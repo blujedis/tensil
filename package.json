@@ -1,0 +1,22 @@
+{
+  "name": "tensil",
+  "version": "1.0.0",
+  "description": "Simple Express framework",
+  "main": "dist/index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Blujedis <blujedicorp@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/lodash": "^4.14.123",
+    "@types/node": "^11.11.3",
+    "ts-node": "^8.0.3"
+  }
+}

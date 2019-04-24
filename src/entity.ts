@@ -76,7 +76,7 @@ export class Entity {
 
   policy(enabled?: boolean): this;
   policy(policies: IPolicies): this;
-  policy(key?: string, policies?: Policy | Policy[], force?: boolean)
+  policy(key?: string, policies?: Policy | Policy[], force?: boolean);
   policy(key?: string | boolean | IPolicies, policies?: Policy | Policy[], force: boolean = false) {
 
     if (isObject(key)) {

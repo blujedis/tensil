@@ -89,7 +89,7 @@ class Tensil extends entity_1.Entity {
         return this._core.routers;
     }
     normalize() {
-        let entities = this._core.entities;
+        const entities = this._core.entities;
         for (const k in entities) {
             this.normalizeEntity(entities[k]);
         }

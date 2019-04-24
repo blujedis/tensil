@@ -15,19 +15,17 @@ import { IFilters, IRoutes } from './types';
 
 class AuthSerivce extends Tensil.Service {
 
-
   isAuth(req, res, next) {
-
+    //
   }
 
   login(req, res, next) {
-
+    //
   }
 
 }
 
 const auth = new AuthSerivce();
-
 
 // tensil.init();
 

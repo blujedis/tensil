@@ -9,8 +9,10 @@ const _1 = require(".");
 // const helper = new HelperService();
 class AuthSerivce extends _1.default.Service {
     isAuth(req, res, next) {
+        //
     }
     login(req, res, next) {
+        //
     }
 }
 const auth = new AuthSerivce();

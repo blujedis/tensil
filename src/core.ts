@@ -40,7 +40,8 @@ export class Core {
   // formatMessage(message: string, map?: IMap<any>) {
   //   message = template(message)(map || {});
   //   const caller = parseCaller(3);
-  //   return template(this.config.messageTemplate)({ program: this.config.program, ministack: caller.ministack, message });
+  //   return template(this.config.messageTemplate)
+  // ({ program: this.config.program, ministack: caller.ministack, message });
   // }
 
   registerEntity(entity: Entity) {

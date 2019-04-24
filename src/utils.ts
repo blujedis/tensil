@@ -22,7 +22,7 @@ export function parseCaller(err?: string | number | Error, split?: number) {
   const idx = line.indexOf('at ');
   line = line.slice(idx + 2, line.length).trim().replace(/\(|\)/, '');
 
-  let parts: any = line.split(' ');
+  const parts: any = line.split(' ');
   parts[1] = parts[1].split(':');
 
   const result = {
@@ -32,8 +32,8 @@ export function parseCaller(err?: string | number | Error, split?: number) {
     function: parts[0],
     filepath: parts[1][0],
     filename: '',
-    line: parseInt(parts[1][1]),
-    column: parseInt(parts[1][2]),
+    line: parseInt(parts[1][1], 10),
+    column: parseInt(parts[1][2], 10),
     ministack: '',
     stack: (err as Error).stack
   };

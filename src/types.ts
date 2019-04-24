@@ -63,5 +63,3 @@ export interface IConfig extends IOptionsBase {
 }
 
 export interface IOptions extends IOptionsBase { }
-
-

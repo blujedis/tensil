@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import { Entity } from './entity';
-import { IPolicies, IFilters, IRoutes, IActions } from './types';
+import { IPolicies, IFilters, IRoutes, IActions, IRouters } from './types';
 declare class Service extends Entity {
     filters: IFilters;
     routes: IRoutes;
@@ -26,7 +26,7 @@ export declare class Tensil extends Entity {
     protected lookupHandler(namespace: string, context: string): any;
     protected normalizeHandlers(handlers: any, context: string): Function[];
     protected normalizeEntity(entity: Entity): void;
-    readonly routers: import("src/types").IRouters;
+    readonly routers: IRouters;
     normalize(): this;
     mount(): this;
     init(strict?: boolean): this;

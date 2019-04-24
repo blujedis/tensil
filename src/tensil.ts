@@ -1,8 +1,7 @@
-import { Express, Router } from 'express';
+import { Express } from 'express';
 import { Entity } from './entity';
-import { isBoolean, get, isString, castArray, isUndefined, uniq } from 'lodash';
-import { IPolicies, IFilters, IRoutes, IActions, IConfig } from './types';
-
+import { isBoolean, get, isString, castArray, isUndefined } from 'lodash';
+import { IPolicies, IFilters, IRoutes, IActions, IRouters } from './types';
 
 class Service extends Entity {
 
@@ -158,13 +157,13 @@ export class Tensil extends Entity {
 
   }
 
-  get routers() {
+  get routers(): IRouters {
     return this._core.routers;
   }
 
   normalize() {
 
-    let entities = this._core.entities;
+    const entities = this._core.entities;
 
     for (const k in entities) {
       this.normalizeEntity(entities[k]);
@@ -196,8 +195,3 @@ export class Tensil extends Entity {
 
 Tensil.Service = Service;
 Tensil.Controller = Controller;
-
-
-
-
-

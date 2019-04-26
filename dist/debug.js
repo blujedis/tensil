@@ -1,13 +1,32 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
-// const tensil = new Tensil();
-// class HelperService extends Tensil.Service {
-//   log(req, res, next) {
-//   }
-// }
-// const helper = new HelperService();
-class AuthSerivce extends _1.default.Service {
+const decorators_1 = require("./decorators");
+const tensil = new _1.default();
+class HelperService extends _1.default.Service {
+    log(req, res, next) {
+        //
+    }
+}
+__decorate([
+    decorators_1.filter
+], HelperService.prototype, "log", null);
+const helpers = new HelperService();
+class UserService extends _1.default.Service {
+    constructor() {
+        super(...arguments);
+        this.filters = {
+            isAuth: ['HelperService.log', this.isAuth],
+            login: [helpers.log, 'filters.isAuth', 'login']
+        };
+        this.routes = {};
+    }
     isAuth(req, res, next) {
         //
     }
@@ -15,7 +34,40 @@ class AuthSerivce extends _1.default.Service {
         //
     }
 }
-const auth = new AuthSerivce();
-// tensil.init();
-// console.log(auth.config);
+__decorate([
+    decorators_1.filter
+], UserService.prototype, "isAuth", null);
+__decorate([
+    decorators_1.filter
+], UserService.prototype, "login", null);
+const user = new UserService();
+class OtherController extends _1.default.Controller {
+    constructor() {
+        super(...arguments);
+        this.policies = {
+            common: ['UserService.filters.isAuth']
+        };
+    }
+}
+tensil.registerController(OtherController, 'other');
+class UserController extends _1.default.Controller {
+    constructor() {
+        super(...arguments);
+        this.policies = {
+            '*': true,
+            find: ['OtherController.policies.common']
+        };
+    }
+    find(req, res) {
+        //
+    }
+    create(req, res) {
+        //
+    }
+}
+tensil.registerController(UserController, 'user');
+// const usrCtrl = tensil.entity<UserController>('UserController');
+// const usrCtrl = new UserController('user');
+// usrCtrl.policy(true);
+tensil.init();
 //# sourceMappingURL=debug.js.map

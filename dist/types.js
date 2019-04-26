@@ -1,8 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ENTITY_TYPES;
-(function (ENTITY_TYPES) {
-    ENTITY_TYPES["Service"] = "Service";
-    ENTITY_TYPES["Controller"] = "Controller";
-})(ENTITY_TYPES = exports.ENTITY_TYPES || (exports.ENTITY_TYPES = {}));
+var EntityType;
+(function (EntityType) {
+    EntityType["Controller"] = "Controller";
+    EntityType["Service"] = "Service";
+})(EntityType = exports.EntityType || (exports.EntityType = {}));
+var ContextType;
+(function (ContextType) {
+    ContextType["policies"] = "policies";
+    ContextType["filters"] = "filters";
+    ContextType["routes"] = "routes";
+})(ContextType = exports.ContextType || (exports.ContextType = {}));
 //# sourceMappingURL=types.js.map

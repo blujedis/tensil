@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import { Entity } from './entity';
-import { IEntities, IRouters } from './types';
+import { IEntities, IRouters, EntityExtended } from './types';
 export declare class Core {
     private static _instance;
     static getInstance(app?: Express): Core;
@@ -8,5 +8,6 @@ export declare class Core {
     entities: IEntities;
     routers: IRouters;
     constructor(app?: Express);
-    registerEntity(entity: Entity): this;
+    getType(entity: Entity | EntityExtended): any;
+    registerInstance(entity: Entity): this;
 }

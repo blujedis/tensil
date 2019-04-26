@@ -102,13 +102,14 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#_core" class="tsd-kind-icon">_core</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#_type" class="tsd-kind-icon">_type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#actions" class="tsd-kind-icon">actions</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_entity_.entity.html#basepath" class="tsd-kind-icon">base<wbr>Path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_entity_.entity.html#basetype" class="tsd-kind-icon">base<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#generate" class="tsd-kind-icon">generate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_entity_.entity.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_entity_.entity.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#policies" class="tsd-kind-icon">policies</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_entity_.entity.html#routes" class="tsd-kind-icon">routes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_entity_.entity.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -116,6 +117,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_entity_.entity.html#app" class="tsd-kind-icon">app</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_entity_.entity.html#router" class="tsd-kind-icon">router</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-private"><a href="_entity_.entity.html#tensil" class="tsd-kind-icon">tensil</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -137,14 +139,13 @@
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
 						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></li>
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, mount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, app<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Express</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></li>
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, mount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, app<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Express</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>base<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, mount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, app<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Express</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L17">entity.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L20">entity.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></h4>
@@ -152,39 +153,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L19">entity.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L22">entity.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> name: <span class="tsd-signature-type">string</span></h5>
+									<h5>base: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mount: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> app: <span class="tsd-signature-type">Express</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L20">entity.ts:20</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mount: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> type: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> app: <span class="tsd-signature-type">Express</span></h5>
@@ -203,27 +181,27 @@
 					<div class="tsd-signature tsd-kind-icon">_core<span class="tsd-signature-symbol">:</span> <a href="_core_.core.html" class="tsd-signature-type">Core</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L9">entity.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L10">entity.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="_type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _type</h3>
-					<div class="tsd-signature tsd-kind-icon">_type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="basepath" class="tsd-anchor"></a>
+					<h3>base<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L8">entity.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L20">entity.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="actions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> actions</h3>
-					<div class="tsd-signature tsd-kind-icon">actions<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.iactions.html" class="tsd-signature-type">IActions</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="basetype" class="tsd-anchor"></a>
+					<h3>base<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L14">entity.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L18">entity.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -233,7 +211,17 @@
 					<div class="tsd-signature tsd-kind-icon">filters<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.ifilters.html" class="tsd-signature-type">IFilters</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L12">entity.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L13">entity.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="generate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> generate</h3>
+					<div class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L15">entity.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -243,17 +231,7 @@
 					<div class="tsd-signature tsd-kind-icon">mount<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L17">entity.ts:17</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L16">entity.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L19">entity.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -263,7 +241,7 @@
 					<div class="tsd-signature tsd-kind-icon">policies<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.ipolicies.html" class="tsd-signature-type">IPolicies</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L11">entity.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L12">entity.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -273,7 +251,17 @@
 					<div class="tsd-signature tsd-kind-icon">routes<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.iroutes.html" class="tsd-signature-type">IRoutes</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L13">entity.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L14">entity.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L17">entity.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -290,7 +278,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L69">entity.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L67">entity.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Express</span></h4>
@@ -307,10 +295,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L73">entity.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L71">entity.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Router</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-private">
+					<a name="tensil" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> tensil</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> tensil<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tensil_.tensil.html" class="tsd-signature-type">Tensil</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Request</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L52">entity.ts:52</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="_tensil_.tensil.html" class="tsd-signature-type">Tensil</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Request</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -328,7 +333,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L104">entity.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L106">entity.ts:106</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -342,7 +347,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L105">entity.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L107">entity.ts:107</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -373,7 +378,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L77">entity.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L75">entity.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -387,7 +392,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L78">entity.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L76">entity.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -401,7 +406,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L79">entity.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L77">entity.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -431,7 +436,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L125">entity.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L131">entity.ts:131</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -445,7 +450,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L126">entity.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L132">entity.ts:132</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -474,7 +479,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L58">entity.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L56">entity.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -503,6 +508,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_core_.html">"core"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_decorators_.html">"decorators"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/_entity_.html">"entity"</a>
@@ -534,20 +542,20 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="_entity_.entity.html#_core" class="tsd-kind-icon">_core</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="_entity_.entity.html#_type" class="tsd-kind-icon">_type</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_entity_.entity.html#basepath" class="tsd-kind-icon">base<wbr>Path</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="_entity_.entity.html#actions" class="tsd-kind-icon">actions</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_entity_.entity.html#basetype" class="tsd-kind-icon">base<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="_entity_.entity.html#filters" class="tsd-kind-icon">filters</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_entity_.entity.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="_entity_.entity.html#generate" class="tsd-kind-icon">generate</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_entity_.entity.html#name" class="tsd-kind-icon">name</a>
+								<a href="_entity_.entity.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="_entity_.entity.html#policies" class="tsd-kind-icon">policies</a>
@@ -555,11 +563,17 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="_entity_.entity.html#routes" class="tsd-kind-icon">routes</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_entity_.entity.html#type" class="tsd-kind-icon">type</a>
+							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_entity_.entity.html#app" class="tsd-kind-icon">app</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_entity_.entity.html#router" class="tsd-kind-icon">router</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-private">
+								<a href="_entity_.entity.html#tensil" class="tsd-kind-icon">tensil</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_entity_.entity.html#filter" class="tsd-kind-icon">filter</a>

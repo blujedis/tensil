@@ -1,12 +1,12 @@
 {
   "name": "tensil",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple Express framework",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist/*",
     "build": "tsc",
-    "watch": "npm run tsc -- -w",
+    "watch": "npm run build -- -w",
     "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
     "typedoc": "typedoc ./src --options ./typedoc.json --out ./docs",
     "docs": "npm run typedoc && touch ./docs/.nojekll",

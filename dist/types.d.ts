@@ -1,15 +1,30 @@
-import { Express, NextFunction, Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { Entity } from './entity';
-export declare enum ENTITY_TYPES {
-    Service = "Service",
-    Controller = "Controller"
+import { Tensil, Service, Controller } from './tensil';
+export declare enum EntityType {
+    Controller = "Controller",
+    Service = "Service"
 }
-export declare type Filter = string | Function;
-export declare type Policy = string | boolean | Function;
+export declare enum ContextType {
+    policies = "policies",
+    filters = "filters",
+    routes = "routes"
+}
+export declare type ContextTypes = keyof typeof ContextType;
+export declare type Constructor<T = {}> = new (...args: any[]) => T;
+export declare type Filter = string | Function | any[];
+export declare type Policy = string | boolean | Function | any[];
 export declare type Action = string | Function;
-export declare type RequestHandler = (req?: IRequest, res?: IResponse, next?: NextFunction) => any;
-export declare type RequestErrorHandler = (err: Error, req?: IRequest, res?: IResponse, next?: NextFunction) => any;
-export declare type RequestParamHandler = (req: IRequest, res: IResponse, next: NextFunction, param: any) => any;
+export declare type RequestHandler<R extends Request, S extends Response> = (req?: R, res?: S, next?: NextFunction) => any;
+export declare type RequestErrorHandler<R extends Request, S extends Response> = (err: Error, req?: R, res?: S, next?: NextFunction) => any;
+export declare type RequestParamHandler<R extends Request, S extends Response> = (req: R, res: S, next: NextFunction, param: any) => any;
+export declare type EntityExtended = Entity & {
+    name?: string;
+    filters: IFilters;
+    routes: IRoutes;
+    policies?: IPolicies;
+    generate?: boolean;
+};
 export interface IMap<T> {
     [name: string]: T;
 }
@@ -22,30 +37,12 @@ export interface IPolicies {
 export interface IRoutes {
     [route: string]: Filter | Filter[] | Action | Action[];
 }
-export interface IActions {
-    [action: string]: RequestHandler | RequestErrorHandler | RequestParamHandler;
+export interface IActions<R extends Request, S extends Response> {
+    [action: string]: RequestHandler<R, S> | RequestErrorHandler<R, S> | RequestParamHandler<R, S>;
 }
 export interface IEntities {
-    [entity: string]: Entity;
+    [entity: string]: Entity | Service | Controller | Tensil<Request, Response>;
 }
 export interface IRouters {
     [router: string]: Router;
-}
-export interface IRequest extends Request {
-    [key: string]: any;
-}
-export interface IResponse extends Response {
-    [key: string]: any;
-}
-export interface IOptionsBase {
-    policies?: IPolicies;
-    filters?: IFilters;
-    routes?: IRoutes;
-    actions?: IActions;
-    app?: Express;
-}
-export interface IConfig extends IOptionsBase {
-    type: string;
-}
-export interface IOptions extends IOptionsBase {
 }

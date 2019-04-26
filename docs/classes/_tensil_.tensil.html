@@ -62,13 +62,24 @@
 					<a href="_tensil_.tensil.html">Tensil</a>
 				</li>
 			</ul>
-			<h1>Class Tensil</h1>
+			<h1>Class Tensil&lt;R, S&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span></h4>
+					</li>
+					<li>
+						<h4>S<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -96,13 +107,15 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#_core" class="tsd-kind-icon">_core</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#_type" class="tsd-kind-icon">_type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#actions" class="tsd-kind-icon">actions</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#basepath" class="tsd-kind-icon">base<wbr>Path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#basetype" class="tsd-kind-icon">base<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_tensil_.tensil.html#events" class="tsd-kind-icon">events</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#filters" class="tsd-kind-icon">filters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#generate" class="tsd-kind-icon">generate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#policies" class="tsd-kind-icon">policies</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.tensil.html#routes" class="tsd-kind-icon">routes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#type" class="tsd-kind-icon">type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_tensil_.tensil.html#controller" class="tsd-kind-icon">Controller</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_tensil_.tensil.html#service" class="tsd-kind-icon">Service</a></li>
 							</ul>
@@ -110,23 +123,39 @@
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_tensil_.tensil.html#allowhandler" class="tsd-kind-icon">allow<wbr>Handler</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#app" class="tsd-kind-icon">app</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_tensil_.tensil.html#denyhandler" class="tsd-kind-icon">deny<wbr>Handler</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_tensil_.tensil.html#entities" class="tsd-kind-icon">entities</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#router" class="tsd-kind-icon">router</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_tensil_.tensil.html#routers" class="tsd-kind-icon">routers</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="_tensil_.tensil.html#viewhandler" class="tsd-kind-icon">view<wbr>Handler</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_tensil_.tensil.html#_allowhandler" class="tsd-kind-icon">_allow<wbr>Handler</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_tensil_.tensil.html#_denyhandler" class="tsd-kind-icon">_deny<wbr>Handler</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_tensil_.tensil.html#_viewhandler" class="tsd-kind-icon">_view<wbr>Handler</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_tensil_.tensil.html#entity" class="tsd-kind-icon">entity</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#filter" class="tsd-kind-icon">filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#init" class="tsd-kind-icon">init</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#initentity" class="tsd-kind-icon">init<wbr>Entity</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="_tensil_.tensil.html#lookuphandler" class="tsd-kind-icon">lookup<wbr>Handler</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#mount" class="tsd-kind-icon">mount</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#normalize" class="tsd-kind-icon">normalize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="_tensil_.tensil.html#normalizeentity" class="tsd-kind-icon">normalize<wbr>Entity</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#normalizeentity" class="tsd-kind-icon">normalize<wbr>Entity</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="_tensil_.tensil.html#normalizehandlers" class="tsd-kind-icon">normalize<wbr>Handlers</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="_tensil_.tensil.html#normalizenamespaces" class="tsd-kind-icon">normalize<wbr>Namespaces</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#off" class="tsd-kind-icon">off</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#parseroutes" class="tsd-kind-icon">parse<wbr>Routes</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#policy" class="tsd-kind-icon">policy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_tensil_.tensil.html#registercontroller" class="tsd-kind-icon">register<wbr>Controller</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_tensil_.tensil.html#registerservice" class="tsd-kind-icon">register<wbr>Service</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_tensil_.tensil.html#removeevents" class="tsd-kind-icon">remove<wbr>Events</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.tensil.html#route" class="tsd-kind-icon">route</a></li>
 							</ul>
 						</section>
@@ -147,7 +176,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L39">tensil.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L45">tensil.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_tensil_.tensil.html" class="tsd-signature-type">Tensil</a></h4>
@@ -156,7 +185,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L41">tensil.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L47">tensil.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -179,31 +208,49 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#_core">_core</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L9">entity.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L10">entity.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="_type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _type</h3>
-					<div class="tsd-signature tsd-kind-icon">_type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="basepath" class="tsd-anchor"></a>
+					<h3>base<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#_type">_type</a></p>
+						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#basepath">basePath</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L8">entity.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L20">entity.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="actions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> actions</h3>
-					<div class="tsd-signature tsd-kind-icon">actions<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.iactions.html" class="tsd-signature-type">IActions</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="basetype" class="tsd-anchor"></a>
+					<h3>base<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">base<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#actions">actions</a></p>
+						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#basetype">baseType</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L14">entity.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L18">entity.ts:18</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="events" class="tsd-anchor"></a>
+					<h3>events</h3>
+					<div class="tsd-signature tsd-kind-icon">events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L45">tensil.ts:45</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 					<a name="filters" class="tsd-anchor"></a>
@@ -212,7 +259,18 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#filters">filters</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L12">entity.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L13">entity.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="generate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> generate</h3>
+					<div class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#generate">generate</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L15">entity.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -223,18 +281,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#mountpath">mountPath</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L17">entity.ts:17</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#name">name</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L16">entity.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L19">entity.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -245,7 +292,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policies">policies</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L11">entity.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L12">entity.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -256,7 +303,18 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#routes">routes</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L13">entity.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L14">entity.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#type">type</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L17">entity.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -266,7 +324,7 @@
 					<div class="tsd-signature tsd-kind-icon">Controller<span class="tsd-signature-symbol">:</span> <a href="_tensil_.controller.html" class="tsd-signature-type">Controller</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L39">tensil.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L39">tensil.ts:39</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -276,13 +334,69 @@
 					<div class="tsd-signature tsd-kind-icon">Service<span class="tsd-signature-symbol">:</span> <a href="_tensil_.service.html" class="tsd-signature-type">Service</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L38">tensil.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L38">tensil.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="allowhandler" class="tsd-anchor"></a>
+					<h3>allow<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> allowHandler<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> allowHandler<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L169">tensil.ts:169</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">S</span>, next<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">NextFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> req: <span class="tsd-signature-type">R</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> res: <span class="tsd-signature-type">S</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> next: <span class="tsd-signature-type">NextFunction</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L173">tensil.ts:173</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fn: <a href="../modules/_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 					<a name="app" class="tsd-anchor"></a>
 					<h3>app</h3>
@@ -294,10 +408,83 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#app">app</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L69">entity.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L67">entity.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Express</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="denyhandler" class="tsd-anchor"></a>
+					<h3>deny<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> denyHandler<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> denyHandler<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L177">tensil.ts:177</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">S</span>, next<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">NextFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> req: <span class="tsd-signature-type">R</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> res: <span class="tsd-signature-type">S</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> next: <span class="tsd-signature-type">NextFunction</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L181">tensil.ts:181</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fn: <a href="../modules/_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="entities" class="tsd-anchor"></a>
+					<h3>entities</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> entities<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.ientities.html" class="tsd-signature-type">IEntities</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L161">tensil.ts:161</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_types_.ientities.html" class="tsd-signature-type">IEntities</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -312,7 +499,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#router">router</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L73">entity.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L71">entity.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Router</span></h4>
@@ -329,16 +516,250 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L160">tensil.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L165">tensil.ts:165</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_types_.irouters.html" class="tsd-signature-type">IRouters</a></h4>
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class">
+					<a name="viewhandler" class="tsd-anchor"></a>
+					<h3>view<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> viewHandler<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> viewHandler<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L185">tensil.ts:185</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">S</span>, next<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">NextFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> req: <span class="tsd-signature-type">R</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> res: <span class="tsd-signature-type">S</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> next: <span class="tsd-signature-type">NextFunction</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L189">tensil.ts:189</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>fn: <a href="../modules/_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="_allowhandler" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _allow<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">_allow<wbr>Handler<span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NextFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NextFunction</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L41">tensil.ts:41</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>req: <span class="tsd-signature-type">R</span></h5>
+								</li>
+								<li>
+									<h5>res: <span class="tsd-signature-type">S</span></h5>
+								</li>
+								<li>
+									<h5>next: <span class="tsd-signature-type">NextFunction</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">NextFunction</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="_denyhandler" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _deny<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">_deny<wbr>Handler<span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NextFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L42">tensil.ts:42</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>req: <span class="tsd-signature-type">R</span></h5>
+								</li>
+								<li>
+									<h5>res: <span class="tsd-signature-type">S</span></h5>
+								</li>
+								<li>
+									<h5>next: <span class="tsd-signature-type">NextFunction</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>body<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> body: <span class="tsd-signature-type">any</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Response</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="_viewhandler" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _view<wbr>Handler</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">_view<wbr>Handler<span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NextFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L43">tensil.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>req: <span class="tsd-signature-type">R</span></h5>
+								</li>
+								<li>
+									<h5>res: <span class="tsd-signature-type">S</span></h5>
+								</li>
+								<li>
+									<h5>next: <span class="tsd-signature-type">NextFunction</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-siganture">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>body<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> body: <span class="tsd-signature-type">any</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Response</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="emit" class="tsd-anchor"></a>
+					<h3>emit</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">emit<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L199">tensil.ts:199</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="entity" class="tsd-anchor"></a>
+					<h3>entity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">entity&lt;T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L214">tensil.ts:214</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="filter" class="tsd-anchor"></a>
 					<h3>filter</h3>
@@ -351,7 +772,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#filter">filter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L104">entity.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L106">entity.ts:106</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -366,7 +787,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#filter">filter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L105">entity.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L107">entity.ts:107</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -389,22 +810,62 @@
 					<a name="init" class="tsd-anchor"></a>
 					<h3>init</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>strict<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>isProduction<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L184">tensil.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L323">tensil.ts:323</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> strict: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> isProduction: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="initentity" class="tsd-anchor"></a>
+					<h3>init<wbr>Entity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">init<wbr>Entity<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#entityextended" class="tsd-signature-type">EntityExtended</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L232">tensil.ts:232</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>entity: <a href="../modules/_types_.html#entityextended" class="tsd-signature-type">EntityExtended</a></h5>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">object</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>filters<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.ifilters.html" class="tsd-signature-type">IFilters</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> policies<span class="tsd-signature-symbol">?: </span><a href="../interfaces/_types_.ipolicies.html" class="tsd-signature-type">IPolicies</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>routes<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iroutes.html" class="tsd-signature-type">IRoutes</a></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_entity_.entity.html" class="tsd-signature-type">Entity</a>
+								<span class="tsd-signature-symbol"> &amp; </span>
+								<span class="tsd-signature-type">object</span>
+							</h4>
 						</li>
 					</ul>
 				</section>
@@ -412,13 +873,13 @@
 					<a name="lookuphandler" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> lookup<wbr>Handler</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">lookup<wbr>Handler<span class="tsd-signature-symbol">(</span>namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+						<li class="tsd-signature tsd-kind-icon">lookup<wbr>Handler<span class="tsd-signature-symbol">(</span>namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, context<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#contexttypes" class="tsd-signature-type">ContextTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L85">tensil.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L96">tensil.ts:96</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -427,7 +888,7 @@
 									<h5>namespace: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>context: <span class="tsd-signature-type">string</span></h5>
+									<h5>context: <a href="../modules/_types_.html#contexttypes" class="tsd-signature-type">ContextTypes</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -444,7 +905,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L176">tensil.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L308">tensil.ts:308</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -461,33 +922,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L164">tensil.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L290">tensil.ts:290</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="normalizeentity" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> normalize<wbr>Entity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Entity<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<h3>normalize<wbr>Entity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Entity<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="_tensil_.service.html" class="tsd-signature-type">Service</a><span class="tsd-signature-symbol"> | </span><a href="_tensil_.controller.html" class="tsd-signature-type">Controller</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_tensil_.service.html" class="tsd-signature-type">Service</a><span class="tsd-signature-symbol"> | </span><a href="_tensil_.controller.html" class="tsd-signature-type">Controller</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L142">tensil.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L250">tensil.ts:250</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>entity: <a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></h5>
+									<h5>entity: <a href="_tensil_.service.html" class="tsd-signature-type">Service</a><span class="tsd-signature-symbol"> | </span><a href="_tensil_.controller.html" class="tsd-signature-type">Controller</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_tensil_.service.html" class="tsd-signature-type">Service</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<a href="_tensil_.controller.html" class="tsd-signature-type">Controller</a>
+							</h4>
 						</li>
 					</ul>
 				</section>
@@ -495,13 +959,13 @@
 					<a name="normalizehandlers" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> normalize<wbr>Handlers</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Handlers<span class="tsd-signature-symbol">(</span>handlers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Handlers<span class="tsd-signature-symbol">(</span>handlers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, context<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#contexttypes" class="tsd-signature-type">ContextTypes</a>, key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L114">tensil.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L121">tensil.ts:121</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -510,7 +974,10 @@
 									<h5>handlers: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>context: <span class="tsd-signature-type">string</span></h5>
+									<h5>context: <a href="../modules/_types_.html#contexttypes" class="tsd-signature-type">ContextTypes</a></h5>
+								</li>
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -521,22 +988,136 @@
 					<a name="normalizenamespaces" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> normalize<wbr>Namespaces</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Namespaces<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="_entity_.entity.html" class="tsd-signature-type">Entity</a>, context<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"policies"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"filters"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"routes"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">normalize<wbr>Namespaces<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#entityextended" class="tsd-signature-type">EntityExtended</a>, context<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#contexttypes" class="tsd-signature-type">ContextTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/tensil.ts#L47">tensil.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L53">tensil.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>entity: <a href="_entity_.entity.html" class="tsd-signature-type">Entity</a></h5>
+									<h5>entity: <a href="../modules/_types_.html#entityextended" class="tsd-signature-type">EntityExtended</a></h5>
 								</li>
 								<li>
-									<h5>context: <span class="tsd-signature-type">"policies"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"filters"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"routes"</span></h5>
+									<h5>context: <a href="../modules/_types_.html#contexttypes" class="tsd-signature-type">ContextTypes</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="off" class="tsd-anchor"></a>
+					<h3>off</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">off<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L203">tensil.ts:203</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>handler: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="on" class="tsd-anchor"></a>
+					<h3>on</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L193">tensil.ts:193</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>handler: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="parseroutes" class="tsd-anchor"></a>
+					<h3>parse<wbr>Routes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">parse<wbr>Routes<span class="tsd-signature-symbol">(</span>route<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, handlers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L228">tensil.ts:228</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>route: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>handlers: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -556,7 +1137,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policy">policy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L77">entity.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L75">entity.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -571,7 +1152,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policy">policy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L78">entity.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L76">entity.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -586,7 +1167,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policy">policy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L79">entity.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L77">entity.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -605,6 +1186,96 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="registercontroller" class="tsd-anchor"></a>
+					<h3>register<wbr>Controller</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Controller&lt;T&gt;<span class="tsd-signature-symbol">(</span>Klass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, base<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, mount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L223">tensil.ts:223</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#constructor" class="tsd-signature-type">Constructor</a></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>Klass: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>base: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mount: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="registerservice" class="tsd-anchor"></a>
+					<h3>register<wbr>Service</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Service&lt;T&gt;<span class="tsd-signature-symbol">(</span>Klass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, mount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L218">tensil.ts:218</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#constructor" class="tsd-signature-type">Constructor</a></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>Klass: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mount: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="removeevents" class="tsd-anchor"></a>
+					<h3>remove<wbr>Events</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Events<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L210">tensil.ts:210</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="route" class="tsd-anchor"></a>
 					<h3>route</h3>
@@ -617,7 +1288,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#route">route</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L125">entity.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L131">entity.ts:131</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -632,7 +1303,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#route">route</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/7d14625/src/entity.ts#L126">entity.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L132">entity.ts:132</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -663,6 +1334,9 @@
 						<a href="../modules/_core_.html">"core"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_decorators_.html">"decorators"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_entity_.html">"entity"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -681,15 +1355,15 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="_tensil_.controller.html" class="tsd-kind-icon">Controller</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-is-not-exported">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="_tensil_.service.html" class="tsd-kind-icon">Service</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_tensil_.tensil.html" class="tsd-kind-icon">Tensil</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
@@ -698,20 +1372,23 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="_tensil_.tensil.html#_core" class="tsd-kind-icon">_core</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_tensil_.tensil.html#_type" class="tsd-kind-icon">_type</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="_tensil_.tensil.html#basepath" class="tsd-kind-icon">base<wbr>Path</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_tensil_.tensil.html#actions" class="tsd-kind-icon">actions</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="_tensil_.tensil.html#basetype" class="tsd-kind-icon">base<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#events" class="tsd-kind-icon">events</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="_tensil_.tensil.html#filters" class="tsd-kind-icon">filters</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tensil_.tensil.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="_tensil_.tensil.html#generate" class="tsd-kind-icon">generate</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_tensil_.tensil.html#name" class="tsd-kind-icon">name</a>
+								<a href="_tensil_.tensil.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="_tensil_.tensil.html#policies" class="tsd-kind-icon">policies</a>
@@ -719,14 +1396,26 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="_tensil_.tensil.html#routes" class="tsd-kind-icon">routes</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="_tensil_.tensil.html#type" class="tsd-kind-icon">type</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="_tensil_.tensil.html#controller" class="tsd-kind-icon">Controller</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="_tensil_.tensil.html#service" class="tsd-kind-icon">Service</a>
 							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#allowhandler" class="tsd-kind-icon">allow<wbr>Handler</a>
+							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.tensil.html#app" class="tsd-kind-icon">app</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#denyhandler" class="tsd-kind-icon">deny<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#entities" class="tsd-kind-icon">entities</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.tensil.html#router" class="tsd-kind-icon">router</a>
@@ -734,11 +1423,32 @@
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="_tensil_.tensil.html#routers" class="tsd-kind-icon">routers</a>
 							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#viewhandler" class="tsd-kind-icon">view<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_tensil_.tensil.html#_allowhandler" class="tsd-kind-icon">_allow<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_tensil_.tensil.html#_denyhandler" class="tsd-kind-icon">_deny<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="_tensil_.tensil.html#_viewhandler" class="tsd-kind-icon">_view<wbr>Handler</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#emit" class="tsd-kind-icon">emit</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_tensil_.tensil.html#entity" class="tsd-kind-icon">entity</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.tensil.html#filter" class="tsd-kind-icon">filter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_tensil_.tensil.html#init" class="tsd-kind-icon">init</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#initentity" class="tsd-kind-icon">init<wbr>Entity</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="_tensil_.tensil.html#lookuphandler" class="tsd-kind-icon">lookup<wbr>Handler</a>
@@ -749,7 +1459,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_tensil_.tensil.html#normalize" class="tsd-kind-icon">normalize</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_tensil_.tensil.html#normalizeentity" class="tsd-kind-icon">normalize<wbr>Entity</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
@@ -758,8 +1468,26 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="_tensil_.tensil.html#normalizenamespaces" class="tsd-kind-icon">normalize<wbr>Namespaces</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#off" class="tsd-kind-icon">off</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#on" class="tsd-kind-icon">on</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#parseroutes" class="tsd-kind-icon">parse<wbr>Routes</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.tensil.html#policy" class="tsd-kind-icon">policy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_tensil_.tensil.html#registercontroller" class="tsd-kind-icon">register<wbr>Controller</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="_tensil_.tensil.html#registerservice" class="tsd-kind-icon">register<wbr>Service</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_tensil_.tensil.html#removeevents" class="tsd-kind-icon">remove<wbr>Events</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.tensil.html#route" class="tsd-kind-icon">route</a>

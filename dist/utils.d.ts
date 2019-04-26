@@ -10,3 +10,4 @@ export declare function parseCaller(err?: string | number | Error, split?: numbe
     ministack: string;
     stack: string;
 };
+export declare function parseRoute(route: any, handlers: any): void;

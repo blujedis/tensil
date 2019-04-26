@@ -1,18 +1,19 @@
 import { Express, Router } from 'express';
 import { Core } from './core';
-import { Filter, Policy, Action, IFilters, IPolicies, IRoutes, IActions } from './types';
+import { Filter, Policy, Action, IFilters, IPolicies, IRoutes } from './types';
 export declare class Entity {
-    protected _type: string;
     protected _core: Core;
     protected policies: IPolicies;
     protected filters: IFilters;
     protected routes: IRoutes;
-    protected actions: IActions;
-    name: string;
+    protected generate: boolean;
+    type: string;
+    baseType: string;
     mountPath: string;
+    basePath: string;
     constructor();
-    constructor(name?: string, mount?: string, app?: Express);
-    constructor(name?: string, mount?: string, type?: string, app?: Express);
+    constructor(base: string, mount?: string, app?: Express);
+    private readonly tensil;
     private validateKey;
     readonly app: Express;
     readonly router: Router;

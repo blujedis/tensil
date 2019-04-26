@@ -22,10 +22,13 @@ class Core {
     //   return template(this.config.messageTemplate)
     // ({ program: this.config.program, ministack: caller.ministack, message });
     // }
-    registerEntity(entity) {
-        if (lodash_1.has(this.entities, entity.name))
-            throw new Error(`Entity ${entity.name} failed to register, already exists`);
-        this.entities[entity.name] = entity;
+    getType(entity) {
+        return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
+    }
+    registerInstance(entity) {
+        if (lodash_1.has(this.entities, entity.type))
+            throw new Error(`Entity ${entity.type} failed to register, already exists`);
+        this.entities[entity.type] = entity;
         return this;
     }
 }

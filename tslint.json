@@ -22,6 +22,7 @@
       "arrow-parens": false,
       "array-type": false,
       "unified-signatures": false,
+      "only-arrow-functions": false,
       "align": false,
       "ban-types": false,
       "forin": false,

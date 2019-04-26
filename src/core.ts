@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Express } from 'express';
 import { Entity } from './entity';
 import { has } from 'lodash';
-import { IEntities, IRouters } from './types';
+import { IEntities, IRouters, EntityExtended } from './types';
 
 // templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
@@ -44,10 +44,14 @@ export class Core {
   // ({ program: this.config.program, ministack: caller.ministack, message });
   // }
 
-  registerEntity(entity: Entity) {
-    if (has(this.entities, entity.name))
-      throw new Error(`Entity ${entity.name} failed to register, already exists`);
-    this.entities[entity.name] = entity;
+  getType(entity: Entity | EntityExtended) {
+    return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
+  }
+
+  registerInstance(entity: Entity) {
+    if (has(this.entities, entity.type))
+      throw new Error(`Entity ${entity.type} failed to register, already exists`);
+    this.entities[entity.type] = entity;
     return this;
   }
 

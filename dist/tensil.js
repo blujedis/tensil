@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const http_1 = require("http");
+const https_1 = require("https");
 const entity_1 = require("./entity");
 const lodash_1 = require("lodash");
 const path_1 = require("path");
@@ -475,6 +477,22 @@ class Tensil extends entity_1.Entity {
         }
         this._normalized = true;
         return this;
+    }
+    createServer(app, options) {
+        if (lodash_1.isObject(app)) {
+            options = app;
+            app = undefined;
+        }
+        app = app || this.app;
+        return this.server = http_1.createServer(options, app);
+    }
+    createHttpsServer(app, options) {
+        if (lodash_1.isObject(app)) {
+            options = app;
+            app = undefined;
+        }
+        app = app || this.app;
+        return this.server = https_1.createServer(options, app);
     }
     /**
      * When no server is specified uses internal Express app.

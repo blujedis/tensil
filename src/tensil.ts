@@ -1,6 +1,6 @@
 import { Express, Request, Response } from 'express';
-import { Server as HttpServer } from 'http';
-import { Server as HttpsServer } from 'https';
+import { Server as HttpServer, createServer as createHttpServer, ServerOptions as HttpServerOptions } from 'http';
+import { Server as HttpsServer, createServer as createHttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
 import {
   isBoolean, get, set, has, isString, isFunction, castArray, isObject, isUndefined,
@@ -724,6 +724,57 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
     return this;
 
+  }
+
+  /**
+   * Creates an Http Server using interall Express app.
+   */
+  createServer(): HttpServer;
+
+  /**
+   * Creates Http Server using internal Express app.
+   * 
+   * @param options the Http Server options to apply on create.
+   */
+  createServer(options: HttpServerOptions): HttpsServer;
+
+  /**
+   * Creates an Http Server with specified app and options.
+   * 
+   * @param app an Express app to bind to the server.
+   * @param options the Http Server options to apply on create.
+   */
+  createServer(app: Express, options?: HttpServerOptions): HttpServer;
+  createServer(app?: Express | HttpServerOptions, options?: HttpServerOptions) {
+    if (isObject(app)) {
+      options = app as HttpServerOptions;
+      app = undefined;
+    }
+    app = app || this.app;
+    return this.server = createHttpServer(options, app as Express);
+  }
+
+  /**
+   * Creates Https Server using internal Express app.
+   * 
+   * @param options the Https Server options to apply on create.
+   */
+  createHttpsServer(options: HttpsServerOptions): HttpsServer;
+
+  /**
+   * Creates an Https Server with specified app and options.
+   * 
+   * @param app an Express app to bind to the server.
+   * @param options the Http Servers options to apply on create.
+   */
+  createHttpsServer(app: Express, options?: HttpsServerOptions): HttpsServer;
+  createHttpsServer(app: Express | HttpsServerOptions, options?: HttpsServerOptions) {
+    if (isObject(app)) {
+      options = app as HttpServerOptions;
+      app = undefined;
+    }
+    app = app || this.app;
+    return this.server = createHttpsServer(options, app as Express);
   }
 
   /**

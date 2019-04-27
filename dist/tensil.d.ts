@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { Express, Request, Response } from 'express';
-import { Server as HttpServer } from 'http';
-import { Server as HttpsServer } from 'https';
+import { Server as HttpServer, ServerOptions as HttpServerOptions } from 'http';
+import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
 import { IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig } from './types';
 export declare class Service<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
@@ -238,6 +238,36 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      * .normalize();
      */
     normalize(): this;
+    /**
+     * Creates an Http Server using interall Express app.
+     */
+    createServer(): HttpServer;
+    /**
+     * Creates Http Server using internal Express app.
+     *
+     * @param options the Http Server options to apply on create.
+     */
+    createServer(options: HttpServerOptions): HttpsServer;
+    /**
+     * Creates an Http Server with specified app and options.
+     *
+     * @param app an Express app to bind to the server.
+     * @param options the Http Server options to apply on create.
+     */
+    createServer(app: Express, options?: HttpServerOptions): HttpServer;
+    /**
+     * Creates Https Server using internal Express app.
+     *
+     * @param options the Https Server options to apply on create.
+     */
+    createHttpsServer(options: HttpsServerOptions): HttpsServer;
+    /**
+     * Creates an Https Server with specified app and options.
+     *
+     * @param app an Express app to bind to the server.
+     * @param options the Http Servers options to apply on create.
+     */
+    createHttpsServer(app: Express, options?: HttpsServerOptions): HttpsServer;
     /**
      * When no server is specified uses internal Express app.
      *

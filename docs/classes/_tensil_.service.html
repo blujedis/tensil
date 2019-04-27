@@ -62,18 +62,29 @@
 					<a href="_tensil_.service.html">Service</a>
 				</li>
 			</ul>
-			<h1>Class Service</h1>
+			<h1>Class Service&lt;R, S&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span></h4>
+					</li>
+					<li>
+						<h4>S<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_entity_.entity.html" class="tsd-signature-type">Entity</a>
+						<a href="_entity_.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">Service</span>
@@ -96,10 +107,10 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.service.html#_core" class="tsd-kind-icon">_core</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.service.html#actions" class="tsd-kind-icon">actions</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#basepath" class="tsd-kind-icon">base<wbr>Path</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#basetype" class="tsd-kind-icon">base<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite"><a href="_tensil_.service.html#filters" class="tsd-kind-icon">filters</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.service.html#generate" class="tsd-kind-icon">generate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_tensil_.service.html#policies" class="tsd-kind-icon">policies</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite"><a href="_tensil_.service.html#routes" class="tsd-kind-icon">routes</a></li>
@@ -116,9 +127,12 @@
 						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#deny" class="tsd-kind-icon">deny</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#filter" class="tsd-kind-icon">filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#policy" class="tsd-kind-icon">policy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#redirect" class="tsd-kind-icon">redirect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_tensil_.service.html#route" class="tsd-kind-icon">route</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_tensil_.service.html#view" class="tsd-kind-icon">view</a></li>
 							</ul>
 						</section>
 					</div>
@@ -138,7 +152,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L12">tensil.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L39">tensil.ts:39</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_tensil_.service.html" class="tsd-signature-type">Service</a></h4>
@@ -147,7 +161,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L14">tensil.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L41">tensil.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -170,7 +184,18 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#_core">_core</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L10">entity.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L10">entity.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="actions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> actions</h3>
+					<div class="tsd-signature tsd-kind-icon">actions<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_types_.iactions.html" class="tsd-signature-type">IActions</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#actions">actions</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L15">entity.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -181,7 +206,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#basepath">basePath</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L20">entity.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L20">entity.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -192,7 +217,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#basetype">baseType</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L18">entity.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L18">entity.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -203,18 +228,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#filters">filters</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L11">tensil.ts:11</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="generate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> generate</h3>
-					<div class="tsd-signature tsd-kind-icon">generate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#generate">generate</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L15">entity.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L38">tensil.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -225,7 +239,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#mountpath">mountPath</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L19">entity.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L19">entity.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -236,7 +250,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policies">policies</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L12">entity.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L12">entity.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -247,7 +261,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#routes">routes</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/tensil.ts#L12">tensil.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L39">tensil.ts:39</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -258,7 +272,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#type">type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L17">entity.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L17">entity.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -276,7 +290,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#app">app</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L67">entity.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L69">entity.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Express</span></h4>
@@ -294,7 +308,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#router">router</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L71">entity.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L73">entity.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Router</span></h4>
@@ -304,6 +318,33 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="deny" class="tsd-anchor"></a>
+					<h3>deny</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">deny<span class="tsd-signature-symbol">(</span>req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span>, res<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Response</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#deny">deny</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L79">entity.ts:79</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>req: <span class="tsd-signature-type">R</span></h5>
+								</li>
+								<li>
+									<h5>res: <span class="tsd-signature-type">S</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Response</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="filter" class="tsd-anchor"></a>
 					<h3>filter</h3>
@@ -316,7 +357,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#filter">filter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L106">entity.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L126">entity.ts:126</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -331,7 +372,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#filter">filter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L107">entity.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L127">entity.ts:127</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -363,7 +404,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policy">policy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L75">entity.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L95">entity.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -378,7 +419,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policy">policy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L76">entity.ts:76</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L96">entity.ts:96</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -393,7 +434,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#policy">policy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L77">entity.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L97">entity.ts:97</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -413,6 +454,30 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="redirect" class="tsd-anchor"></a>
+					<h3>redirect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">redirect<span class="tsd-signature-symbol">(</span>to<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#redirect">redirect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L89">entity.ts:89</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>to: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="route" class="tsd-anchor"></a>
 					<h3>route</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -424,7 +489,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#route">route</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L131">entity.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L151">entity.ts:151</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -439,7 +504,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#route">route</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/b88168f/src/entity.ts#L132">entity.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L152">entity.ts:152</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -455,6 +520,39 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+					<a name="view" class="tsd-anchor"></a>
+					<h3>view</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">view&lt;T&gt;<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, context<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_entity_.entity.html">Entity</a>.<a href="_entity_.entity.html#view">view</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/entity.ts#L83">entity.ts:83</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> context: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -491,12 +589,12 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_tensil_.controller.html" class="tsd-kind-icon">Controller</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_tensil_.service.html" class="tsd-kind-icon">Service</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
@@ -504,6 +602,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="_tensil_.service.html#_core" class="tsd-kind-icon">_core</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="_tensil_.service.html#actions" class="tsd-kind-icon">actions</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.service.html#basepath" class="tsd-kind-icon">base<wbr>Path</a>
@@ -513,9 +614,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite">
 								<a href="_tensil_.service.html#filters" class="tsd-kind-icon">filters</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_tensil_.service.html#generate" class="tsd-kind-icon">generate</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.service.html#mountpath" class="tsd-kind-icon">mount<wbr>Path</a>
@@ -536,13 +634,22 @@
 								<a href="_tensil_.service.html#router" class="tsd-kind-icon">router</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_tensil_.service.html#deny" class="tsd-kind-icon">deny</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.service.html#filter" class="tsd-kind-icon">filter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.service.html#policy" class="tsd-kind-icon">policy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_tensil_.service.html#redirect" class="tsd-kind-icon">redirect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_tensil_.service.html#route" class="tsd-kind-icon">route</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+								<a href="_tensil_.service.html#view" class="tsd-kind-icon">view</a>
 							</li>
 						</ul>
 					</li>
@@ -550,6 +657,9 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_tensil_.tensil.html" class="tsd-kind-icon">Tensil</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/_tensil_.html#default_options" class="tsd-kind-icon">DEFAULT_<wbr>OPTIONS</a>
 					</li>
 				</ul>
 			</nav>

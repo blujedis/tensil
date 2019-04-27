@@ -6,15 +6,16 @@ const lodash_1 = require("lodash");
 const types_1 = require("./types");
 class Entity {
     constructor(base, mount, app) {
-        this.generate = false;
         const ctorName = this.constructor.name;
         this._core = core_1.Core.getInstance(app);
         this.type = ctorName;
         this.baseType = this._core.getType(this);
         this.mountPath = (mount || '/').trim().toLowerCase();
         // Defaults basePath to controller name without "Controller"
-        if (this.baseType === types_1.EntityType.Controller)
-            this.basePath = base || ctorName.toLowerCase().replace(/controller$/, '');
+        if (this.baseType === types_1.EntityType.Controller) {
+            base = base || ctorName.toLowerCase().replace(/controller$/, '');
+            this.basePath = base.replace(/^\//, '');
+        }
         // Check if router exists
         if (this.mountPath && !this._core.routers[this.mountPath])
             this._core.routers[this.mountPath] = express_1.Router();
@@ -40,6 +41,20 @@ class Entity {
     }
     get router() {
         return this._core.routers[this.mountPath];
+    }
+    // HELPERS //
+    deny(req, res) {
+        return res.status(403).send();
+    }
+    view(path, context) {
+        return (req, res) => {
+            return res.render(path, context);
+        };
+    }
+    redirect(to) {
+        return (req, res) => {
+            return res.render(to);
+        };
     }
     policy(key, policies, force = false) {
         if (lodash_1.isObject(key)) {

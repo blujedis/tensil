@@ -1,6 +1,6 @@
 {
   "name": "tensil",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple Express framework",
   "main": "dist/index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.11.3",
     "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "mocha": "^6.1.4",
     "rimraf": "^2.6.3",
     "ts-node": "^8.0.3",

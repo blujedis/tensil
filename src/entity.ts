@@ -1,18 +1,18 @@
-import { Express, Router } from 'express';
+import { Express, Router, NextFunction } from 'express';
 import { Core } from './core';
 import { Tensil } from './tensil';
 import { isBoolean, castArray, has, isObject } from 'lodash';
-import { Filter, Policy, Action, IFilters, IPolicies, IRoutes, EntityType } from './types';
+import { Filter, Policy, Action, IFilters, IPolicies, IRoutes, EntityType, IActions, ContextTypes } from './types';
 import { Request, Response } from 'express-serve-static-core';
 
-export class Entity {
+export class Entity<R extends Request, S extends Response> {
 
   protected _core: Core;
 
   protected policies: IPolicies;
   protected filters: IFilters;
   protected routes: IRoutes;
-  protected generate: boolean = false;
+  protected actions: IActions;
 
   type: string;
   baseType: string;
@@ -31,8 +31,10 @@ export class Entity {
     this.mountPath = (mount || '/').trim().toLowerCase();
 
     // Defaults basePath to controller name without "Controller"
-    if (this.baseType === EntityType.Controller)
-      this.basePath = base || ctorName.toLowerCase().replace(/controller$/, '');
+    if (this.baseType === EntityType.Controller) {
+      base = base || ctorName.toLowerCase().replace(/controller$/, '');
+      this.basePath = base.replace(/^\//, '');
+    }
 
     // Check if router exists
     if (this.mountPath && !this._core.routers[this.mountPath])
@@ -49,11 +51,11 @@ export class Entity {
 
   }
 
-  private get tensil(): Tensil<Request, Response> {
-    return this._core.entities.Tensil as Tensil<Request, Response>;
+  private get tensil(): Tensil<R, S> {
+    return this._core.entities.Tensil as Tensil<R, S>;
   }
 
-  private validateKey(key: string, context: 'policies' | 'filters' | 'routes', force: boolean) {
+  private validateKey(key: string, context: ContextTypes, force: boolean) {
 
     key = key.trim();
 
@@ -70,6 +72,24 @@ export class Entity {
 
   get router() {
     return this._core.routers[this.mountPath];
+  }
+
+  // HELPERS //
+
+  deny(req: R, res: S) {
+    return res.status(403).send();
+  }
+
+  view<T extends object = any>(path: string, context?: T) {
+    return (req: R, res: S) => {
+      return res.render(path, context);
+    };
+  }
+
+  redirect(to: string) {
+    return (req: R, res: S) => {
+      return res.render(to);
+    };
   }
 
   policy(enabled?: boolean): this;

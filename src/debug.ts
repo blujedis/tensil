@@ -1,6 +1,6 @@
 import Tensil from '.';
-import { filter } from './decorators';
-import { IFilters, IRoutes, IPolicies } from './types';
+import { filter, action } from './decorators';
+import { IFilters, IRoutes, IPolicies, IActions, HttpMethod } from './types';
 
 const tensil = new Tensil();
 
@@ -15,6 +15,16 @@ class HelperService extends Tensil.Service {
 
 const helpers = new HelperService();
 
+class OtherController extends Tensil.Controller {
+
+  policies: IPolicies = {
+    common: ['UserService.filters.isAuth']
+  };
+
+}
+
+tensil.registerController(OtherController, 'other');
+
 class UserService extends Tensil.Service {
 
   filters: IFilters = {
@@ -23,7 +33,9 @@ class UserService extends Tensil.Service {
   };
 
   routes: IRoutes = {
-
+    'post /user/:id': ['UserController.find'],
+    'view /some/path': [helpers.log, 'user/view'],
+    'redirect /from/path/:id': [helpers.log, '/new/path']
   };
 
   @filter
@@ -40,34 +52,29 @@ class UserService extends Tensil.Service {
 
 const user = new UserService();
 
-class OtherController extends Tensil.Controller {
-
-  policies: IPolicies = {
-    common: ['UserService.filters.isAuth']
-  };
-
-}
-
-tensil.registerController(OtherController, 'other');
-
 class UserController extends Tensil.Controller {
 
   policies: IPolicies = {
-    '*': true,
+    // '*': true,
     find: ['OtherController.policies.common']
+  };
+
+  actions: IActions = {
+    find: HttpMethod.Get
   };
 
   find(req, res) {
     //
   }
 
+  @action()
   create(req, res) {
     //
   }
 
 }
 
-tensil.registerController(UserController, 'user');
+tensil.registerController(UserController, 'user', '/id');
 
 // const usrCtrl = tensil.entity<UserController>('UserController');
 

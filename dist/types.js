@@ -10,5 +10,13 @@ var ContextType;
     ContextType["policies"] = "policies";
     ContextType["filters"] = "filters";
     ContextType["routes"] = "routes";
+    ContextType["actions"] = "actions";
 })(ContextType = exports.ContextType || (exports.ContextType = {}));
+var HttpMethod;
+(function (HttpMethod) {
+    HttpMethod["Get"] = "get";
+    HttpMethod["Put"] = "put";
+    HttpMethod["Post"] = "post";
+    HttpMethod["Delete"] = "delete";
+})(HttpMethod = exports.HttpMethod || (exports.HttpMethod = {}));
 //# sourceMappingURL=types.js.map

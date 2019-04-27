@@ -1,8 +1,9 @@
 import * as express from 'express';
 import { Express } from 'express';
-import { Entity } from './entity';
 import { has } from 'lodash';
-import { IEntities, IRouters, EntityExtended } from './types';
+import { IEntities, IRouters } from './types';
+import { Controller, Service } from './tensil';
+import { Entity } from './entity';
 
 // templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
@@ -44,11 +45,11 @@ export class Core {
   // ({ program: this.config.program, ministack: caller.ministack, message });
   // }
 
-  getType(entity: Entity | EntityExtended) {
+  getType(entity: Service | Controller | Entity<any, any>) {
     return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
   }
 
-  registerInstance(entity: Entity) {
+  registerInstance(entity: Service | Controller | Entity<any, any>) {
     if (has(this.entities, entity.type))
       throw new Error(`Entity ${entity.type} failed to register, already exists`);
     this.entities[entity.type] = entity;

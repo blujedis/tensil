@@ -1,4 +1,3 @@
-import { castArray, isString } from 'lodash';
 
 export function parseCaller(err?: string | number | Error, split?: number) {
 
@@ -43,49 +42,5 @@ export function parseCaller(err?: string | number | Error, split?: number) {
   result.ministack = `(${result.filename}:${result.line}:${result.column})`;
 
   return result;
-
-}
-
-export function parseRoute(route, handlers) {
-
-  const parts = route.split(' ');
-
-  let method = 'get';
-  let methods = [];
-  let path = parts[0];
-
-  if (parts.length > 1) {
-    path = parts[1].toLowerCase();
-    methods = parts[0].toLowerCase().split('|');
-    method = methods.shift();
-  }
-
-  // Normalize starting '/' and remove trailing '/';
-  path = '/' + path.replace(/^\//, '').replace(/\/$/, '');
-
-  handlers = castArray(handlers);
-
-  // When view handler may be a view path.
-  // Check if exists in handlers if not assume path.
-  if (method === 'view') {
-    method = 'get';
-    if (isString(handlers[0])) {
-      // const fn = get(policy, viewHandler);
-      // Converting
-      // view /some/path: 'view_name' to:
-      // get /some/path: [handler, view_name]
-      // handlers[0] = [fn, handlers[0]];
-    }
-  }
-
-  if (method === 'param') {
-    method = 'get';
-    if (isString(handlers[0])) {
-      // const fn = get(policy, paramHandler);
-      // let paramPath = mount.length ? join(mount, path) : path;
-      // paramPath = '/' + paramPath.replace(/^\//, '');
-      // handlers[0] = [fn, paramPath];
-    }
-  }
 
 }

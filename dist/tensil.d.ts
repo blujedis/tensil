@@ -1,53 +1,57 @@
 import { Express, Request, Response } from 'express';
 import { Entity } from './entity';
-import { IPolicies, IFilters, IRoutes, IRouters, EntityExtended, IEntities, Constructor, ContextTypes, RequestHandler } from './types';
-export declare class Service extends Entity {
+import { IPolicies, IFilters, IRoutes, IRouters, IEntities, Constructor, ContextTypes, IActions, IOptions, IRouteMap } from './types';
+export declare class Service<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
     filters: IFilters;
     routes: IRoutes;
     constructor();
     constructor(mount: string);
 }
-export declare class Controller extends Entity {
-    generate: boolean;
+export declare class Controller<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
     policies: IPolicies;
     filters: IFilters;
     routes: IRoutes;
+    actions: IActions;
     constructor(base: string, mount?: string);
 }
-export declare class Tensil<R extends Request, S extends Response> extends Entity {
+export declare class Tensil<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
     static Service: typeof Service;
     static Controller: typeof Controller;
-    private _allowHandler;
-    private _denyHandler;
-    private _viewHandler;
-    events: {
-        [key: string]: ((...args: any[]) => void)[];
-    };
+    private _events;
+    private _routeMap;
+    options: IOptions;
     constructor();
-    constructor(app: Express);
-    protected normalizeNamespaces(entity: EntityExtended, context: ContextTypes): void;
-    protected lookupHandler(namespace: string, context: ContextTypes): any;
-    protected normalizeHandlers(handlers: any, context: ContextTypes, key: string): Function[];
+    constructor(options: IOptions);
+    constructor(app: Express, options?: IOptions);
+    protected normalizeNamespaces(entity: Service | Controller, context: ContextTypes): void;
+    protected lookupHandler(namespace: string): any;
+    protected normalizeHandlers(handlers: any, context: ContextTypes, key?: string): Function[];
     readonly entities: IEntities;
     readonly routers: IRouters;
-    allowHandler: RequestHandler<R, S>;
-    denyHandler: RequestHandler<R, S>;
-    viewHandler: RequestHandler<R, S>;
+    readonly routeMap: IRouteMap;
     on(event: string, handler: (...args: any[]) => void): this;
     emit(event: string, ...args: any[]): void;
     off(event: string, handler: (...args: any[]) => void): this;
     removeEvents(event: string): void;
-    entity<T extends Entity>(name: string): T;
+    getService<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P>;
+    getController<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P>;
     registerService<T extends Constructor>(Klass: T, mount?: string): this;
     registerController<T extends Constructor>(Klass: T, base: string, mount?: string): this;
-    parseRoutes(route: string, handlers: any): void;
-    initEntity(entity: EntityExtended, data: {
+    parseRoute(route: string, base?: string): {
+        methods: string[];
+        path: string;
+        fullPath: string;
+    };
+    registerRoute(mount: string, route: string, handlers: Function[], controller?: string): this;
+    registerRoute(mount: string, base: string, route: string, handlers: Function[], controller?: string): this;
+    initEntity(entity: Service | Controller, contexts: {
         filters: IFilters;
         routes: IRoutes;
         policies?: IPolicies;
-    }): EntityExtended;
-    normalizeEntity(entity: Service | Controller): Service | Controller;
+        actions?: IActions;
+    }): Service<Request, Response> | Controller<Request, Response>;
+    normalizeEntity(entity: Service | Controller): Service<Request, Response> | Controller<Request, Response>;
     normalize(): this;
     mount(): this;
-    init(isProduction?: boolean): this;
+    init(strict?: boolean): this;
 }

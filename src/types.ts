@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { Entity } from './entity';
 import { Tensil, Service, Controller } from './tensil';
 
@@ -10,7 +10,15 @@ export enum EntityType {
 export enum ContextType {
   policies = 'policies',
   filters = 'filters',
-  routes = 'routes'
+  routes = 'routes',
+  actions = 'actions'
+}
+
+export enum HttpMethod {
+  Get = 'get',
+  Put = 'put',
+  Post = 'post',
+  Delete = 'delete'
 }
 
 export type ContextTypes = keyof typeof ContextType;
@@ -21,21 +29,14 @@ export type Filter = string | Function | any[];
 export type Policy = string | boolean | Function | any[];
 export type Action = string | Function;
 
-export type RequestHandler<R extends Request, S extends Response> =
-  (req?: R, res?: S, next?: NextFunction) => any;
+// export type RequestHandler<R extends Request, S extends Response> =
+//   (req?: R, res?: S, next?: NextFunction) => any;
 
-export type RequestErrorHandler<R extends Request, S extends Response> =
-  (err: Error, req?: R, res?: S, next?: NextFunction) => any;
+// export type RequestErrorHandler<R extends Request, S extends Response> =
+//   (err: Error, req?: R, res?: S, next?: NextFunction) => any;
 
-export type RequestParamHandler<R extends Request, S extends Response> =
-  (req: R, res: S, next: NextFunction, param: any) => any;
-
-export type EntityExtended =
-  Entity & { name?: string, filters: IFilters, routes: IRoutes, policies?: IPolicies, generate?: boolean };
-
-export interface IMap<T> {
-  [name: string]: T;
-}
+// export type RequestParamHandler<R extends Request, S extends Response> =
+//   (req: R, res: S, next: NextFunction, param: any) => any;
 
 export interface IFilters {
   [filter: string]: Filter | Filter[];
@@ -49,14 +50,29 @@ export interface IRoutes {
   [route: string]: Filter | Filter[] | Action | Action[];
 }
 
-export interface IActions<R extends Request, S extends Response> {
-  [action: string]: RequestHandler<R, S> | RequestErrorHandler<R, S> | RequestParamHandler<R, S>;
+export interface IRouteMap {
+  [mount: string]: {
+    [method: string]: {
+      [path: string]: Function[]
+    }
+  }
+}
+
+export interface IActions {
+  [action: string]: string;
 }
 
 export interface IEntities {
-  [entity: string]: Entity | Service | Controller | Tensil<Request, Response>;
+  [entity: string]: Service | Controller | Tensil | Entity<any, any>;
 }
 
 export interface IRouters {
   [router: string]: Router;
+}
+
+export interface IOptions {
+  actions?: IActions;
+  formatter?: (key: string, path: string, type: 'rest' | 'crud') => string;
+  rest?: boolean; // enable rest routes.
+  crud?: boolean; // enable crud routes.
 }

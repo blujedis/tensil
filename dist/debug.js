@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
 const decorators_1 = require("./decorators");
+const types_1 = require("./types");
 const tensil = new _1.default();
 class HelperService extends _1.default.Service {
     log(req, res, next) {
@@ -18,6 +19,15 @@ __decorate([
     decorators_1.filter
 ], HelperService.prototype, "log", null);
 const helpers = new HelperService();
+class OtherController extends _1.default.Controller {
+    constructor() {
+        super(...arguments);
+        this.policies = {
+            common: ['UserService.filters.isAuth']
+        };
+    }
+}
+tensil.registerController(OtherController, 'other');
 class UserService extends _1.default.Service {
     constructor() {
         super(...arguments);
@@ -25,7 +35,11 @@ class UserService extends _1.default.Service {
             isAuth: ['HelperService.log', this.isAuth],
             login: [helpers.log, 'filters.isAuth', 'login']
         };
-        this.routes = {};
+        this.routes = {
+            'post /user/:id': ['UserController.find'],
+            'view /some/path': [helpers.log, 'user/view'],
+            'redirect /from/path/:id': [helpers.log, '/new/path']
+        };
     }
     isAuth(req, res, next) {
         //
@@ -41,21 +55,15 @@ __decorate([
     decorators_1.filter
 ], UserService.prototype, "login", null);
 const user = new UserService();
-class OtherController extends _1.default.Controller {
-    constructor() {
-        super(...arguments);
-        this.policies = {
-            common: ['UserService.filters.isAuth']
-        };
-    }
-}
-tensil.registerController(OtherController, 'other');
 class UserController extends _1.default.Controller {
     constructor() {
         super(...arguments);
         this.policies = {
-            '*': true,
+            // '*': true,
             find: ['OtherController.policies.common']
+        };
+        this.actions = {
+            find: types_1.HttpMethod.Get
         };
     }
     find(req, res) {
@@ -65,7 +73,10 @@ class UserController extends _1.default.Controller {
         //
     }
 }
-tensil.registerController(UserController, 'user');
+__decorate([
+    decorators_1.action()
+], UserController.prototype, "create", null);
+tensil.registerController(UserController, 'user', '/id');
 // const usrCtrl = tensil.entity<UserController>('UserController');
 // const usrCtrl = new UserController('user');
 // usrCtrl.policy(true);

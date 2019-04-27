@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;decorators&quot; | Knect-Mongo</title>
+	<title>&quot;decorators&quot; | Tensil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Knect-Mongo</a>
+					<a href="../index.html" class="title">Tensil</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -94,9 +94,35 @@
 					<div class="tsd-signature tsd-kind-icon">Descriptor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/decorators.ts#L19">decorators.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/decorators.ts#L51">decorators.ts:51</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Adds method as filter in Service or Controller filters collection.
+								Accepts an Http Method or Methods or a template name as the first argument.
+							A path argument can be passed to statically define the action&#39;s path.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>example</dt>
+							<dd><p>class UserController {
+									@action(&#39;create&#39;)
+									create(req, res, next) {
+									// check if authorized.
+									}
+								}</p>
+							</dd>
+							<dt>param</dt>
+							<dd><p>the target class instance.</p>
+							</dd>
+							<dt>param</dt>
+							<dd><p>the method name the decorator is bound to.</p>
+							</dd>
+							<dt>param</dt>
+							<dd><p>the property descriptor for the bound method.</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -133,13 +159,14 @@
 					<h3>action</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
 						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
+						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>template<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
 						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>methods<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol"> | </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/decorators.ts#L21">decorators.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/decorators.ts#L53">decorators.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
@@ -147,7 +174,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/decorators.ts#L22">decorators.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/decorators.ts#L54">decorators.ts:54</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>template: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/decorators.ts#L55">decorators.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -173,19 +214,43 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/decorators.ts#L4">decorators.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/decorators.ts#L19">decorators.ts:19</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds method as filter in Service or Controller filters collection.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>class UserService {
+											@filter
+											isAuthorized(req, res, next) {
+											// check if authorized.
+											}
+										}</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>target: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the target class instance.</p>
+									</div>
 								</li>
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the method name the decorator is bound to.</p>
+									</div>
 								</li>
 								<li>
 									<h5>descriptor: <span class="tsd-signature-type">PropertyDescriptor</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the property descriptor for the bound method.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PropertyDescriptor</span></h4>

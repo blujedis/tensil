@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IOptions | Knect-Mongo</title>
+	<title>IOptions | Tensil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Knect-Mongo</a>
+					<a href="../index.html" class="title">Tensil</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -84,10 +84,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ioptions.html#actions" class="tsd-kind-icon">actions</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ioptions.html#crud" class="tsd-kind-icon">crud</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ioptions.html#formatter" class="tsd-kind-icon">formatter</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ioptions.html#rest" class="tsd-kind-icon">rest</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ioptions.html#sort" class="tsd-kind-icon">sort</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ioptions.html#templates" class="tsd-kind-icon">templates</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,22 +97,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="actions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> actions</h3>
-					<div class="tsd-signature tsd-kind-icon">actions<span class="tsd-signature-symbol">:</span> <a href="_types_.iactions.html" class="tsd-signature-type">IActions</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L74">types.ts:74</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="crud" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> crud</h3>
 					<div class="tsd-signature tsd-kind-icon">crud<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L77">types.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L86">types.ts:86</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -121,7 +112,7 @@
 					<div class="tsd-signature tsd-kind-icon">formatter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L75">types.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L84">types.ts:84</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -158,7 +149,27 @@
 					<div class="tsd-signature tsd-kind-icon">rest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L76">types.ts:76</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L85">types.ts:85</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="sort" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> sort</h3>
+					<div class="tsd-signature tsd-kind-icon">sort<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L87">types.ts:87</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="templates" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> templates</h3>
+					<div class="tsd-signature tsd-kind-icon">templates<span class="tsd-signature-symbol">:</span> <a href="_types_.iactions.html" class="tsd-signature-type">IActions</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L83">types.ts:83</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,6 +219,9 @@
 						<a href="_types_.iactions.html" class="tsd-kind-icon">IActions</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_types_.iconfig.html" class="tsd-kind-icon">IConfig</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="_types_.ientities.html" class="tsd-kind-icon">IEntities</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
@@ -219,9 +233,6 @@
 						<a href="_types_.ioptions.html" class="tsd-kind-icon">IOptions</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.ioptions.html#actions" class="tsd-kind-icon">actions</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_types_.ioptions.html#crud" class="tsd-kind-icon">crud</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -229,6 +240,12 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_types_.ioptions.html#rest" class="tsd-kind-icon">rest</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.ioptions.html#sort" class="tsd-kind-icon">sort</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.ioptions.html#templates" class="tsd-kind-icon">templates</a>
 							</li>
 						</ul>
 					</li>
@@ -257,6 +274,9 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_types_.html#filter" class="tsd-kind-icon">Filter</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_types_.html#noop" class="tsd-kind-icon">Noop</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="../modules/_types_.html#policy" class="tsd-kind-icon">Policy</a>

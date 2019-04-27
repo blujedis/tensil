@@ -74,11 +74,12 @@ class UserController extends _1.default.Controller {
     }
 }
 __decorate([
-    decorators_1.action()
+    decorators_1.action(types_1.HttpMethod.Del)
 ], UserController.prototype, "create", null);
-tensil.registerController(UserController, 'user', '/id');
+const ctrl = new UserController('user', '/id');
 // const usrCtrl = tensil.entity<UserController>('UserController');
 // const usrCtrl = new UserController('user');
 // usrCtrl.policy(true);
 tensil.init();
+console.log(tensil.routeMap);
 //# sourceMappingURL=debug.js.map

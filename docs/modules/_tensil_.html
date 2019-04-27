@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;tensil&quot; | Knect-Mongo</title>
+	<title>&quot;tensil&quot; | Tensil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Knect-Mongo</a>
+					<a href="../index.html" class="title">Tensil</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -95,7 +95,7 @@
 					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>OPTIONS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L12">tensil.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L16">tensil.ts:16</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
@@ -104,7 +104,7 @@
 						<div class="tsd-signature tsd-kind-icon">crud<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L25">tensil.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L30">tensil.ts:30</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -114,7 +114,17 @@
 						<div class="tsd-signature tsd-kind-icon">rest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L24">tensil.ts:24</a></li>
+								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L29">tensil.ts:29</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="default_options.sort" class="tsd-anchor"></a>
+						<h3>sort</h3>
+						<div class="tsd-signature tsd-kind-icon">sort<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L31">tensil.ts:31</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -128,7 +138,7 @@
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L27">tensil.ts:27</a></li>
+										<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L33">tensil.ts:33</a></li>
 									</ul>
 								</aside>
 								<h4 class="tsd-parameters-title">Parameters</h4>
@@ -148,81 +158,91 @@
 						</ul>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal tsd-is-not-exported">
-						<a name="default_options.actions" class="tsd-anchor"></a>
-						<h3>actions</h3>
-						<div class="tsd-signature tsd-kind-icon">actions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+						<a name="default_options.templates" class="tsd-anchor"></a>
+						<h3>templates</h3>
+						<div class="tsd-signature tsd-kind-icon">templates<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L14">tensil.ts:14</a></li>
+								<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L18">tensil.ts:18</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.create" class="tsd-anchor"></a>
+							<a name="default_options.templates.create" class="tsd-anchor"></a>
 							<h3>create</h3>
-							<div class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
+							<div class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Post + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L17">tensil.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L24">tensil.ts:24</a></li>
 								</ul>
 							</aside>
 						</section>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.delete" class="tsd-anchor"></a>
+							<a name="default_options.templates.del" class="tsd-anchor"></a>
+							<h3>del</h3>
+							<div class="tsd-signature tsd-kind-icon">del<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Del + &#x27; &#x27; + &#x27;/{{action}}/:id?&#x27;</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L22">tensil.ts:22</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+							<a name="default_options.templates.delete" class="tsd-anchor"></a>
 							<h3>delete</h3>
-							<div class="tsd-signature tsd-kind-icon">delete<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
+							<div class="tsd-signature tsd-kind-icon">delete<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Del + &#x27; &#x27; + &#x27;/{{action}}/:id?&#x27;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L20">tensil.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L26">tensil.ts:26</a></li>
 								</ul>
 							</aside>
 						</section>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.deletebyid" class="tsd-anchor"></a>
-							<h3>delete<wbr>ById</h3>
-							<div class="tsd-signature tsd-kind-icon">delete<wbr>ById<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}/:id&#x27;</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L21">tensil.ts:21</a></li>
-								</ul>
-							</aside>
-						</section>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.find" class="tsd-anchor"></a>
+							<a name="default_options.templates.find" class="tsd-anchor"></a>
 							<h3>find</h3>
-							<div class="tsd-signature tsd-kind-icon">find<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
+							<div class="tsd-signature tsd-kind-icon">find<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}/:id?&#x27;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L15">tensil.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L23">tensil.ts:23</a></li>
 								</ul>
 							</aside>
 						</section>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.findbyid" class="tsd-anchor"></a>
-							<h3>find<wbr>ById</h3>
-							<div class="tsd-signature tsd-kind-icon">find<wbr>ById<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}/:id&#x27;</span></div>
+							<a name="default_options.templates.get" class="tsd-anchor"></a>
+							<h3>get</h3>
+							<div class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L16">tensil.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L19">tensil.ts:19</a></li>
 								</ul>
 							</aside>
 						</section>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.update" class="tsd-anchor"></a>
+							<a name="default_options.templates.post" class="tsd-anchor"></a>
+							<h3>post</h3>
+							<div class="tsd-signature tsd-kind-icon">post<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Post + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L21">tensil.ts:21</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+							<a name="default_options.templates.put" class="tsd-anchor"></a>
+							<h3>put</h3>
+							<div class="tsd-signature tsd-kind-icon">put<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Put + &#x27; &#x27; + &#x27;/{{action}}/:id?&#x27;</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L20">tensil.ts:20</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
+							<a name="default_options.templates.update" class="tsd-anchor"></a>
 							<h3>update</h3>
-							<div class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}&#x27;</span></div>
+							<div class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Put + &#x27; &#x27; + &#x27;/{{action}}/:id?&#x27;</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L18">tensil.ts:18</a></li>
-								</ul>
-							</aside>
-						</section>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal tsd-is-not-exported">
-							<a name="default_options.actions.updatebyid" class="tsd-anchor"></a>
-							<h3>update<wbr>ById</h3>
-							<div class="tsd-signature tsd-kind-icon">update<wbr>ById<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;HttpMethod.Get + &#x27; &#x27; + &#x27;/{{action}}/:id&#x27;</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/tensil.ts#L19">tensil.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/tensil.ts#L25">tensil.ts:25</a></li>
 								</ul>
 							</aside>
 						</section>

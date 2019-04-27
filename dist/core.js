@@ -22,9 +22,25 @@ class Core {
     //   return template(this.config.messageTemplate)
     // ({ program: this.config.program, ministack: caller.ministack, message });
     // }
+    /**
+     * Gets the prototypeOf name for the provided Entity class.
+     *
+     * @example
+     * .getType(UserController);
+     *
+     * @param entity the Entity to get prototype name for.
+     */
     getType(entity) {
         return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
     }
+    /**
+     * Registers an Entity instance with the Tensil Entities collection.
+     *
+     * @example
+     * .registerInstance(UserController);
+     *
+     * @param entity the Entity instance to register with Tensil.
+     */
     registerInstance(entity) {
         if (lodash_1.has(this.entities, entity.type))
             throw new Error(`Entity ${entity.type} failed to register, already exists`);

@@ -15,10 +15,11 @@ export declare enum HttpMethod {
     Get = "get",
     Put = "put",
     Post = "post",
-    Delete = "delete"
+    Del = "delete"
 }
 export declare type ContextTypes = keyof typeof ContextType;
 export declare type Constructor<T = {}> = new (...args: any[]) => T;
+export declare type Noop = (...args: any[]) => void;
 export declare type Filter = string | Function | any[];
 export declare type Policy = string | boolean | Function | any[];
 export declare type Action = string | Function;
@@ -47,9 +48,16 @@ export interface IEntities {
 export interface IRouters {
     [router: string]: Router;
 }
+export interface IConfig {
+    policies: IPolicies;
+    filters: IFilters;
+    routes: IRoutes;
+    actions: IActions;
+}
 export interface IOptions {
-    actions?: IActions;
+    templates?: IActions;
     formatter?: (key: string, path: string, type: 'rest' | 'crud') => string;
     rest?: boolean;
     crud?: boolean;
+    sort?: boolean;
 }

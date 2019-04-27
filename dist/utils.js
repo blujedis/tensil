@@ -1,5 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Parses out the caller from stack trace using an error.
+ *
+ * @param err the Error to be parsed.
+ * @param split the index which to split stack trace at.
+ */
 function parseCaller(err, split) {
     let message = '';
     if (typeof err === 'string') {

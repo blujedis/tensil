@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Knect-Mongo</title>
+	<title>Tensil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">Knect-Mongo</a>
+					<a href="index.html" class="title">Tensil</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> Knect-Mongo</h1>
+			<h1> Tensil</h1>
 		</div>
 	</div>
 </header>
@@ -64,6 +64,149 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
+				<h1 id="tensil">Tensil</h1>
+				<p>Express server Service, Controller and Routing framework.</p>
+				<h2 id="introduction">Introduction</h2>
+				<p>Tensil flexible and lightweight. It intentionally leaves out opinion and focuses on painless secure routing. The idea behind Tensil is flexibilty with just enough magic. Services and Controllers can be mounted to the root router or their own router for app segregation. </p>
+				<h2 id="install">Install</h2>
+				<pre><code class="language-sh">$ npm install tensil -s</code></pre>
+				<h2 id="usage">Usage</h2>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> bodyParser <span class="hljs-keyword">from</span> <span class="hljs-string">'body-parser'</span>;
+
+<span class="hljs-keyword">const</span> tensil = <span class="hljs-keyword">new</span> Tensil();
+
+<span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> Tensil.Controller {
+  <span class="hljs-comment">// See below for configuring Controllers &amp; Services</span>
+  <span class="hljs-comment">// Excluded here for clarity sake of how to wire up Tensil.</span>
+}
+
+tensil.app.use(bodyParser.json());
+tensil.app.use(bodyParser.urlencoded({ extended: <span class="hljs-literal">true</span> }));
+tensil.app.use(bodyParser.text());
+tensil.app.use(bodyParser.json({ <span class="hljs-keyword">type</span>: <span class="hljs-string">'application/json'</span> }));
+
+tensil
+  .registerController(MyController)
+  .start();
+</code></pre>
+				<h2 id="with-app">With App</h2>
+				<p>Using Tensil with external express() app.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
+
+<span class="hljs-keyword">const</span> app = express();
+<span class="hljs-keyword">const</span> tensil = <span class="hljs-keyword">new</span> Tensil(app);</code></pre>
+				<h2 id="with-http-server">With Http Server</h2>
+				<p>Using Tensil with http.createServer</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
+<span class="hljs-keyword">import</span> { createServer } <span class="hljs-keyword">from</span> <span class="hljs-string">'http'</span>;
+
+<span class="hljs-keyword">const</span> app = express();
+<span class="hljs-keyword">const</span> tensil = <span class="hljs-keyword">new</span> Tensil(app);
+tensil.bindServer(createServer(app)); <span class="hljs-comment">// or .bindServer(createServer(tensil.app));</span></code></pre>
+				<h2 id="server">Server</h2>
+				<p>Configuring a Tensil Service.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil, { filter } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+<span class="hljs-keyword">import</span> { format } <span class="hljs-keyword">from</span> <span class="hljs-string">'util'</span>;
+<span class="hljs-keyword">class</span> MyService <span class="hljs-keyword">extends</span> Tensil.Service {
+
+  filters: {
+    canCreate: [<span class="hljs-string">'log'</span>, <span class="hljs-string">'isAuthorized'</span>]
+  }
+
+  <span class="hljs-keyword">private</span> formatMessage(message, ...args) {
+    <span class="hljs-keyword">return</span> format(message, args);
+  }
+
+  <span class="hljs-meta">@filter</span>
+  log(req, res, next) {
+    <span class="hljs-comment">// Log a message when this filter is hit.</span>
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.formatMessage(<span class="hljs-string">'Request id'</span>, <span class="hljs-number">123456</span>));
+    next();
+  }
+
+  <span class="hljs-meta">@filter</span>
+  isAuthorized(req, res, next) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'authorized'</span>)
+      <span class="hljs-keyword">return</span> next();
+    res.status(<span class="hljs-number">403</span>).send();
+  }
+
+}
+
+<span class="hljs-keyword">const</span> myService = <span class="hljs-keyword">new</span> MyService();
+<span class="hljs-comment">// OR</span>
+tensil.registerSerivce(MyService);</code></pre>
+				<h2 id="controller">Controller</h2>
+				<p>Configuring a Tensil Controller.</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil, { action, HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+<span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> Tensil.Controller {
+
+  <span class="hljs-comment">// When a custom route or generated route</span>
+  <span class="hljs-comment">// calls "MyController.create" as it's action method</span>
+  <span class="hljs-comment">// the MyService filter "canCreate" is injected.</span>
+
+  <span class="hljs-comment">// The result would be as if you did the following manually:</span>
+  <span class="hljs-comment">// app.post('/user/:id?, ['Myservice.log', 'Myservice.isAuthorized', 'MyController.create'])</span>
+
+  policies: {
+    create: [<span class="hljs-string">'MyService.filters.canCreate'</span>] <span class="hljs-comment">// </span>
+  }
+
+  <span class="hljs-comment">// or use HttpMethod.Get </span>
+  <span class="hljs-comment">// or template defined in options like "find"</span>
+  <span class="hljs-comment">// or define with path @action('get', '/some/path/:id?')</span>
+  <span class="hljs-meta">@action</span>(<span class="hljs-string">'get'</span>) 
+  find(req, res) {
+    <span class="hljs-comment">// find a record.</span>
+    res.json({});
+  }
+
+  <span class="hljs-meta">@action</span>(<span class="hljs-string">'post'</span>) 
+  create(req, res) {
+    <span class="hljs-comment">// create a record</span>
+    res.status(<span class="hljs-number">201</span>).json({})
+  }
+
+}
+
+<span class="hljs-keyword">const</span> myController = <span class="hljs-keyword">new</span> MyController(<span class="hljs-string">'user'</span>);
+<span class="hljs-comment">// OR</span>
+tensil.registerController(MyController, <span class="hljs-string">'user'</span>);</code></pre>
+				<h2 id="default-action-templates">Default Action Templates</h2>
+				<p>Templates allow you to map your action decorators to a key to make the defining of generated routes for controller actions less verbose. You can always override and defined a specific path. </p>
+				<p>Simply define a template below then use as:</p>
+				<pre><code class="language-ts"><span class="hljs-meta">@action</span>(<span class="hljs-string">'my-template-name'</span>)
+create(req, res) {
+  <span class="hljs-comment">//</span>
+}</code></pre>
+				<pre><code class="language-ts"><span class="hljs-keyword">const</span> options = {
+  templates: {
+   <span class="hljs-keyword">get</span>: <span class="hljs-string">'get /{{action}}'</span>,
+   put: <span class="hljs-string">'put /{{action}}/:id?'</span>,
+   post: <span class="hljs-string">'post /{{action}}'</span>,
+   del: <span class="hljs-string">'delete /{{action}}/:id?'</span>,
+   find: <span class="hljs-string">'get /{{action}}/:id?'</span>,
+   create: <span class="hljs-string">'post /{{action}}'</span>,
+   update: <span class="hljs-string">'put /{{action}}/:id?'</span>,
+   <span class="hljs-keyword">delete</span>: <span class="hljs-string">'delete /{{action}}/:id?'</span>,
+  }
+  formattter: <span class="hljs-function">(<span class="hljs-params">key, path, <span class="hljs-keyword">type</span></span>) =&gt;</span> {
+    <span class="hljs-comment">// override default formatter function</span>
+    <span class="hljs-comment">// to handle formatting of above templates</span>
+    <span class="hljs-comment">// by default rest routes remove {{action}}</span>
+  }
+  rest: <span class="hljs-literal">true</span>,
+  crud: <span class="hljs-literal">false</span>
+}</code></pre>
+				<h2 id="docs">Docs</h2>
+				<p>See <a href="https://blujedis.github.io/tensil/">https://blujedis.github.io/tensil/</a></p>
+				<h2 id="change">Change</h2>
+				<p>See <a href="CHANGE.md">CHANGE.md</a></p>
+				<h2 id="license">License</h2>
+				<p>See <a href="LICENSE">LICENSE.md</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

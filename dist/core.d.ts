@@ -9,6 +9,22 @@ export declare class Core {
     entities: IEntities;
     routers: IRouters;
     constructor(app?: Express);
+    /**
+     * Gets the prototypeOf name for the provided Entity class.
+     *
+     * @example
+     * .getType(UserController);
+     *
+     * @param entity the Entity to get prototype name for.
+     */
     getType(entity: Service | Controller | Entity<any, any>): any;
+    /**
+     * Registers an Entity instance with the Tensil Entities collection.
+     *
+     * @example
+     * .registerInstance(UserController);
+     *
+     * @param entity the Entity instance to register with Tensil.
+     */
     registerInstance(entity: Service | Controller | Entity<any, any>): this;
 }

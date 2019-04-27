@@ -67,14 +67,14 @@ class UserController extends Tensil.Controller {
     //
   }
 
-  @action()
+  @action(HttpMethod.Del)
   create(req, res) {
     //
   }
 
 }
 
-tensil.registerController(UserController, 'user', '/id');
+const ctrl = new UserController('user', '/id');
 
 // const usrCtrl = tensil.entity<UserController>('UserController');
 
@@ -83,3 +83,5 @@ tensil.registerController(UserController, 'user', '/id');
 // usrCtrl.policy(true);
 
 tensil.init();
+
+console.log(tensil.routeMap);

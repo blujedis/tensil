@@ -10,7 +10,7 @@ class Entity {
         this._core = core_1.Core.getInstance(app);
         this.type = ctorName;
         this.baseType = this._core.getType(this);
-        this.mountPath = (mount || '/').trim().toLowerCase();
+        this.mountPath = '/' + ((mount || '/').trim().toLowerCase()).replace(/^\/\/?/, '');
         // Defaults basePath to controller name without "Controller"
         if (this.baseType === types_1.EntityType.Controller) {
             base = base || ctorName.toLowerCase().replace(/controller$/, '');
@@ -30,6 +30,17 @@ class Entity {
     get tensil() {
         return this._core.entities.Tensil;
     }
+    /**
+     * Ensures a key does not exist in a context collection.
+     *
+     * @example
+     * .validKey('isAuthorized', 'filters');
+     * .validKey('isAuthorized', 'filters', true);
+     *
+     * @param key checks if a key exists in the collection.
+     * @param context the context to inspect in.
+     * @param force when true allows overwrite of existing key.
+     */
     validateKey(key, context, force) {
         key = key.trim();
         if (lodash_1.has(this[context], key) && !force)
@@ -43,37 +54,45 @@ class Entity {
         return this._core.routers[this.mountPath];
     }
     // HELPERS //
+    /**
+     * Default deny handler.
+     *
+     * @example
+     * .deny(req, res);
+     *
+     * @param req the Express request object.
+     * @param res the Express response object.
+     */
     deny(req, res) {
         return res.status(403).send();
     }
+    /**
+     * Returns default handler for rendering a view.
+     *
+     * @example
+     * .view('user/create');
+     * .view('user/create', { });
+     *
+     * @param path the path of the view.
+     * @param context the context to pass to the view.
+     */
     view(path, context) {
         return (req, res) => {
             return res.render(path, context);
         };
     }
+    /**
+     * Returns default redirect handler.
+     *
+     * @example
+     * .redirect('/to/some/new/path');
+     *
+     * @param to the path to redirect to.
+     */
     redirect(to) {
         return (req, res) => {
             return res.render(to);
         };
-    }
-    policy(key, policies, force = false) {
-        if (lodash_1.isObject(key)) {
-            this.policies = { ...(this.policies), ...key };
-            this.tensil.emit('policy', key, this.policies);
-            return this;
-        }
-        if (lodash_1.isBoolean(key)) {
-            policies = key;
-            key = '*';
-        }
-        policies = lodash_1.castArray(policies);
-        const validKey = this.validateKey(key, 'policies', force);
-        if (!validKey)
-            throw new Error(`Policy key "${key}" exists set force to true to overwrite`);
-        this.policies = this.policies || {};
-        this.policies[validKey] = policies;
-        this.tensil.emit('policy', { [validKey]: policies }, this.policies);
-        return this;
     }
     filter(key, filters, force = false) {
         if (lodash_1.isObject(key)) {

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;types&quot; | Knect-Mongo</title>
+	<title>&quot;types&quot; | Tensil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Knect-Mongo</a>
+					<a href="../index.html" class="title">Tensil</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -82,6 +82,7 @@
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.iactions.html" class="tsd-kind-icon">IActions</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.iconfig.html" class="tsd-kind-icon">IConfig</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ientities.html" class="tsd-kind-icon">IEntities</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ifilters.html" class="tsd-kind-icon">IFilters</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ioptions.html" class="tsd-kind-icon">IOptions</a></li>
@@ -98,6 +99,7 @@
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#constructor" class="tsd-kind-icon">Constructor</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#contexttypes" class="tsd-kind-icon">Context<wbr>Types</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#filter" class="tsd-kind-icon">Filter</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#noop" class="tsd-kind-icon">Noop</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#policy" class="tsd-kind-icon">Policy</a></li>
 							</ul>
 						</section>
@@ -112,7 +114,7 @@
 					<div class="tsd-signature tsd-kind-icon">Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L30">types.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L32">types.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -122,7 +124,7 @@
 					<div class="tsd-signature tsd-kind-icon">Constructor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L26">types.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L26">types.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -137,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">Context<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof ContextType</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L24">types.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L24">types.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -147,9 +149,40 @@
 					<div class="tsd-signature tsd-kind-icon">Filter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L28">types.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L30">types.ts:30</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="noop" class="tsd-anchor"></a>
+					<h3>Noop</h3>
+					<div class="tsd-signature tsd-kind-icon">Noop<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L28">types.ts:28</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
 					<a name="policy" class="tsd-anchor"></a>
@@ -157,7 +190,7 @@
 					<div class="tsd-signature tsd-kind-icon">Policy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8ac613b/src/types.ts#L29">types.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/8f6d269/src/types.ts#L31">types.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -207,6 +240,9 @@
 						<a href="../interfaces/_types_.iactions.html" class="tsd-kind-icon">IActions</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_types_.iconfig.html" class="tsd-kind-icon">IConfig</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_types_.ientities.html" class="tsd-kind-icon">IEntities</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
@@ -238,6 +274,9 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_types_.html#filter" class="tsd-kind-icon">Filter</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#noop" class="tsd-kind-icon">Noop</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_types_.html#policy" class="tsd-kind-icon">Policy</a>

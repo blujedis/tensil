@@ -17,6 +17,6 @@ var HttpMethod;
     HttpMethod["Get"] = "get";
     HttpMethod["Put"] = "put";
     HttpMethod["Post"] = "post";
-    HttpMethod["Delete"] = "delete";
+    HttpMethod["Del"] = "delete";
 })(HttpMethod = exports.HttpMethod || (exports.HttpMethod = {}));
 //# sourceMappingURL=types.js.map

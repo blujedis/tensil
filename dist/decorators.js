@@ -2,6 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
 const types_1 = require("./types");
+/**
+ * Adds method as filter in Service or Controller filters collection.
+ *
+ * @example
+ * class UserService {
+ *  @filter
+ *  isAuthorized(req, res, next) {
+ *    // check if authorized.
+ *  }
+ * }
+ *
+ * @param target the target class instance.
+ * @param key the method name the decorator is bound to.
+ * @param descriptor the property descriptor for the bound method.
+ */
 function filter(target, key, descriptor) {
     const isFunc = descriptor.value && typeof descriptor.value === 'function';
     if (!isFunc)
@@ -14,11 +29,8 @@ function filter(target, key, descriptor) {
 exports.filter = filter;
 function action(methods, path = '') {
     return (target, key, descriptor) => {
-        if (methods) {
-            if (!path)
-                throw new Error(`Decorator "${key}" cannot be defined, path is missing`);
+        if (methods)
             path = (lodash_1.castArray(methods).join('|') + ' ' + path).trim();
-        }
         const isFunc = descriptor.value && typeof descriptor.value === 'function';
         const baseType = Object.getPrototypeOf(target).constructor.name;
         const isCtrl = baseType === types_1.EntityType.Controller;

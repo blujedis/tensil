@@ -28,7 +28,7 @@ export class Entity<R extends Request, S extends Response> {
     this._core = Core.getInstance(app);
     this.type = ctorName;
     this.baseType = this._core.getType(this);
-    this.mountPath = (mount || '/').trim().toLowerCase();
+    this.mountPath = '/' + ((mount || '/').trim().toLowerCase()).replace(/^\/\/?/, '');
 
     // Defaults basePath to controller name without "Controller"
     if (this.baseType === EntityType.Controller) {
@@ -51,11 +51,22 @@ export class Entity<R extends Request, S extends Response> {
 
   }
 
-  private get tensil(): Tensil<R, S> {
-    return this._core.entities.Tensil as Tensil<R, S>;
+  protected get tensil(): Tensil<R, S> {
+    return this._core.entities.Tensil as any;
   }
 
-  private validateKey(key: string, context: ContextTypes, force: boolean) {
+  /**
+   * Ensures a key does not exist in a context collection.
+   * 
+   * @example
+   * .validKey('isAuthorized', 'filters');
+   * .validKey('isAuthorized', 'filters', true);
+   * 
+   * @param key checks if a key exists in the collection.
+   * @param context the context to inspect in.
+   * @param force when true allows overwrite of existing key.
+   */
+  protected validateKey(key: string, context: ContextTypes, force?: boolean) {
 
     key = key.trim();
 
@@ -76,54 +87,72 @@ export class Entity<R extends Request, S extends Response> {
 
   // HELPERS //
 
+  /**
+   * Default deny handler.
+   * 
+   * @example
+   * .deny(req, res);
+   * 
+   * @param req the Express request object.
+   * @param res the Express response object.
+   */
   deny(req: R, res: S) {
     return res.status(403).send();
   }
 
+  /**
+   * Returns default handler for rendering a view.
+   * 
+   * @example
+   * .view('user/create');
+   * .view('user/create', { });
+   * 
+   * @param path the path of the view.
+   * @param context the context to pass to the view.
+   */
   view<T extends object = any>(path: string, context?: T) {
     return (req: R, res: S) => {
       return res.render(path, context);
     };
   }
 
+  /**
+   * Returns default redirect handler.
+   * 
+   * @example
+   * .redirect('/to/some/new/path');
+   * 
+   * @param to the path to redirect to.
+   */
   redirect(to: string) {
     return (req: R, res: S) => {
       return res.render(to);
     };
   }
 
-  policy(enabled?: boolean): this;
-  policy(policies: IPolicies): this;
-  policy(key?: string, policies?: Policy | Policy[], force?: boolean);
-  policy(key?: string | boolean | IPolicies, policies?: Policy | Policy[], force: boolean = false) {
-
-    if (isObject(key)) {
-      this.policies = { ...(this.policies), ...key };
-      this.tensil.emit('policy', key, this.policies);
-      return this;
-    }
-
-    if (isBoolean(key)) {
-      policies = key;
-      key = '*';
-    }
-
-    policies = castArray(policies) as Policy[];
-    const validKey = this.validateKey(key, 'policies', force);
-
-    if (!validKey)
-      throw new Error(`Policy key "${key}" exists set force to true to overwrite`);
-
-    this.policies = this.policies || {};
-    this.policies[validKey] = policies;
-
-    this.tensil.emit('policy', { [validKey]: policies }, this.policies);
-
-    return this;
-
-  }
-
+  /**
+   * Merges policies with the provided object.
+   * 
+   * @example
+   * .policy({  
+   *   find: ['isAuthorized']
+   * });
+   * 
+   * @param policies the filter collection object.
+   */
   filter(filters: IFilters): this;
+
+  /**
+   * Adds policy to collection.
+   * 
+   * @example
+   * .policy('find', 'isAuthorized');
+   * .policy('find', 'isAuthorized', true);
+   * 
+   * @param key the filters's key.
+   * @param filters the filters or array of filters.
+   * @param force when true overwrites existing.
+   */
   filter(key: string, filters: Filter | Filter[], force?: boolean): this;
   filter(key: string | IFilters, filters?: Filter | Filter[], force: boolean = false) {
 
@@ -148,7 +177,29 @@ export class Entity<R extends Request, S extends Response> {
 
   }
 
+  /**
+   * Merges routes with the provided object.
+   * 
+   * @example
+   * .route({  
+   *   'get /user': ['isAuthorized', 'UserController.find']
+   * });
+   * 
+   * @param routes the route collection object.
+   */
   route(routes: IRoutes): this;
+
+  /**
+   * Adds route to collection.
+   * 
+   * @example
+   * .route('get /user', ['isAuthorized', 'UserController.find']);
+   * .route('get /user', ['isAuthorized', 'UserController.find', true]);
+   * 
+   * @param route the route path.
+   * @param actions the action or array of actions.
+   * @param force when true overwrites existing.
+   */
   route(route: string, actions: Filter | Filter[] | Action | Action[], force?: boolean): this;
   route(route: string | IRoutes, actions?: Filter | Filter[] | Action | Action[], force: boolean = false) {
 

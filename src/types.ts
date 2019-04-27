@@ -18,12 +18,14 @@ export enum HttpMethod {
   Get = 'get',
   Put = 'put',
   Post = 'post',
-  Delete = 'delete'
+  Del = 'delete'
 }
 
 export type ContextTypes = keyof typeof ContextType;
 
 export type Constructor<T = {}> = new (...args: any[]) => T;
+
+export type Noop = (...args: any[]) => void;
 
 export type Filter = string | Function | any[];
 export type Policy = string | boolean | Function | any[];
@@ -70,9 +72,17 @@ export interface IRouters {
   [router: string]: Router;
 }
 
+export interface IConfig {
+  policies: IPolicies;
+  filters: IFilters;
+  routes: IRoutes;
+  actions: IActions;
+}
+
 export interface IOptions {
-  actions?: IActions;
+  templates?: IActions;
   formatter?: (key: string, path: string, type: 'rest' | 'crud') => string;
   rest?: boolean; // enable rest routes.
   crud?: boolean; // enable crud routes.
+  sort?: boolean; // sorts routes before binding to routers.
 }

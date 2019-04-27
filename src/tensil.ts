@@ -1,28 +1,34 @@
-import { Express, Request, Response, Router } from 'express';
+import { Express, Request, Response } from 'express';
+import { Server as HttpServer } from 'http';
+import { Server as HttpsServer } from 'https';
 import { Entity } from './entity';
-import { isBoolean, get, set, has, isString, isFunction, castArray, isUndefined, uniq, includes } from 'lodash';
+import {
+  isBoolean, get, set, has, isString, isFunction, castArray, isObject, isUndefined,
+  uniq, includes
+} from 'lodash';
 import { join } from 'path';
 import {
-  IPolicies, IFilters, IRoutes, IRouters, IEntities,
+  IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy,
   Constructor, EntityType, ContextType, ContextTypes,
-  IActions, HttpMethod, IOptions, IRouteMap
+  IActions, HttpMethod, IOptions, IRouteMap, Noop, IConfig
 } from './types';
-import { isObject } from 'util';
 
 const DEFAULT_OPTIONS: IOptions = {
 
-  actions: {
-    find: HttpMethod.Get + ' ' + '/{{action}}',
-    findById: HttpMethod.Get + ' ' + '/{{action}}/:id',
-    create: HttpMethod.Get + ' ' + '/{{action}}',
-    update: HttpMethod.Get + ' ' + '/{{action}}',
-    updateById: HttpMethod.Get + ' ' + '/{{action}}/:id',
-    delete: HttpMethod.Get + ' ' + '/{{action}}',
-    deleteById: HttpMethod.Get + ' ' + '/{{action}}/:id',
+  templates: {
+    get: HttpMethod.Get + ' ' + '/{{action}}',
+    put: HttpMethod.Put + ' ' + '/{{action}}/:id?',
+    post: HttpMethod.Post + ' ' + '/{{action}}',
+    del: HttpMethod.Del + ' ' + '/{{action}}/:id?',
+    find: HttpMethod.Get + ' ' + '/{{action}}/:id?',
+    create: HttpMethod.Post + ' ' + '/{{action}}',
+    update: HttpMethod.Put + ' ' + '/{{action}}/:id?',
+    delete: HttpMethod.Del + ' ' + '/{{action}}/:id?',
   },
 
   rest: true,
   crud: false,
+  sort: true,
 
   formatter: (key: string, path: string, type: 'rest' | 'crud') => {
     if (type === 'rest')
@@ -57,6 +63,68 @@ export class Controller<R extends Request = Request, S extends Response = Respon
     super(base, mount);
   }
 
+  /**
+   * Sets global policy for Controller.
+   * 
+   * @example
+   * .policy(false);
+   * 
+   * @param enabled boolean indicating allow or deny for Controller.
+   */
+  policy(enabled?: boolean): this;
+
+  /**
+   * Merges policies with the provided object.
+   * 
+   * @example
+   * .policy({  
+   *   find: ['isAuthorized']
+   * });
+   * 
+   * @param policies the policy collection object.
+   */
+  policy(policies: IPolicies): this;
+
+  /**
+   * Adds policy to collection.
+   * 
+   * @example
+   * .policy('find', 'isAuthorized');
+   * .policy('find', 'isAuthorized', true);
+   * 
+   * @param key the policy's key.
+   * @param policies the policy or array of policies.
+   * @param force when true overwrites existing.
+   */
+  policy(key?: string, policies?: Policy | Policy[], force?: boolean);
+  policy(key?: string | boolean | IPolicies, policies?: Policy | Policy[], force: boolean = false) {
+
+    if (isObject(key)) {
+      this.policies = { ...(this.policies), ...key };
+      this.tensil.emit('policy', key, this.policies);
+      return this;
+    }
+
+    if (isBoolean(key)) {
+      policies = key;
+      key = '*';
+    }
+
+    policies = castArray(policies) as Policy[];
+    const validKey = this.validateKey(key, 'policies', force);
+
+    if (!validKey)
+      throw new Error(`Policy key "${key}" exists set force to true to overwrite`);
+
+    this.policies = this.policies || {};
+    this.policies[validKey] = policies;
+
+    this.tensil.emit('policy', { [validKey]: policies }, this.policies);
+
+    return this;
+
+  }
+
 }
 
 export class Tensil<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
@@ -64,10 +132,13 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
   static Service: typeof Service = Service;
   static Controller: typeof Controller = Controller;
 
+  private _initialized = false;
+  private _normalized = false;
   private _events: { [key: string]: ((...args: any[]) => void)[] } = {};
   private _routeMap: IRouteMap = {};
 
   options: IOptions;
+  server: HttpServer | HttpsServer;
 
   constructor()
   constructor(options: IOptions)
@@ -81,6 +152,12 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     this.options = { ...DEFAULT_OPTIONS, ...options };
   }
 
+  /**
+   * Normalizes namespaces for lookups.
+   * 
+   * @param entity the Service or Controller to normalize.
+   * @param context the context to normalize in
+   */
   protected normalizeNamespaces(entity: Service | Controller, context: ContextTypes) {
 
     const map = entity[context];
@@ -138,6 +215,14 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
+  /**
+   * Looks up namespace within a given Entity.
+   * 
+   * @example
+   * .lookupHandler('UserController.find');
+   * 
+   * @param namespace the namespace to be looked up.
+   */
   protected lookupHandler(namespace: string) {
 
     const entities = this._core.entities;
@@ -163,6 +248,16 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
+  /**
+   * Iterates a context normalizing all handlers looking up handler when required.
+   * 
+   * @example
+   * .normalizeHandlers(['CommonService.log', (req, res, next) => next], 'filters', 'isAuthorized');
+   * 
+   * @param handlers an array containing handlers to be looked up when string.
+   * @param context the context to look up.
+   * @param key the property key within the context.
+   */
   protected normalizeHandlers(handlers: any, context: ContextTypes, key?: string): Function[] {
 
     // If a route check if is redirect or view route.
@@ -233,16 +328,43 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     return this._routeMap;
   }
 
+  /**
+   * Binds event listener to event.
+   * 
+   * @example
+   * .on('start', () => { console.log('server started'); });
+   * 
+   * @param event the event to listen on.
+   * @param handler the handler to be called on emit.
+   */
   on(event: string, handler: (...args: any[]) => void) {
     this._events[event] = this._events[event] || [];
     this._events[event].push(handler);
     return this;
   }
 
+  /**
+   * Emits events by name.
+   * 
+   * @example
+   * .emit('register', SomeEntity);
+   * 
+   * @param event the event to be emitted.
+   * @param args the arguments to be passed to the handler.
+   */
   emit(event: string, ...args: any[]) {
     (this._events[event] || []).forEach(fn => fn(...args));
   }
 
+  /**
+   * Disables an event removing it from the collection.
+   * 
+   * @example
+   * .off('register', (entity: Entity) => {});
+   * 
+   * @param event the event to be disabled.
+   * @param handler the handler within event collection to be removed.
+   */
   off(event: string, handler: (...args: any[]) => void) {
     const idx = this._events[event] && this._events[event].indexOf(handler);
     if (~idx)
@@ -250,10 +372,27 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     return this;
   }
 
+  /**
+   * Removes all handlers for the specified event.
+   * 
+   * @example
+   * .removeEvents('register');
+   * 
+   * @param event the event name to remove handlers for.
+   */
   removeEvents(event: string) {
     delete this._events[event];
   }
 
+  /**
+   * Gets a Service by name.
+   * 
+   * @example
+   * .getService('LogService');
+   * .getService<Request, Response>('LogService');
+   * 
+   * @param name the name of the Service to get.
+   */
   getService<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P> {
     const entity = this.entities[name];
     if (entity.baseType !== EntityType.Service)
@@ -261,6 +400,15 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     return entity as any;
   }
 
+  /**
+   * Gets a Controller by name.
+   * 
+   * @example
+   * .getController('UserController');
+   * .getController<Request, Response>('LogService');
+   * 
+   * @param name the name of the Controller to get.
+   */
   getController<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P> {
     const entity = this.entities[name];
     if (entity.baseType !== EntityType.Controller)
@@ -268,16 +416,47 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     return entity as any;
   }
 
+  /**
+   * Registers a Service with Tensil.
+   * 
+   * @example
+   * .registerService(LogService);
+   * .registerService(LogService, '/log');
+   * 
+   * @param Klass the Service class to be registered.
+   * @param mount the optional router mount point to use.
+   */
   registerService<T extends Constructor>(Klass: T, mount?: string) {
     new Klass(undefined, mount);
     return this;
   }
 
+  /**
+   * Registers a Controller with Tensil.
+   * 
+   * @example
+   * .registerController(UserController, 'user');
+   * .registerController(UserController, 'user', '/identity');
+   * 
+   * @param Klass the Controller class to be registered.
+   * @param mount the optional router mount point to use.
+   */
   registerController<T extends Constructor>(Klass: T, base: string, mount?: string) {
     new Klass(base, mount);
     return this;
   }
 
+  /**
+   * Parses a route returning config object.
+   * 
+   * @example
+   * .parseRoute('get /user');
+   * .parseRoute('get|put /user/:id?');
+   * .parseRoute('get /user', '/identity');
+   * 
+   * @param route the route to parse for methods and path.
+   * @param base a base path to be prefixed to route.
+   */
   parseRoute(route: string, base: string = '') {
 
     const parts = route.trim().toLowerCase().split(' ');
@@ -285,13 +464,14 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     if (parts.length === 1)
       parts.unshift(HttpMethod.Get);
 
-    const methods = parts.shift().split('|');
+    const methods = parts.shift().split('|').map(m => m === 'del' ? 'delete' : m);
     let path = parts.shift();
 
     // Normalize starting '/' and remove trailing '/';
     path = '/' + path.replace(/^\//, '').replace(/\/$/, '');
 
-    const fullPath = join(base, path).replace(/\/$/, '');
+    let fullPath = join(base, path);
+    fullPath = '/' + fullPath.replace(/^\//, '').replace(/\/$/, '');
 
     return {
       methods,
@@ -301,7 +481,33 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
+  /**
+   * Registers a route with the routeMap.
+   * 
+   * @example
+   * .registerRoute('/identity', 'get /user/:id?', []);
+   * .registerRoute('/identity', 'get /user/:id?', [], 'UserController');
+   * 
+   * @param mount the router mount point to be registered 
+   * @param route the route to be parsed and registerd.
+   * @param handlers the handlers to be bound to route.
+   * @param controller optional Controller name when generating routes.
+   */
   registerRoute(mount: string, route: string, handlers: Function[], controller?: string): this;
+
+  /**
+   * Registers a route with the routeMap.
+   * 
+   * @example
+   * .registerRoute('/identity', 'user', 'get /:id?', []);
+   * .registerRoute('/identity', '/user', 'get /:id?', [], 'UserController');
+   * 
+   * @param mount the router mount point to be registered 
+   * @param base the base path to prefix to the route.
+   * @param route the route to be parsed and registerd.
+   * @param handlers the handlers to be bound to route.
+   * @param controller optional Controller name when generating routes.
+   */
   registerRoute(mount: string, base: string, route: string, handlers: Function[], controller?: string): this;
   registerRoute(mount: string, base: string, route: string | Function[],
     handlers?: string | Function[], controller?: string) {
@@ -334,7 +540,7 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
       root[m] = root[m] || {};
 
-      const path = join(mount, config.fullPath);
+      const path = config.fullPath; // join(mount, config.fullPath);
 
       // Show warning overriding path.
       if (has(root[m], path) && process.env.NODE_ENV !== 'production') {
@@ -361,10 +567,13 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
-  initEntity(entity: Service | Controller, contexts: {
-    filters: IFilters, routes: IRoutes,
-    policies?: IPolicies, actions?: IActions
-  }) {
+  /**
+   * Configures constructed class merging in initialized data from decorators.
+   * 
+   * @param entity the Service or Controller to configure init data for.
+   * @param contexts the configuration contexts to merge/init data for.
+   */
+  configure(entity: Service | Controller, contexts: IConfig) {
 
     entity.filters = entity.filters || {};
     entity.routes = entity.routes || {};
@@ -386,6 +595,14 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
+  /**
+   * Iterates configuration contexts normalizing them for the purpose of building routes.
+   * 
+   * @example
+   * .normalizeEntity(UserController);
+   * 
+   * @param entity the Service or Controller to be normalized.
+   */
   normalizeEntity(entity: Service | Controller) {
 
     const ctrl = (entity.baseType === EntityType.Controller) && entity as Controller;
@@ -395,17 +612,20 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
       // Check global policy.
       ctrl.policies = ctrl.policies || {};
-      const globalPol = isUndefined(ctrl.policies['*']) ? [] : ctrl.policies['*'];
       ctrl.policies['*'] = this.normalizeHandlers(ctrl.policies['*'], ContextType.policies, '*');
 
       // Generate routes for controllers.
       if (ctrl.actions) {
 
-        const merged = { ...(ctrl.actions), ...this.options.actions };
-
         for (const k in ctrl.actions) {
 
-          const route = merged[k];
+          let route = ctrl.actions[k] || this.options.templates[k];
+          route = this.options.templates[route] || route;
+
+          // If no route by this point throw error.
+          if (!route)
+            throw new Error(`Action ${entity.type}.${k} route could NOT be generated using path ${route}`);
+
           const actionKey = `${entity.type}.${k}`;
 
           // Lookup the policies for action.
@@ -480,6 +700,12 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
+  /**
+   * Iterates each entity, loads init data then normalizes.
+   * 
+   * @example
+   * .normalize();
+   */
   normalize() {
 
     const entities = this.entities;
@@ -488,17 +714,44 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
       // Extend the filters, policies and routes with initialized properties.
       const entity =
-        this.initEntity(entities[k] as (Service | Controller), (entities[k] as any).constructor.__INIT_DATA__);
+        this.configure(entities[k] as (Service | Controller), (entities[k] as any).constructor.__INIT_DATA__);
 
       this.normalizeEntity(entity);
 
     }
 
+    this._normalized = true;
+
     return this;
 
   }
 
+  /**
+   * When no server is specified uses internal Express app.
+   * 
+   * @example
+   * import { createServer } from 'http';
+   * import * as express from 'express';
+   * const app = express();
+   * const server = createServer(app);
+   * 
+   * @param server the server to use for listening to requests.
+   */
+  bindServer(server?: HttpServer | HttpsServer) {
+    this.server = (server || this.app) as HttpServer | HttpsServer;
+    return this;
+  }
+
+  /**
+   * Mounts the routes from the generated routeMap to their respective routers.
+   * 
+   * @example
+   * .mount();
+   */
   mount() {
+
+    if (!this._normalized)
+      this.normalize();
 
     // Add routes to routers.
     // Map is structured as
@@ -515,18 +768,21 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
       const methods = this.routeMap[k];
 
       Object.keys(methods)
-        .filter(m => includes(['get', 'put', 'post', 'delete'], m))
+        .filter(m => includes(['get', 'put', 'post', 'delete', 'param'], m))
         .forEach(m => {
-          Object.keys(methods[m])
-            .reverse()
+          const routes = Object.keys(methods[m]);
+          if (this.options.sort)
+            routes.reverse();
+          routes
             .forEach(r => {
               router[m](r, ...methods[m][r]);
             });
         });
 
       // Default router is already mounted.
-      if (k !== '/')
+      if (k !== '/') {
         this.app.use(k, router);
+      }
 
     }
 
@@ -534,11 +790,82 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
-  init(strict: boolean = true) {
+  /**
+   * Initializes Tensil ensuring Server, normalizing routes, mounting routes.
+   * 
+   * @example
+   * .init();
+   */
+  init() {
+
+    if (this._initialized)
+      return this;
+
+    if (!this.server)
+      this.bindServer();
 
     this
       .normalize()
       .mount();
+
+    this._initialized = true;
+
+    return this;
+
+  }
+
+  /**
+   * Starts the server after initializing, normalizing and mounting routes.
+   * 
+   * @example
+   * .start();
+   */
+  start(): this;
+
+  /**
+   * Starts the server after initializing, normalizing and mounting routes.
+   * 
+   * @example
+   * .start(8080, () => { console.log('listening...')});
+   * 
+   * @param port the port the server should listen on.
+   * @param fn a callback on server listening.
+   */
+  start(port: number, fn: () => void): this;
+
+  /**
+   * Starts the server after initializing, normalizing and mounting routes.
+   * 
+   * @example
+   * .start(8080, '10.0.0.1', () => { console.log('listening...')});
+   * 
+   * @param port the port the server should listen on.
+   * @param host the host the server should listen on (default: 3000)
+   * @param fn a callback on server listening.
+   */
+  start(port: number, host: string, fn: Noop): this;
+  start(port?: number, host?: string | Noop, fn?: Noop) {
+
+    if (typeof host === 'function') {
+      fn = host;
+      host = undefined;
+    }
+
+    port = port || 3000;
+    host = (host || '127.0.0.1') as string;
+
+    fn = fn || (() => {
+      if (process.env.NODE_ENV !== 'test')
+        console.log(`[TENSIL]: SERVER Listening at ${host}:${port}`);
+    });
+
+    this.server = this
+      .init()
+      .server
+      .listen(port, host as string, () => {
+        this.emit('start');
+        fn();
+      });
 
     return this;
 

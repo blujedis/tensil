@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import { Express, Request, Response } from 'express';
+import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
@@ -239,47 +240,52 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      */
     normalize(): this;
     /**
-     * Creates an Http Server using interall Express app.
-     */
-    createServer(): HttpServer;
-    /**
-     * Creates Http Server using internal Express app.
+     * Binds static path for resolving static content (images, styles etc)
      *
-     * @param options the Http Server options to apply on create.
+     * @example
+     * app.use('./public', {  });
+     * app.use('./public', true);
+     * app.use('./public', {}, true);
+     *
+     * @param path the path to the directory for static content.
+     * @param options any ServeStaticOptions to be applied.
+     * @param bind when true same as calling app.use(express.static('./public)).
      */
-    createServer(options: HttpServerOptions): HttpsServer;
+    static(path: string, options?: ServeStaticOptions | boolean, bind?: boolean): import("express-serve-static-core").Handler;
     /**
      * Creates an Http Server with specified app and options.
+     *
+     * @example
+     * .createServer(app);
+     * .createServer(tensil.app, {});
      *
      * @param app an Express app to bind to the server.
      * @param options the Http Server options to apply on create.
      */
     createServer(app: Express, options?: HttpServerOptions): HttpServer;
     /**
-     * Creates Https Server using internal Express app.
+     * Creates an Http Server with specified app and options.
      *
-     * @param options the Https Server options to apply on create.
-     */
-    createHttpsServer(options: HttpsServerOptions): HttpsServer;
-    /**
-     * Creates an Https Server with specified app and options.
+     * @example
+     * .createServer(tensil.app, {}, true);
      *
-     * @param app an Express app to bind to the server.
-     * @param options the Http Servers options to apply on create.
+     * @param app the Express app to bind to the server.
+     * @param options the Https server options.
+     * @param isSSL indicates an Https server is being created.
      */
-    createHttpsServer(app: Express, options?: HttpsServerOptions): HttpsServer;
+    createServer(app: Express, options: HttpsServerOptions, isSSL: boolean): HttpsServer;
     /**
-     * When no server is specified uses internal Express app.
+     * Binds the Http Server instance to Tensil.
      *
      * @example
      * import { createServer } from 'http';
      * import * as express from 'express';
-     * const app = express();
-     * const server = createServer(app);
+     * const server = createServer(express());
+     * .bindServer(server);
      *
      * @param server the server to use for listening to requests.
      */
-    bindServer(server?: HttpServer | HttpsServer): this;
+    bindServer(server: HttpServer | HttpsServer): this;
     /**
      * Mounts the routes from the generated routeMap to their respective routers.
      *
@@ -321,5 +327,5 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      * @param host the host the server should listen on (default: 3000)
      * @param fn a callback on server listening.
      */
-    start(port: number, host: string, fn: Noop): this;
+    start(port: number, host: string, fn?: Noop): this;
 }

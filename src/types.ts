@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Express } from 'express';
 import { Entity } from './entity';
 import { Tensil, Service, Controller } from './tensil';
 
@@ -22,9 +22,7 @@ export enum HttpMethod {
 }
 
 export type ContextTypes = keyof typeof ContextType;
-
 export type Constructor<T = {}> = new (...args: any[]) => T;
-
 export type Noop = (...args: any[]) => void;
 
 export type Filter = string | Function | any[];

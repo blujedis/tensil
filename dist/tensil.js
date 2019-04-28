@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
 const http_1 = require("http");
 const https_1 = require("https");
 const entity_1 = require("./entity");
@@ -478,35 +479,50 @@ class Tensil extends entity_1.Entity {
         this._normalized = true;
         return this;
     }
-    createServer(app, options) {
-        if (lodash_1.isObject(app)) {
-            options = app;
-            app = undefined;
+    /**
+     * Binds static path for resolving static content (images, styles etc)
+     *
+     * @example
+     * app.use('./public', {  });
+     * app.use('./public', true);
+     * app.use('./public', {}, true);
+     *
+     * @param path the path to the directory for static content.
+     * @param options any ServeStaticOptions to be applied.
+     * @param bind when true same as calling app.use(express.static('./public)).
+     */
+    static(path, options, bind) {
+        if (lodash_1.isBoolean(options)) {
+            bind = options;
+            options = undefined;
         }
-        app = app || this.app;
-        return this.server = http_1.createServer(options, app);
+        const staticMiddleware = express_1.static(path, options);
+        if (bind)
+            this.app.use(staticMiddleware);
+        return staticMiddleware;
     }
-    createHttpsServer(app, options) {
-        if (lodash_1.isObject(app)) {
-            options = app;
-            app = undefined;
-        }
-        app = app || this.app;
-        return this.server = https_1.createServer(options, app);
+    createServer(app, options, isSSL) {
+        options = options || {};
+        let server;
+        if (isSSL)
+            server = https_1.createServer(options, app);
+        server = http_1.createServer(options, app);
+        this.server = server;
+        return server;
     }
     /**
-     * When no server is specified uses internal Express app.
+     * Binds the Http Server instance to Tensil.
      *
      * @example
      * import { createServer } from 'http';
      * import * as express from 'express';
-     * const app = express();
-     * const server = createServer(app);
+     * const server = createServer(express());
+     * .bindServer(server);
      *
      * @param server the server to use for listening to requests.
      */
     bindServer(server) {
-        this.server = (server || this.app);
+        this.server = server;
         return this;
     }
     /**
@@ -557,8 +573,6 @@ class Tensil extends entity_1.Entity {
     init() {
         if (this._initialized)
             return this;
-        if (!this.server)
-            this.bindServer();
         this
             .normalize()
             .mount();
@@ -576,13 +590,17 @@ class Tensil extends entity_1.Entity {
             if (process.env.NODE_ENV !== 'test')
                 console.log(`[TENSIL]: SERVER Listening at ${host}:${port}`);
         });
-        this.server = this
-            .init()
-            .server
+        // Ensure Tensil is initialized.
+        this.init();
+        const server = (this.server || this.app)
             .listen(port, host, () => {
             this.emit('start');
             fn();
         });
+        // If no server then we started using
+        // Express app, save the server reference.
+        if (!this.server)
+            this.server = server;
         return this;
     }
 }

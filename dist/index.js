@@ -6,5 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tensil_1 = require("./tensil");
 __export(require("./types"));
 __export(require("./decorators"));
+__export(require("./utils"));
 exports.default = tensil_1.Tensil;
 //# sourceMappingURL=index.js.map

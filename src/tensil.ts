@@ -1,18 +1,27 @@
-import { Express, Request, Response, static as createStatic } from 'express';
+import {
+  Express, Request, Response, static as createStatic, NextFunction, RequestHandler,
+  ErrorRequestHandler
+} from 'express';
+import { Transform } from 'stream';
 import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, createServer as createHttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, createServer as createHttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
 import {
   isBoolean, get, set, has, isString, isFunction, castArray, isObject, isUndefined,
-  uniq, includes
+  uniq, includes, templateSettings, template
 } from 'lodash';
-import { join } from 'path';
+import { STATUS_CODES } from 'statuses';
+import { join, resolve } from 'path';
+import { stat, statSync, createReadStream, readFile } from 'fs';
 import {
   IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy,
-  Constructor, EntityType, ContextType, ContextTypes,
+  Constructor, EntityType, ContextType, ContextTypes, HttpError,
   IActions, HttpMethod, IOptions, IRouteMap, Noop, IConfig
 } from './types';
+import { awaiter } from './utils';
+
+templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 
 const DEFAULT_OPTIONS: IOptions = {
 
@@ -36,11 +45,20 @@ const DEFAULT_OPTIONS: IOptions = {
       return path.replace(/{{action}}/, '').replace(/^\/\//, '/');
     key = key.replace(/ById$/, '');
     return path.replace(/{{action}}/, '');
+  },
+
+  themes: {
+    500: { primary: '#661717', accent: '#dd0d2c' },
+    406: { primary: '#6d0227', accent: '#c10043' },
+    404: { primary: '#1E152A', accent: '#444c99' },
+    403: { primary: '#661717', accent: '#dd0d2c' },
+    401: { primary: '#661717', accent: '#dd0d2c' },
+    400: { primary: '#ad3826', accent: '#f95036' },
   }
 
 };
 
-export class Service<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
+export class Service extends Entity {
 
   filters: IFilters;
   routes: IRoutes;
@@ -53,7 +71,7 @@ export class Service<R extends Request = Request, S extends Response = Response>
 
 }
 
-export class Controller<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
+export class Controller extends Entity {
 
   policies: IPolicies;
   filters: IFilters;
@@ -128,7 +146,7 @@ export class Controller<R extends Request = Request, S extends Response = Respon
 
 }
 
-export class Tensil<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
+export class Tensil extends Entity {
 
   static Service: typeof Service = Service;
   static Controller: typeof Controller = Controller;
@@ -151,6 +169,46 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
       app = undefined;
     }
     this.options = { ...DEFAULT_OPTIONS, ...options };
+  }
+
+  // PRIVATE & PROTECTED // 
+
+  /**
+   * Creates transform to be used with ReadStream.
+   * 
+   * @example
+   * res.write('<!-- BEGIN WRITE -->') // optional
+   * createReadStream('/path/to.html')
+   *  .pipe(.transformContext({}))
+   *  .on('end', () => res.write('<!-- END WRITE -->'))
+   *  .pipe(res);
+   * 
+   * @param context the context object to render to string template. 
+   */
+  protected transformContext(context: any) {
+    const transformer = new Transform();
+    transformer._transform = (data, enc, done) => {
+      transformer.push(template(data.toString())(context));
+      done();
+    };
+  }
+
+  /**
+   * Clone an error into plain object.
+   * 
+   * @param err the error to be cloned.
+   */
+  protected cloneError<T extends Error = Error>(err: T, pick?: string | string[]) {
+    pick = castArray(pick);
+    return Object.getOwnPropertyNames(err)
+      .reduce((a, c) => {
+        if (~pick.indexOf(c))
+          return a;
+        if (!a.name)
+          a.name = err.name;
+        a[c] = err[c];
+        return a;
+      }, {} as T);
   }
 
   /**
@@ -303,7 +361,7 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
           throw new Error(`${context.charAt(0).toUpperCase() +
             context.slice(1)} "${key || 'unknown'}" cannot contain boolean handler.`);
 
-        result = (handler === true) ? [] : this.deny || [];
+        result = (handler === true) ? [] : this.deny() || [];
 
       }
 
@@ -317,17 +375,32 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
 
   }
 
-  get entities(): IEntities {
-    return this._core.entities;
+  /**
+   * Renders Express view or static html file.
+   * 
+   * @param res the Express Request handler.
+   * @param next the Express Next Function handler.
+   */
+  protected renderFileOrView(res: Response, next: NextFunction) {
+
+    return async (view: string, context: any, status: number) => {
+
+      const result = await awaiter(this.isView(view));
+
+      if (result.data)
+        return res.status(status).render(view, context);
+
+      readFile(view, (err, html) => {
+        if (err)
+          return next(err);
+        res.status(status).send(template(html.toString())(context));
+      });
+
+    };
+
   }
 
-  get routers(): IRouters {
-    return this._core.routers;
-  }
-
-  get routeMap() {
-    return this._routeMap;
-  }
+  // EVENTS //
 
   /**
    * Binds event listener to event.
@@ -385,6 +458,370 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     delete this._events[event];
   }
 
+  // GETTERS //
+
+  get entities(): IEntities {
+    return this._core.entities;
+  }
+
+  get routers(): IRouters {
+    return this._core.routers;
+  }
+
+  get routeMap() {
+    return this._routeMap;
+  }
+
+  get isProd() {
+    return this.isEnv('production');
+  }
+
+  get isDev() {
+    return this.isEnv('') || !this.isEnv('production');
+  }
+
+  // HELPERS //
+
+  /**
+   * Checks if process.env.NODE_ENV contains specified environment.
+   * 
+   * @param env the environment to inspect process.env.NODE_ENV for.
+   */
+  isEnv(env: string) {
+    return process.env.NODE_ENV === env;
+  }
+
+  /**
+   * Checks if Request is of type XHR.
+   * 
+   * @param req Express Request
+   */
+  isXHR(req: Request) {
+    return req.xhr || req.get('X-Requested-With') || req.is('*/json');
+  }
+
+  /**
+   * Synchronously checks if a view exists.
+   * 
+   * @example
+   * .isView('user/profile');
+   * 
+   * @param view the view to check if exists.
+   */
+  isView(view: string, sync: boolean): boolean;
+
+  /**
+   * Asynchronously checks if a view exists.
+   * 
+   * @example
+   * const isFile = await .isView('user/profile');
+   * 
+   * @param view the view to check if exists.
+   */
+  async isView(view: string): Promise<boolean>;
+  isView(view: string, sync?: boolean): boolean | Promise<boolean> {
+
+    const filename = resolve(this.app.get('view'), view);
+
+    if (sync) {
+      const stats = statSync(filename);
+      return stats.isFile();
+    }
+
+    return new Promise((_resolve, _reject) => {
+      stat(filename, (err, stats) => {
+        if (err)
+          return _reject(err);
+        _resolve(stats.isFile());
+      });
+
+    });
+
+  }
+
+  /**
+   * Require Xhr requests.
+   * 
+   * @param status the Http status code.
+   */
+  demandXhr(status?: number): RequestHandler;
+
+  /**
+   * Rejects Xhr requests.
+   * 
+   * @param text the Http status text (default: Not Acceptable).
+   * @param view optional filename to be rendered (default: 'dist/views/error.html')
+   */
+  demandXhr(text: string, view: string): RequestHandler;
+
+  /**
+   * Rejects Xhr requests.
+   * 
+   * @param status the Http status code.
+   * @param text the Http status message (default: Not Acceptable).
+   * @param view optional filename to be rendered (default: 'dist/views/error.html')
+   */
+  demandXhr(status: number, text: string, view?: string): RequestHandler;
+  demandXhr(status?: number | string, text?: string, view?: string) {
+
+    if (isString(status)) {
+      view = text;
+      text = status;
+      status = undefined;
+    }
+
+    status = status || 406;
+    text = text || STATUS_CODES[status];
+    view = view || resolve(__dirname, 'views/error.html');
+    const theme = this.options.themes[status];
+
+    const err = new HttpError(text, status as number, text, theme);
+    const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (!this.isXHR(req))
+        return this.renderFileOrView(res, next)(view, payload, status as number);
+      next();
+    };
+
+  }
+
+  /**
+   * Rejects Xhr requests.
+   * 
+   * @param status the Http status code.
+   */
+  rejectXhr(status?: number): RequestHandler;
+
+  /**
+   * Rejects Xhr requests.
+   * 
+   * @param text the Http status message (default: Not Acceptable).
+   */
+  rejectXhr(text: string): RequestHandler;
+
+  /**
+   * Rejects Xhr requests.
+   * 
+   * @param status the Http status code.
+   * @param text the Http status message (default: Not Acceptable).
+   */
+  rejectXhr(status: number, text: string): RequestHandler;
+  rejectXhr(status: number | string, text?: string) {
+
+    if (isString(status)) {
+      text = status;
+      status = undefined;
+    }
+
+    status = status || 406;
+    text = text || STATUS_CODES[status];
+    const theme = this.options.themes[status];
+
+    const err = new HttpError(text, status as number, text, theme);
+    const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+
+    return (req: Request, res: Response, next: NextFunction) => {
+      if (this.isXHR(req))
+        return res.status(status as number).json(payload);
+      next();
+    };
+
+  }
+
+  /**
+   * Default deny handler.
+   * 
+   * @example
+   * .deny();
+   */
+  deny(): RequestHandler;
+
+  /**
+   * Default deny handler.
+   * 
+   * @example
+   * .deny('Access denied');
+   * .deny('Access denied', '/path/to/file.html')
+   *
+   * @param text the message to be sent (default: Access denied).
+   * @param filename optional filename to render (default: 'dist/views/error.html')
+   */
+  deny(text: string, filename: string): RequestHandler;
+
+  /**
+   * Default deny handler.
+   * 
+   * @example
+   * .deny(403, 'Access denied');
+   * 
+   * @param status the Http status code to use (default: 403).
+   * @param text the message to be sent (default: Access denied).
+   * @param filename optional view/filename to render (default: 'dist/views/error.html')
+   */
+  deny(status: number, text?: string): RequestHandler;
+  deny(status?: number | string, text?: string, view?: string) {
+
+    if (isString(status)) {
+      text = status;
+      status = undefined;
+    }
+
+    status = status || 403;
+    text = text || STATUS_CODES[status];
+    view = view || resolve(__dirname, 'views/error.html');
+    const theme = this.options.themes[status];
+
+    const err = new HttpError(text, status as number, text, theme);
+    const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+
+    return (req: Request, res: Response, next: NextFunction) => {
+
+      if (this.isXHR(req))
+        return res.status(status as number).json(payload);
+
+      return this.renderFileOrView(res, next)(view, payload, status as number);
+
+    };
+
+  }
+
+  /**
+   * Returns default handler for rendering a view.
+   * 
+   * @example
+   * .view('user/create');
+   * .view('user/create', { });
+   * 
+   * @param view the path of the view.
+   * @param context the context to pass to the view.
+   */
+  view<T extends object = any>(view: string, context?: T) {
+    return (req: Request, res: Response) => {
+      return res.render(view, context);
+    };
+  }
+
+  /**
+   * Returns default redirect handler.
+   * 
+   * @example
+   * .redirect('/to/some/new/path');
+   * 
+   * @param to the path to redirect to.
+   */
+  redirect(to: string) {
+    return (req: Request, res: Response) => {
+      return res.render(to);
+    };
+  }
+
+  /**
+   * Binds static path for resolving static content (images, styles etc)
+   * 
+   * @example
+   * app.use('./public', {  });
+   * app.use('./public', true);
+   * app.use('./public', {}, true);
+   * 
+   * @param path the path to the directory for static content.
+   * @param options any ServeStaticOptions to be applied.
+   * @param bind when true same as calling app.use(express.static('./public)).
+   */
+  static(path: string, options?: ServeStaticOptions | boolean, bind?: boolean) {
+    if (isBoolean(options)) {
+      bind = options;
+      options = undefined;
+    }
+    const staticMiddleware = createStatic(path, options as ServeStaticOptions);
+    if (bind)
+      this.app.use(staticMiddleware);
+    return staticMiddleware;
+  }
+
+  /**
+   * Enables 404 Error handling.
+   * 
+   * @example
+   * .notFound('Custom 404 error message');
+   * .notFound('Custom 404 error message', '/path/to/file.html');
+   * .notFound(null, '/path/to/file.html');
+   * 
+   * @param text method to be displayed on 404 error.
+   * @param view optional view/filename to render (default: 'dist/views/error.html')
+   */
+  notFound(text?: string, view?: string) {
+
+    text = text || STATUS_CODES[404];
+    view = view || resolve(__dirname, 'views/error.html');
+    const theme = this.options.themes[404];
+
+    const handler = async (req: Request, res: Response, next: NextFunction) => {
+
+      const err = new HttpError(text as string, 404, text, theme);
+      const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+
+      if (this.isXHR(req))
+        return res.status(404).json(payload);
+
+      return this.renderFileOrView(res, next)(view, payload, 404);
+
+    };
+
+    return handler;
+
+  }
+
+  /**
+   * Creates 500 Error handler.
+   * NOTE: if next(err) and err contains status/statusText it will be used instead.
+   * 
+   * @example
+   * .serverError();
+   * .serverError('Server Error', '/some/path/to/error.html');
+   * .serverError(null, '/some/path/to/error.html');
+   * 
+   * @param text the Server Error status text.
+   * @param view optional view/filename (default: /tensil/dist/views/error.html)
+   */
+  serverError(text?: string, view?: string): ErrorRequestHandler {
+
+    text = text || STATUS_CODES[500];
+    view = view || resolve(__dirname, 'views/error.html');
+
+    const handler = async (err: HttpError, req: Request, res: Response, next: NextFunction) => {
+
+      const status = err.status || 500;
+      const statusText = err.status ? err.statusText || STATUS_CODES[status] : text;
+      const theme = this.options.themes[status];
+
+      err = new HttpError(err.message, status, statusText, theme);
+      const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+
+      if (this.isXHR(req))
+        return res.status(status).json(payload);
+
+      return this.renderFileOrView(res, next)(view, payload, status);
+
+      // const result = await awaiter(this.isView(filename));
+
+      // if (result.data)
+      //   return res.status(status).render(filename, payload);
+
+      // readFile(filename, (_err, html) => {
+      //   if (err)
+      //     return next(_err);
+      //   res.status(status).send(template(html.toString())(payload));
+      // });
+
+    };
+
+    return handler;
+
+  }
+
+  // SERVICE & CONTROLLER //
+
   /**
    * Gets a Service by name.
    * 
@@ -394,7 +831,7 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
    * 
    * @param name the name of the Service to get.
    */
-  getService<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P> {
+  getService(name: string): Service {
     const entity = this.entities[name];
     if (entity.baseType !== EntityType.Service)
       return null;
@@ -410,7 +847,7 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
    * 
    * @param name the name of the Controller to get.
    */
-  getController<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P> {
+  getController(name: string): Service {
     const entity = this.entities[name];
     if (entity.baseType !== EntityType.Controller)
       return null;
@@ -446,6 +883,8 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
     new Klass(base, mount);
     return this;
   }
+
+  // CONFIGURATION //
 
   /**
    * Parses a route returning config object.
@@ -728,29 +1167,6 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
   }
 
   /**
-   * Binds static path for resolving static content (images, styles etc)
-   * 
-   * @example
-   * app.use('./public', {  });
-   * app.use('./public', true);
-   * app.use('./public', {}, true);
-   * 
-   * @param path the path to the directory for static content.
-   * @param options any ServeStaticOptions to be applied.
-   * @param bind when true same as calling app.use(express.static('./public)).
-   */
-  static(path: string, options?: ServeStaticOptions | boolean, bind?: boolean) {
-    if (isBoolean(options)) {
-      bind = options;
-      options = undefined;
-    }
-    const staticMiddleware = createStatic(path, options as ServeStaticOptions);
-    if (bind)
-      this.app.use(staticMiddleware);
-    return staticMiddleware;
-  }
-
-  /**
    * Creates an Http Server with specified app and options.
    * 
    * @example
@@ -774,17 +1190,18 @@ export class Tensil<R extends Request = Request, S extends Response = Response> 
    */
   createServer(app: Express, options: HttpsServerOptions, isSSL: boolean): HttpsServer;
 
-  createServer(app: Express | HttpServerOptions | HttpsServerOptions,
-    options?: HttpServerOptions | HttpsServerOptions, isSSL?: boolean) {
+  createServer(app: Express, options?: HttpServerOptions | HttpsServerOptions, isSSL?: boolean) {
 
-    options = options || {};
+    const args: any = [app];
+
+    if (options) args.unshift(options);
 
     let server;
 
     if (isSSL)
-      server = createHttpsServer(options as HttpsServerOptions, app as Express);
+      server = createHttpsServer.apply(null, args);
 
-    server = createHttpServer(options as HttpServerOptions, app as Express);
+    server = createHttpServer.apply(null, args);
 
     this.server = server;
 

@@ -1,9 +1,8 @@
-import { Express, Router } from 'express';
+import { Router, Express } from 'express';
 import { Core } from './core';
 import { Tensil } from './tensil';
 import { Filter, Action, IFilters, IPolicies, IRoutes, IActions, ContextTypes } from './types';
-import { Request, Response } from 'express-serve-static-core';
-export declare class Entity<R extends Request, S extends Response> {
+export declare class Entity {
     protected _core: Core;
     protected policies: IPolicies;
     protected filters: IFilters;
@@ -15,7 +14,7 @@ export declare class Entity<R extends Request, S extends Response> {
     basePath: string;
     constructor();
     constructor(base: string, mount?: string, app?: Express);
-    protected readonly tensil: Tensil<R, S>;
+    protected readonly tensil: Tensil;
     /**
      * Ensures a key does not exist in a context collection.
      *
@@ -30,36 +29,6 @@ export declare class Entity<R extends Request, S extends Response> {
     protected validateKey(key: string, context: ContextTypes, force?: boolean): string;
     readonly app: Express;
     readonly router: Router;
-    /**
-     * Default deny handler.
-     *
-     * @example
-     * .deny(req, res);
-     *
-     * @param req the Express request object.
-     * @param res the Express response object.
-     */
-    deny(req: R, res: S): Response;
-    /**
-     * Returns default handler for rendering a view.
-     *
-     * @example
-     * .view('user/create');
-     * .view('user/create', { });
-     *
-     * @param path the path of the view.
-     * @param context the context to pass to the view.
-     */
-    view<T extends object = any>(path: string, context?: T): (req: R, res: S) => void;
-    /**
-     * Returns default redirect handler.
-     *
-     * @example
-     * .redirect('/to/some/new/path');
-     *
-     * @param to the path to redirect to.
-     */
-    redirect(to: string): (req: R, res: S) => void;
     /**
      * Merges policies with the provided object.
      *

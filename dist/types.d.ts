@@ -23,6 +23,17 @@ export declare type Noop = (...args: any[]) => void;
 export declare type Filter = string | Function | any[];
 export declare type Policy = string | boolean | Function | any[];
 export declare type Action = string | Function;
+export declare type AwaiterResponse<T = any, K extends string = 'data'> = Promise<{
+    err?: Error;
+} & Record<K, T>>;
+export declare class HttpError extends Error {
+    status: number;
+    title: string;
+    statusText: string;
+    theme: ITheme;
+    constructor(message: string, status: number, theme?: ITheme);
+    constructor(message: string, status: number, statusText: string, theme?: ITheme);
+}
 export interface IFilters {
     [filter: string]: Filter | Filter[];
 }
@@ -43,7 +54,7 @@ export interface IActions {
     [action: string]: string;
 }
 export interface IEntities {
-    [entity: string]: Service | Controller | Tensil | Entity<any, any>;
+    [entity: string]: Service | Controller | Tensil | Entity;
 }
 export interface IRouters {
     [router: string]: Router;
@@ -54,10 +65,17 @@ export interface IConfig {
     routes: IRoutes;
     actions: IActions;
 }
+export interface ITheme {
+    primary: string;
+    accent: string;
+}
 export interface IOptions {
     templates?: IActions;
     formatter?: (key: string, path: string, type: 'rest' | 'crud') => string;
     rest?: boolean;
     crud?: boolean;
     sort?: boolean;
+    themes?: {
+        [theme: string]: ITheme;
+    };
 }

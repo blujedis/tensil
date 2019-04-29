@@ -1,4 +1,12 @@
 /**
+ * Normalizes promise to return object containing { err, data }
+ *
+ * @param promise the promise to be wrapped.
+ */
+export declare const awaiter: <T, K extends string = "data">(promise: Promise<T>) => Promise<{
+    err?: Error;
+} & Record<K, T>>;
+/**
  * Parses out the caller from stack trace using an error.
  *
  * @param err the Error to be parsed.

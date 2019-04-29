@@ -19,4 +19,22 @@ var HttpMethod;
     HttpMethod["Post"] = "post";
     HttpMethod["Del"] = "delete";
 })(HttpMethod = exports.HttpMethod || (exports.HttpMethod = {}));
+class HttpError extends Error {
+    constructor(message, status, statusText, theme) {
+        super(message);
+        this.status = status;
+        if (typeof statusText === 'object') {
+            theme = statusText;
+            statusText = undefined;
+        }
+        this.title = message;
+        this.statusText = statusText || message;
+        const defaultTheme = {
+            primary: '#1E152A',
+            accent: '#444c99'
+        };
+        this.theme = { ...defaultTheme, ...theme };
+    }
+}
+exports.HttpError = HttpError;
 //# sourceMappingURL=types.js.map

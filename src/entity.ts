@@ -1,11 +1,10 @@
-import { Express, Router, NextFunction } from 'express';
+import { Router, Express, NextFunction } from 'express';
 import { Core } from './core';
 import { Tensil } from './tensil';
-import { isBoolean, castArray, has, isObject } from 'lodash';
-import { Filter, Policy, Action, IFilters, IPolicies, IRoutes, EntityType, IActions, ContextTypes } from './types';
-import { Request, Response } from 'express-serve-static-core';
+import { castArray, has, isObject } from 'lodash';
+import { Filter, Action, IFilters, IPolicies, IRoutes, EntityType, IActions, ContextTypes } from './types';
 
-export class Entity<R extends Request, S extends Response> {
+export class Entity {
 
   protected _core: Core;
 
@@ -26,6 +25,7 @@ export class Entity<R extends Request, S extends Response> {
     const ctorName = this.constructor.name;
 
     this._core = Core.getInstance(app);
+
     this.type = ctorName;
     this.baseType = this._core.getType(this);
     this.mountPath = '/' + ((mount || '/').trim().toLowerCase()).replace(/^\/\/?/, '');
@@ -51,7 +51,7 @@ export class Entity<R extends Request, S extends Response> {
 
   }
 
-  protected get tensil(): Tensil<R, S> {
+  protected get tensil(): Tensil {
     return this._core.entities.Tensil as any;
   }
 
@@ -83,51 +83,6 @@ export class Entity<R extends Request, S extends Response> {
 
   get router() {
     return this._core.routers[this.mountPath];
-  }
-
-  // HELPERS //
-
-  /**
-   * Default deny handler.
-   * 
-   * @example
-   * .deny(req, res);
-   * 
-   * @param req the Express request object.
-   * @param res the Express response object.
-   */
-  deny(req: R, res: S) {
-    return res.status(403).send();
-  }
-
-  /**
-   * Returns default handler for rendering a view.
-   * 
-   * @example
-   * .view('user/create');
-   * .view('user/create', { });
-   * 
-   * @param path the path of the view.
-   * @param context the context to pass to the view.
-   */
-  view<T extends object = any>(path: string, context?: T) {
-    return (req: R, res: S) => {
-      return res.render(path, context);
-    };
-  }
-
-  /**
-   * Returns default redirect handler.
-   * 
-   * @example
-   * .redirect('/to/some/new/path');
-   * 
-   * @param to the path to redirect to.
-   */
-  redirect(to: string) {
-    return (req: R, res: S) => {
-      return res.render(to);
-    };
   }
 
   /**

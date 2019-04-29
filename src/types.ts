@@ -1,4 +1,4 @@
-import { Router, Express } from 'express';
+import { Router } from 'express';
 import { Entity } from './entity';
 import { Tensil, Service, Controller } from './tensil';
 
@@ -28,15 +28,37 @@ export type Noop = (...args: any[]) => void;
 export type Filter = string | Function | any[];
 export type Policy = string | boolean | Function | any[];
 export type Action = string | Function;
+export type AwaiterResponse<T = any, K extends string = 'data'> = Promise<{ err?: Error } & Record<K, T>>;
 
-// export type RequestHandler<R extends Request, S extends Response> =
-//   (req?: R, res?: S, next?: NextFunction) => any;
+export class HttpError extends Error {
 
-// export type RequestErrorHandler<R extends Request, S extends Response> =
-//   (err: Error, req?: R, res?: S, next?: NextFunction) => any;
+  title: string;
+  statusText: string;
+  theme: ITheme;
 
-// export type RequestParamHandler<R extends Request, S extends Response> =
-//   (req: R, res: S, next: NextFunction, param: any) => any;
+  constructor(message: string, status: number, theme?: ITheme);
+  constructor(message: string, status: number, statusText: string, theme?: ITheme);
+  constructor(message: string, public status: number, statusText?: string | ITheme, theme?: ITheme) {
+
+    super(message);
+
+    if (typeof statusText === 'object') {
+      theme = statusText;
+      statusText = undefined;
+    }
+
+    this.title = message;
+    this.statusText = statusText as string || message;
+
+    const defaultTheme: ITheme = {
+      primary: '#1E152A',
+      accent: '#444c99'
+    };
+
+    this.theme = { ...defaultTheme, ...theme };
+
+  }
+}
 
 export interface IFilters {
   [filter: string]: Filter | Filter[];
@@ -63,7 +85,7 @@ export interface IActions {
 }
 
 export interface IEntities {
-  [entity: string]: Service | Controller | Tensil | Entity<any, any>;
+  [entity: string]: Service | Controller | Tensil | Entity;
 }
 
 export interface IRouters {
@@ -77,10 +99,18 @@ export interface IConfig {
   actions: IActions;
 }
 
+export interface ITheme {
+  primary: string;
+  accent: string;
+}
+
 export interface IOptions {
   templates?: IActions;
   formatter?: (key: string, path: string, type: 'rest' | 'crud') => string;
   rest?: boolean; // enable rest routes.
   crud?: boolean; // enable crud routes.
   sort?: boolean; // sorts routes before binding to routers.
+  themes?: {
+    [theme: string]: ITheme;
+  }
 }

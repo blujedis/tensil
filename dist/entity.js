@@ -53,47 +53,6 @@ class Entity {
     get router() {
         return this._core.routers[this.mountPath];
     }
-    // HELPERS //
-    /**
-     * Default deny handler.
-     *
-     * @example
-     * .deny(req, res);
-     *
-     * @param req the Express request object.
-     * @param res the Express response object.
-     */
-    deny(req, res) {
-        return res.status(403).send();
-    }
-    /**
-     * Returns default handler for rendering a view.
-     *
-     * @example
-     * .view('user/create');
-     * .view('user/create', { });
-     *
-     * @param path the path of the view.
-     * @param context the context to pass to the view.
-     */
-    view(path, context) {
-        return (req, res) => {
-            return res.render(path, context);
-        };
-    }
-    /**
-     * Returns default redirect handler.
-     *
-     * @example
-     * .redirect('/to/some/new/path');
-     *
-     * @param to the path to redirect to.
-     */
-    redirect(to) {
-        return (req, res) => {
-            return res.render(to);
-        };
-    }
     filter(key, filters, force = false) {
         if (lodash_1.isObject(key)) {
             this.filters = { ...(this.filters), ...key };

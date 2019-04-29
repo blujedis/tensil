@@ -13,7 +13,7 @@ class Core {
         Core._instance = this;
     }
     static getInstance(app) {
-        return this._instance || (this._instance = new this(app));
+        return (this._instance || (this._instance = new this(app)));
     }
     // PLACEHOLDER
     // formatMessage(message: string, map?: IMap<any>) {

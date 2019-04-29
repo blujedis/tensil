@@ -1,6 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
+ * Normalizes promise to return object containing { err, data }
+ *
+ * @param promise the promise to be wrapped.
+ */
+exports.awaiter = (promise) => {
+    return promise
+        .then(data => ({ err: null, data }))
+        .catch(err => ({ err }));
+};
+/**
  * Parses out the caller from stack trace using an error.
  *
  * @param err the Error to be parsed.

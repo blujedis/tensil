@@ -11,8 +11,8 @@ export class Core {
 
   private static _instance: Core;
 
-  static getInstance(app?: Express) {
-    return this._instance || (this._instance = new this(app));
+  static getInstance(app?: Express): Core {
+    return (this._instance || (this._instance = new this(app))) as any;
   }
 
   // PLACEHOLDER
@@ -28,7 +28,7 @@ export class Core {
 
   constructor(app?: Express) {
 
-    this.app = app || express();
+    this.app = app || (express() as Express);
     this.routers['/'] = this.app;
 
     // Define singleton instance.
@@ -53,7 +53,7 @@ export class Core {
    * 
    * @param entity the Entity to get prototype name for.
    */
-  getType(entity: Service | Controller | Entity<any, any>) {
+  getType(entity: Service | Controller | Entity) {
     return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
   }
 
@@ -65,7 +65,7 @@ export class Core {
    * 
    * @param entity the Entity instance to register with Tensil.
    */
-  registerInstance(entity: Service | Controller | Entity<any, any>) {
+  registerInstance(entity: Service | Controller | Entity) {
     if (has(this.entities, entity.type))
       throw new Error(`Entity ${entity.type} failed to register, already exists`);
     this.entities[entity.type] = entity;

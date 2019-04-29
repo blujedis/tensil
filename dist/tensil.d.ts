@@ -1,17 +1,17 @@
 /// <reference types="node" />
-import { Express, Request, Response } from 'express';
+import { Express, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express';
 import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
 import { IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig } from './types';
-export declare class Service<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
+export declare class Service extends Entity {
     filters: IFilters;
     routes: IRoutes;
     constructor();
     constructor(mount: string);
 }
-export declare class Controller<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
+export declare class Controller extends Entity {
     policies: IPolicies;
     filters: IFilters;
     routes: IRoutes;
@@ -50,7 +50,7 @@ export declare class Controller<R extends Request = Request, S extends Response 
      */
     policy(key?: string, policies?: Policy | Policy[], force?: boolean): any;
 }
-export declare class Tensil<R extends Request = Request, S extends Response = Response> extends Entity<R, S> {
+export declare class Tensil extends Entity {
     static Service: typeof Service;
     static Controller: typeof Controller;
     private _initialized;
@@ -62,6 +62,25 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
     constructor();
     constructor(options: IOptions);
     constructor(app: Express, options?: IOptions);
+    /**
+     * Creates transform to be used with ReadStream.
+     *
+     * @example
+     * res.write('<!-- BEGIN WRITE -->') // optional
+     * createReadStream('/path/to.html')
+     *  .pipe(.transformContext({}))
+     *  .on('end', () => res.write('<!-- END WRITE -->'))
+     *  .pipe(res);
+     *
+     * @param context the context object to render to string template.
+     */
+    protected transformContext(context: any): void;
+    /**
+     * Clone an error into plain object.
+     *
+     * @param err the error to be cloned.
+     */
+    protected cloneError<T extends Error = Error>(err: T, pick?: string | string[]): T;
     /**
      * Normalizes namespaces for lookups.
      *
@@ -89,9 +108,13 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      * @param key the property key within the context.
      */
     protected normalizeHandlers(handlers: any, context: ContextTypes, key?: string): Function[];
-    readonly entities: IEntities;
-    readonly routers: IRouters;
-    readonly routeMap: IRouteMap;
+    /**
+     * Renders Express view or static html file.
+     *
+     * @param res the Express Request handler.
+     * @param next the Express Next Function handler.
+     */
+    protected renderFileOrView(res: Response, next: NextFunction): (view: string, context: any, status: number) => Promise<void>;
     /**
      * Binds event listener to event.
      *
@@ -131,6 +154,168 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      * @param event the event name to remove handlers for.
      */
     removeEvents(event: string): void;
+    readonly entities: IEntities;
+    readonly routers: IRouters;
+    readonly routeMap: IRouteMap;
+    readonly isProd: boolean;
+    readonly isDev: boolean;
+    /**
+     * Checks if process.env.NODE_ENV contains specified environment.
+     *
+     * @param env the environment to inspect process.env.NODE_ENV for.
+     */
+    isEnv(env: string): boolean;
+    /**
+     * Checks if Request is of type XHR.
+     *
+     * @param req Express Request
+     */
+    isXHR(req: Request): string | boolean;
+    /**
+     * Synchronously checks if a view exists.
+     *
+     * @example
+     * .isView('user/profile');
+     *
+     * @param view the view to check if exists.
+     */
+    isView(view: string, sync: boolean): boolean;
+    /**
+     * Asynchronously checks if a view exists.
+     *
+     * @example
+     * const isFile = await .isView('user/profile');
+     *
+     * @param view the view to check if exists.
+     */
+    isView(view: string): Promise<boolean>;
+    /**
+     * Require Xhr requests.
+     *
+     * @param status the Http status code.
+     */
+    demandXhr(status?: number): RequestHandler;
+    /**
+     * Rejects Xhr requests.
+     *
+     * @param text the Http status text (default: Not Acceptable).
+     * @param view optional filename to be rendered (default: 'dist/views/error.html')
+     */
+    demandXhr(text: string, view: string): RequestHandler;
+    /**
+     * Rejects Xhr requests.
+     *
+     * @param status the Http status code.
+     * @param text the Http status message (default: Not Acceptable).
+     * @param view optional filename to be rendered (default: 'dist/views/error.html')
+     */
+    demandXhr(status: number, text: string, view?: string): RequestHandler;
+    /**
+     * Rejects Xhr requests.
+     *
+     * @param status the Http status code.
+     */
+    rejectXhr(status?: number): RequestHandler;
+    /**
+     * Rejects Xhr requests.
+     *
+     * @param text the Http status message (default: Not Acceptable).
+     */
+    rejectXhr(text: string): RequestHandler;
+    /**
+     * Rejects Xhr requests.
+     *
+     * @param status the Http status code.
+     * @param text the Http status message (default: Not Acceptable).
+     */
+    rejectXhr(status: number, text: string): RequestHandler;
+    /**
+     * Default deny handler.
+     *
+     * @example
+     * .deny();
+     */
+    deny(): RequestHandler;
+    /**
+     * Default deny handler.
+     *
+     * @example
+     * .deny('Access denied');
+     * .deny('Access denied', '/path/to/file.html')
+     *
+     * @param text the message to be sent (default: Access denied).
+     * @param filename optional filename to render (default: 'dist/views/error.html')
+     */
+    deny(text: string, filename: string): RequestHandler;
+    /**
+     * Default deny handler.
+     *
+     * @example
+     * .deny(403, 'Access denied');
+     *
+     * @param status the Http status code to use (default: 403).
+     * @param text the message to be sent (default: Access denied).
+     * @param filename optional view/filename to render (default: 'dist/views/error.html')
+     */
+    deny(status: number, text?: string): RequestHandler;
+    /**
+     * Returns default handler for rendering a view.
+     *
+     * @example
+     * .view('user/create');
+     * .view('user/create', { });
+     *
+     * @param view the path of the view.
+     * @param context the context to pass to the view.
+     */
+    view<T extends object = any>(view: string, context?: T): (req: Request, res: Response) => void;
+    /**
+     * Returns default redirect handler.
+     *
+     * @example
+     * .redirect('/to/some/new/path');
+     *
+     * @param to the path to redirect to.
+     */
+    redirect(to: string): (req: Request, res: Response) => void;
+    /**
+     * Binds static path for resolving static content (images, styles etc)
+     *
+     * @example
+     * app.use('./public', {  });
+     * app.use('./public', true);
+     * app.use('./public', {}, true);
+     *
+     * @param path the path to the directory for static content.
+     * @param options any ServeStaticOptions to be applied.
+     * @param bind when true same as calling app.use(express.static('./public)).
+     */
+    static(path: string, options?: ServeStaticOptions | boolean, bind?: boolean): import("express-serve-static-core").Handler;
+    /**
+     * Enables 404 Error handling.
+     *
+     * @example
+     * .notFound('Custom 404 error message');
+     * .notFound('Custom 404 error message', '/path/to/file.html');
+     * .notFound(null, '/path/to/file.html');
+     *
+     * @param text method to be displayed on 404 error.
+     * @param view optional view/filename to render (default: 'dist/views/error.html')
+     */
+    notFound(text?: string, view?: string): (req: Request, res: Response, next: NextFunction) => Promise<void | import("express-serve-static-core").Response>;
+    /**
+     * Creates 500 Error handler.
+     * NOTE: if next(err) and err contains status/statusText it will be used instead.
+     *
+     * @example
+     * .serverError();
+     * .serverError('Server Error', '/some/path/to/error.html');
+     * .serverError(null, '/some/path/to/error.html');
+     *
+     * @param text the Server Error status text.
+     * @param view optional view/filename (default: /tensil/dist/views/error.html)
+     */
+    serverError(text?: string, view?: string): ErrorRequestHandler;
     /**
      * Gets a Service by name.
      *
@@ -140,7 +325,7 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      *
      * @param name the name of the Service to get.
      */
-    getService<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P>;
+    getService(name: string): Service;
     /**
      * Gets a Controller by name.
      *
@@ -150,7 +335,7 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      *
      * @param name the name of the Controller to get.
      */
-    getController<Q extends Request = R, P extends Response = S>(name: string): Service<Q, P>;
+    getController(name: string): Service;
     /**
      * Registers a Service with Tensil.
      *
@@ -222,7 +407,7 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      * @param entity the Service or Controller to configure init data for.
      * @param contexts the configuration contexts to merge/init data for.
      */
-    configure(entity: Service | Controller, contexts: IConfig): Service<Request, Response> | Controller<Request, Response>;
+    configure(entity: Service | Controller, contexts: IConfig): Service | Controller;
     /**
      * Iterates configuration contexts normalizing them for the purpose of building routes.
      *
@@ -231,7 +416,7 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      *
      * @param entity the Service or Controller to be normalized.
      */
-    normalizeEntity(entity: Service | Controller): Service<Request, Response> | Controller<Request, Response>;
+    normalizeEntity(entity: Service | Controller): Service | Controller;
     /**
      * Iterates each entity, loads init data then normalizes.
      *
@@ -239,19 +424,6 @@ export declare class Tensil<R extends Request = Request, S extends Response = Re
      * .normalize();
      */
     normalize(): this;
-    /**
-     * Binds static path for resolving static content (images, styles etc)
-     *
-     * @example
-     * app.use('./public', {  });
-     * app.use('./public', true);
-     * app.use('./public', {}, true);
-     *
-     * @param path the path to the directory for static content.
-     * @param options any ServeStaticOptions to be applied.
-     * @param bind when true same as calling app.use(express.static('./public)).
-     */
-    static(path: string, options?: ServeStaticOptions | boolean, bind?: boolean): import("express-serve-static-core").Handler;
     /**
      * Creates an Http Server with specified app and options.
      *

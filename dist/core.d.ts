@@ -17,7 +17,7 @@ export declare class Core {
      *
      * @param entity the Entity to get prototype name for.
      */
-    getType(entity: Service | Controller | Entity<any, any>): any;
+    getType(entity: Service | Controller | Entity): any;
     /**
      * Registers an Entity instance with the Tensil Entities collection.
      *
@@ -26,5 +26,5 @@ export declare class Core {
      *
      * @param entity the Entity instance to register with Tensil.
      */
-    registerInstance(entity: Service | Controller | Entity<any, any>): this;
+    registerInstance(entity: Service | Controller | Entity): this;
 }

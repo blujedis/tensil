@@ -1,12 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const stream_1 = require("stream");
 const http_1 = require("http");
 const https_1 = require("https");
 const entity_1 = require("./entity");
 const lodash_1 = require("lodash");
+const statuses_1 = require("statuses");
 const path_1 = require("path");
+const fs_1 = require("fs");
 const types_1 = require("./types");
+const utils_1 = require("./utils");
+lodash_1.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 const DEFAULT_OPTIONS = {
     templates: {
         get: types_1.HttpMethod.Get + ' ' + '/{{action}}',
@@ -26,6 +31,14 @@ const DEFAULT_OPTIONS = {
             return path.replace(/{{action}}/, '').replace(/^\/\//, '/');
         key = key.replace(/ById$/, '');
         return path.replace(/{{action}}/, '');
+    },
+    themes: {
+        500: { primary: '#661717', accent: '#dd0d2c' },
+        406: { primary: '#6d0227', accent: '#c10043' },
+        404: { primary: '#1E152A', accent: '#444c99' },
+        403: { primary: '#661717', accent: '#dd0d2c' },
+        401: { primary: '#661717', accent: '#dd0d2c' },
+        400: { primary: '#ad3826', accent: '#f95036' },
     }
 };
 class Service extends entity_1.Entity {
@@ -71,6 +84,43 @@ class Tensil extends entity_1.Entity {
             app = undefined;
         }
         this.options = { ...DEFAULT_OPTIONS, ...options };
+    }
+    // PRIVATE & PROTECTED // 
+    /**
+     * Creates transform to be used with ReadStream.
+     *
+     * @example
+     * res.write('<!-- BEGIN WRITE -->') // optional
+     * createReadStream('/path/to.html')
+     *  .pipe(.transformContext({}))
+     *  .on('end', () => res.write('<!-- END WRITE -->'))
+     *  .pipe(res);
+     *
+     * @param context the context object to render to string template.
+     */
+    transformContext(context) {
+        const transformer = new stream_1.Transform();
+        transformer._transform = (data, enc, done) => {
+            transformer.push(lodash_1.template(data.toString())(context));
+            done();
+        };
+    }
+    /**
+     * Clone an error into plain object.
+     *
+     * @param err the error to be cloned.
+     */
+    cloneError(err, pick) {
+        pick = lodash_1.castArray(pick);
+        return Object.getOwnPropertyNames(err)
+            .reduce((a, c) => {
+            if (~pick.indexOf(c))
+                return a;
+            if (!a.name)
+                a.name = err.name;
+            a[c] = err[c];
+            return a;
+        }, {});
     }
     /**
      * Normalizes namespaces for lookups.
@@ -175,7 +225,7 @@ class Tensil extends entity_1.Entity {
                 if (context !== types_1.ContextType.policies)
                     throw new Error(`${context.charAt(0).toUpperCase() +
                         context.slice(1)} "${key || 'unknown'}" cannot contain boolean handler.`);
-                result = (handler === true) ? [] : this.deny || [];
+                result = (handler === true) ? [] : this.deny() || [];
             }
             else {
                 result = [...result, handler];
@@ -183,15 +233,25 @@ class Tensil extends entity_1.Entity {
             return result;
         }, []);
     }
-    get entities() {
-        return this._core.entities;
+    /**
+     * Renders Express view or static html file.
+     *
+     * @param res the Express Request handler.
+     * @param next the Express Next Function handler.
+     */
+    renderFileOrView(res, next) {
+        return async (view, context, status) => {
+            const result = await utils_1.awaiter(this.isView(view));
+            if (result.data)
+                return res.status(status).render(view, context);
+            fs_1.readFile(view, (err, html) => {
+                if (err)
+                    return next(err);
+                res.status(status).send(lodash_1.template(html.toString())(context));
+            });
+        };
     }
-    get routers() {
-        return this._core.routers;
-    }
-    get routeMap() {
-        return this._routeMap;
-    }
+    // EVENTS //
     /**
      * Binds event listener to event.
      *
@@ -244,6 +304,214 @@ class Tensil extends entity_1.Entity {
     removeEvents(event) {
         delete this._events[event];
     }
+    // GETTERS //
+    get entities() {
+        return this._core.entities;
+    }
+    get routers() {
+        return this._core.routers;
+    }
+    get routeMap() {
+        return this._routeMap;
+    }
+    get isProd() {
+        return this.isEnv('production');
+    }
+    get isDev() {
+        return this.isEnv('') || !this.isEnv('production');
+    }
+    // HELPERS //
+    /**
+     * Checks if process.env.NODE_ENV contains specified environment.
+     *
+     * @param env the environment to inspect process.env.NODE_ENV for.
+     */
+    isEnv(env) {
+        return process.env.NODE_ENV === env;
+    }
+    /**
+     * Checks if Request is of type XHR.
+     *
+     * @param req Express Request
+     */
+    isXHR(req) {
+        return req.xhr || req.get('X-Requested-With') || req.is('*/json');
+    }
+    isView(view, sync) {
+        const filename = path_1.resolve(this.app.get('view'), view);
+        if (sync) {
+            const stats = fs_1.statSync(filename);
+            return stats.isFile();
+        }
+        return new Promise((_resolve, _reject) => {
+            fs_1.stat(filename, (err, stats) => {
+                if (err)
+                    return _reject(err);
+                _resolve(stats.isFile());
+            });
+        });
+    }
+    demandXhr(status, text, view) {
+        if (lodash_1.isString(status)) {
+            view = text;
+            text = status;
+            status = undefined;
+        }
+        status = status || 406;
+        text = text || statuses_1.STATUS_CODES[status];
+        view = view || path_1.resolve(__dirname, 'views/error.html');
+        const theme = this.options.themes[status];
+        const err = new types_1.HttpError(text, status, text, theme);
+        const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+        return (req, res, next) => {
+            if (!this.isXHR(req))
+                return this.renderFileOrView(res, next)(view, payload, status);
+            next();
+        };
+    }
+    rejectXhr(status, text) {
+        if (lodash_1.isString(status)) {
+            text = status;
+            status = undefined;
+        }
+        status = status || 406;
+        text = text || statuses_1.STATUS_CODES[status];
+        const theme = this.options.themes[status];
+        const err = new types_1.HttpError(text, status, text, theme);
+        const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+        return (req, res, next) => {
+            if (this.isXHR(req))
+                return res.status(status).json(payload);
+            next();
+        };
+    }
+    deny(status, text, view) {
+        if (lodash_1.isString(status)) {
+            text = status;
+            status = undefined;
+        }
+        status = status || 403;
+        text = text || statuses_1.STATUS_CODES[status];
+        view = view || path_1.resolve(__dirname, 'views/error.html');
+        const theme = this.options.themes[status];
+        const err = new types_1.HttpError(text, status, text, theme);
+        const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+        return (req, res, next) => {
+            if (this.isXHR(req))
+                return res.status(status).json(payload);
+            return this.renderFileOrView(res, next)(view, payload, status);
+        };
+    }
+    /**
+     * Returns default handler for rendering a view.
+     *
+     * @example
+     * .view('user/create');
+     * .view('user/create', { });
+     *
+     * @param view the path of the view.
+     * @param context the context to pass to the view.
+     */
+    view(view, context) {
+        return (req, res) => {
+            return res.render(view, context);
+        };
+    }
+    /**
+     * Returns default redirect handler.
+     *
+     * @example
+     * .redirect('/to/some/new/path');
+     *
+     * @param to the path to redirect to.
+     */
+    redirect(to) {
+        return (req, res) => {
+            return res.render(to);
+        };
+    }
+    /**
+     * Binds static path for resolving static content (images, styles etc)
+     *
+     * @example
+     * app.use('./public', {  });
+     * app.use('./public', true);
+     * app.use('./public', {}, true);
+     *
+     * @param path the path to the directory for static content.
+     * @param options any ServeStaticOptions to be applied.
+     * @param bind when true same as calling app.use(express.static('./public)).
+     */
+    static(path, options, bind) {
+        if (lodash_1.isBoolean(options)) {
+            bind = options;
+            options = undefined;
+        }
+        const staticMiddleware = express_1.static(path, options);
+        if (bind)
+            this.app.use(staticMiddleware);
+        return staticMiddleware;
+    }
+    /**
+     * Enables 404 Error handling.
+     *
+     * @example
+     * .notFound('Custom 404 error message');
+     * .notFound('Custom 404 error message', '/path/to/file.html');
+     * .notFound(null, '/path/to/file.html');
+     *
+     * @param text method to be displayed on 404 error.
+     * @param view optional view/filename to render (default: 'dist/views/error.html')
+     */
+    notFound(text, view) {
+        text = text || statuses_1.STATUS_CODES[404];
+        view = view || path_1.resolve(__dirname, 'views/error.html');
+        const theme = this.options.themes[404];
+        const handler = async (req, res, next) => {
+            const err = new types_1.HttpError(text, 404, text, theme);
+            const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+            if (this.isXHR(req))
+                return res.status(404).json(payload);
+            return this.renderFileOrView(res, next)(view, payload, 404);
+        };
+        return handler;
+    }
+    /**
+     * Creates 500 Error handler.
+     * NOTE: if next(err) and err contains status/statusText it will be used instead.
+     *
+     * @example
+     * .serverError();
+     * .serverError('Server Error', '/some/path/to/error.html');
+     * .serverError(null, '/some/path/to/error.html');
+     *
+     * @param text the Server Error status text.
+     * @param view optional view/filename (default: /tensil/dist/views/error.html)
+     */
+    serverError(text, view) {
+        text = text || statuses_1.STATUS_CODES[500];
+        view = view || path_1.resolve(__dirname, 'views/error.html');
+        const handler = async (err, req, res, next) => {
+            const status = err.status || 500;
+            const statusText = err.status ? err.statusText || statuses_1.STATUS_CODES[status] : text;
+            const theme = this.options.themes[status];
+            err = new types_1.HttpError(err.message, status, statusText, theme);
+            const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
+            if (this.isXHR(req))
+                return res.status(status).json(payload);
+            return this.renderFileOrView(res, next)(view, payload, status);
+            // const result = await awaiter(this.isView(filename));
+            // if (result.data)
+            //   return res.status(status).render(filename, payload);
+            // readFile(filename, (_err, html) => {
+            //   if (err)
+            //     return next(_err);
+            //   res.status(status).send(template(html.toString())(payload));
+            // });
+        };
+        return handler;
+    }
+    // SERVICE & CONTROLLER //
     /**
      * Gets a Service by name.
      *
@@ -302,6 +570,7 @@ class Tensil extends entity_1.Entity {
         new Klass(base, mount);
         return this;
     }
+    // CONFIGURATION //
     /**
      * Parses a route returning config object.
      *
@@ -479,34 +748,14 @@ class Tensil extends entity_1.Entity {
         this._normalized = true;
         return this;
     }
-    /**
-     * Binds static path for resolving static content (images, styles etc)
-     *
-     * @example
-     * app.use('./public', {  });
-     * app.use('./public', true);
-     * app.use('./public', {}, true);
-     *
-     * @param path the path to the directory for static content.
-     * @param options any ServeStaticOptions to be applied.
-     * @param bind when true same as calling app.use(express.static('./public)).
-     */
-    static(path, options, bind) {
-        if (lodash_1.isBoolean(options)) {
-            bind = options;
-            options = undefined;
-        }
-        const staticMiddleware = express_1.static(path, options);
-        if (bind)
-            this.app.use(staticMiddleware);
-        return staticMiddleware;
-    }
     createServer(app, options, isSSL) {
-        options = options || {};
+        const args = [app];
+        if (options)
+            args.unshift(options);
         let server;
         if (isSSL)
-            server = https_1.createServer(options, app);
-        server = http_1.createServer(options, app);
+            server = https_1.createServer.apply(null, args);
+        server = http_1.createServer.apply(null, args);
         this.server = server;
         return server;
     }

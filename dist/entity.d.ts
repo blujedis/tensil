@@ -27,7 +27,7 @@ export declare class Entity {
      * @param force when true allows overwrite of existing key.
      */
     protected validateKey(key: string, context: ContextTypes, force?: boolean): string;
-    readonly app: Express;
+    app: Express;
     readonly router: Router;
     /**
      * Merges policies with the provided object.

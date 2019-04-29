@@ -1,4 +1,4 @@
-import Tensil from '.';
+import { Tensil } from '.';
 import { filter, action } from './decorators';
 import { IFilters, IRoutes, IPolicies, IActions, HttpMethod } from './types';
 

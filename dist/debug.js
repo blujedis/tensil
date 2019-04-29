@@ -9,8 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require(".");
 const decorators_1 = require("./decorators");
 const types_1 = require("./types");
-const tensil = new _1.default();
-class HelperService extends _1.default.Service {
+const tensil = new _1.Tensil();
+class HelperService extends _1.Tensil.Service {
     log(req, res, next) {
         //
     }
@@ -19,7 +19,7 @@ __decorate([
     decorators_1.filter
 ], HelperService.prototype, "log", null);
 const helpers = new HelperService();
-class OtherController extends _1.default.Controller {
+class OtherController extends _1.Tensil.Controller {
     constructor() {
         super(...arguments);
         this.policies = {
@@ -28,7 +28,7 @@ class OtherController extends _1.default.Controller {
     }
 }
 tensil.registerController(OtherController, 'other');
-class UserService extends _1.default.Service {
+class UserService extends _1.Tensil.Service {
     constructor() {
         super(...arguments);
         this.filters = {
@@ -55,7 +55,7 @@ __decorate([
     decorators_1.filter
 ], UserService.prototype, "login", null);
 const user = new UserService();
-class UserController extends _1.default.Controller {
+class UserController extends _1.Tensil.Controller {
     constructor() {
         super(...arguments);
         this.policies = {

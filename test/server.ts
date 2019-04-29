@@ -1,5 +1,5 @@
 
-import Tensil, { filter, action, IPolicies } from '../src';
+import { Tensil, Service, Controller, filter, action, IPolicies } from '../src';
 import * as bodyParser from 'body-parser';
 import { Request, Response } from 'express';
 
@@ -25,8 +25,9 @@ const users = {
 // Init Tensil Class //
 
 const tensil = new Tensil();
+const app = tensil.app;
 
-class UserController extends Tensil.Controller {
+class UserController extends Controller {
 
   policies: IPolicies = {
     find: 'log'
@@ -49,10 +50,10 @@ class UserController extends Tensil.Controller {
 
 }
 
-tensil.app.use(bodyParser.json());
-tensil.app.use(bodyParser.urlencoded({ extended: true }));
-tensil.app.use(bodyParser.text());
-tensil.app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: 'application/json' }));
 
 tensil
   .registerController(UserController, 'user', '/id')

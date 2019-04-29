@@ -76,3 +76,27 @@ export function action(methods?: string | HttpMethod | HttpMethod[], path: strin
   };
 
 }
+
+export function route(methods: HttpMethod | HttpMethod[], path: string) {
+
+  return (target: any, key: string, descriptor: PropertyDescriptor) => {
+
+    if (methods)
+      path = (castArray(methods as string).join('|') + ' ' + path).trim();
+
+    const isFunc = descriptor.value && typeof descriptor.value === 'function';
+    const baseType = Object.getPrototypeOf(target).constructor.name;
+    const isCtrl = baseType === EntityType.Controller;
+
+    if (!isFunc || !isCtrl)
+      throw new Error(`Cannot set "action" decorator on ${key}`);
+
+    target.constructor.__INIT_DATA__ = target.constructor.__INIT_DATA__ || {};
+    target.constructor.__INIT_DATA__.actions = target.constructor.__INIT_DATA__.routes || {};
+    target.constructor.__INIT_DATA__.actions[key] = path;
+
+    return descriptor;
+
+  };
+
+}

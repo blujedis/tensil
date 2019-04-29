@@ -50,6 +50,9 @@ class Entity {
     get app() {
         return this._core.app;
     }
+    set app(app) {
+        this._core.app = app;
+    }
     get router() {
         return this._core.routers[this.mountPath];
     }

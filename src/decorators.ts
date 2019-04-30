@@ -1,16 +1,14 @@
 import { castArray } from 'lodash';
-import { HttpMethod, EntityType } from './types';
+import { HttpMethod, EntityType, Filter } from './types';
 
 /**
  * Adds method as filter in Service or Controller filters collection.
  * 
  * @example
- * class UserService {
  *  @filter
  *  isAuthorized(req, res, next) {
  *    // check if authorized.
  *  }
- * }
  * 
  * @param target the target class instance.
  * @param key the method name the decorator is bound to.
@@ -31,34 +29,53 @@ export function filter(target: any, key: string, descriptor: PropertyDescriptor)
 
 }
 
-/**
- * Adds method as filter in Service or Controller filters collection.
- * Accepts an Http Method or Methods or a template name as the first argument.
- * A path argument can be passed to statically define the action's path.
- * 
- * @example
- * class UserController {
- *  @action('create')
- *  create(req, res, next) {
- *    // check if authorized.
- *  }
- * }
- * 
- * @param target the target class instance.
- * @param key the method name the decorator is bound to.
- * @param descriptor the property descriptor for the bound method.
- */
 export type Descriptor = (target: any, key: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
 
+/**
+ * Creates action route with Http Method Get
+ * 
+ * @example
+ * .action();
+ * find(req, res, next) {
+ *    // handle request.
+ * }
+ */
 export function action(): Descriptor;
-export function action(template: string): Descriptor;
+
+/**
+ * Creates action route using specified template.
+ * 
+ * @example
+ * .action('my-template-name');
+ * find(req, res, next) {
+ *    // handle request.
+ * }
+ * 
+ * @param template the template name from options.templates
+ */
+export function action(template: string | HttpMethod): Descriptor;
+
+/**
+ * Creates an action route for each specified Http method.
+ * 
+ * @example
+ * .action(HttpMethod.Get, '/some/path');
+ * .action([HttpMethod.Get, HttpMethod.Post], '/some/path');
+ * find(req, res, next) {
+ *    // handle request.
+ * }
+ * 
+ * @param methods the Http Methods to apply to each route.
+ * @param path a custom path to use for the route.
+ */
 export function action(methods: HttpMethod | HttpMethod[], path: string): Descriptor;
 export function action(methods?: string | HttpMethod | HttpMethod[], path: string = '') {
 
+  methods = methods || [];
+
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
 
-    if (methods)
-      path = (castArray(methods as string).join('|') + ' ' + path).trim();
+    path = (castArray(methods as string).join('|') + ' ' + path).trim();
 
     const isFunc = descriptor.value && typeof descriptor.value === 'function';
     const baseType = Object.getPrototypeOf(target).constructor.name;
@@ -77,23 +94,35 @@ export function action(methods?: string | HttpMethod | HttpMethod[], path: strin
 
 }
 
-export function route(methods: HttpMethod | HttpMethod[], path: string) {
+/**
+ * Creates a route for each specified Http method.
+ * 
+ * @example
+ * .action(HttpMethod.Get, '/some/path');
+ * .action([HttpMethod.Get, HttpMethod.Post], '/some/path');
+ * 
+ * @param methods the Http Methods to apply to each route.
+ * @param path a custom path to use for the route.
+ */
+export function route(methods: HttpMethod | HttpMethod[], path: string, filters?: Filter | Filter[]) {
+
+  methods = methods || [];
+  filters = castArray(filters || []);
 
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
 
-    if (methods)
-      path = (castArray(methods as string).join('|') + ' ' + path).trim();
+    path = (castArray(methods as string).join('|') + ' ' + path).trim();
 
     const isFunc = descriptor.value && typeof descriptor.value === 'function';
     const baseType = Object.getPrototypeOf(target).constructor.name;
     const isCtrl = baseType === EntityType.Controller;
 
-    if (!isFunc || !isCtrl)
-      throw new Error(`Cannot set "action" decorator on ${key}`);
+    if (!isFunc)
+      throw new Error(`Cannot set "router" decorator on ${key}`);
 
     target.constructor.__INIT_DATA__ = target.constructor.__INIT_DATA__ || {};
-    target.constructor.__INIT_DATA__.actions = target.constructor.__INIT_DATA__.routes || {};
-    target.constructor.__INIT_DATA__.actions[key] = path;
+    target.constructor.__INIT_DATA__.routes = target.constructor.__INIT_DATA__.routes || {};
+    target.constructor.__INIT_DATA__.routes[key] = [...filters as any[], path];
 
     return descriptor;
 

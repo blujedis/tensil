@@ -15,12 +15,10 @@ $ npm install tensil -s
 ## Usage
 
 ```ts
-import Tensil from 'tensil';
+import tensil, { Controller } from 'tensil';
 import * as bodyParser from 'body-parser';
 
-const tensil = new Tensil();
-
-class MyController extends Tensil.Controller {
+class MyController extends Controller {
   // See below for configuring Controllers & Services
   // Excluded here for clarity sake of how to wire up Tensil.
 }
@@ -36,16 +34,16 @@ tensil
 
 ```
 
-## With App
+## With Custom App
 
 Using Tensil with external express() app.
 
 ```ts
-import Tensil from 'tensil';
+import tensil from 'tensil';
 import * as express from 'express';
 
 const app = express();
-const tensil = new Tensil(app);
+tensil.app = app;
 ```
 
 ## With Http Server
@@ -53,13 +51,19 @@ const tensil = new Tensil(app);
 Using Tensil with http.createServer
 
 ```ts
-import Tensil from 'tensil';
+import tensil from 'tensil';
 import * as express from 'express';
-import { createServer } from 'http';
 
-const app = express();
-const tensil = new Tensil(app);
-tensil.bindServer(createServer(app)); // or .bindServer(createServer(tensil.app));
+tensil.withServer();
+
+// OR
+tensil.withServer(express());
+
+// OR
+tensil.withServer({ options });
+
+// OR with SSL
+tensil.withServer({ options }, true); // 
 ```
 
 ## Server
@@ -67,9 +71,10 @@ tensil.bindServer(createServer(app)); // or .bindServer(createServer(tensil.app)
 Configuring a Tensil Service.
 
 ```ts
-import Tensil, { filter } from 'tensil';
+import tensil, { filter, Service } from 'tensil';
 import { format } from 'util';
-class MyService extends Tensil.Service {
+
+class MyService extends Service {
 
   filters: {
     canCreate: ['log', 'isAuthorized']
@@ -105,7 +110,7 @@ tensil.registerSerivce(MyService);
 Configuring a Tensil Controller.
 
 ```ts
-import Tensil, { action, HttpMethod } from 'tensil';
+import tensil, { action, HttpMethod } from 'tensil';
 class MyController extends Tensil.Controller {
 
   // When a custom route or generated route
@@ -122,13 +127,13 @@ class MyController extends Tensil.Controller {
   // or use HttpMethod.Get 
   // or template defined in options like "find"
   // or define with path @action('get', '/some/path/:id?')
-  @action('get') 
+  @action() 
   find(req, res) {
     // find a record.
     res.json({});
   }
 
-  @action('post') 
+  @action(HttpMethod.Post) 
   create(req, res) {
     // create a record
     res.status(201).json({})

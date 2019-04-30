@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { Entity } from './entity';
 import { Tensil, Service, Controller } from './tensil';
 
@@ -25,10 +25,21 @@ export type ContextTypes = keyof typeof ContextType;
 export type Constructor<T = {}> = new (...args: any[]) => T;
 export type Noop = (...args: any[]) => void;
 
-export type Filter = string | Function | any[];
-export type Policy = string | boolean | Function | any[];
-export type Action = string | Function;
 export type AwaiterResponse<T = any, K extends string = 'data'> = Promise<{ err?: Error } & Record<K, T>>;
+export type RequestHandler<R, S> = (req: R, res: S, next?: NextFunction) => any;
+export type RequestErrorHandler<R, S> = (err: Error, req: R, res: S, next: NextFunction) => any;
+export type RequestParamHandler<R, S> = (req: R, res: S, next: NextFunction, param: any) => any;
+export type RequestHandlers<R, S> = RequestHandler<R, S> | RequestErrorHandler<R, S> | RequestParamHandler<R, S>;
+
+export type Filter<R extends Request = Request, S extends Response = Response> =
+  string | RequestHandlers<R, S>;
+export type Policy<R extends Request = Request, S extends Response = Response> =
+  string | boolean | RequestHandlers<R, S>;
+export type Action<R extends Request = Request, S extends Response = Response> =
+  string | RequestHandlers<R, S>;
+
+export type ContextHandlers<R extends Request = Request, S extends Response = Response> =
+  Filter<R, S> | Policy<R, S> | Action<R, S>;
 
 export class HttpError extends Error {
 
@@ -72,12 +83,26 @@ export interface IRoutes {
   [route: string]: Filter | Filter[] | Action | Action[];
 }
 
-export interface IRouteMap {
-  [mount: string]: {
-    [method: string]: {
-      [path: string]: Function[]
-    }
-  }
+export interface IRouteConfig<R, S> {
+  method: string;
+  handlers: (RequestHandlers<R, S> & { __namespace__: string })[];
+  isView?: boolean;
+  isRedirect?: boolean;
+  isParam?: boolean;
+  entity: Service | Controller | Tensil | Entity;
+  namespaces: string[]
+}
+
+export interface IRouteConfigs<R, S> {
+  [route: string]: IRouteConfig<R, S>;
+}
+
+export interface IMethods<R, S> {
+  [method: string]: IRouteConfigs<R, S>;
+}
+
+export interface IRouteMap<R extends Request = Request, S extends Response = Response> {
+  [mount: string]: IMethods<R, S>;
 }
 
 export interface IActions {
@@ -104,8 +129,12 @@ export interface ITheme {
   accent: string;
 }
 
+export interface ITemplates {
+  [action: string]: string;
+}
+
 export interface IOptions {
-  templates?: IActions;
+  templates?: ITemplates;
   formatter?: (key: string, path: string, type: 'rest' | 'crud') => string;
   rest?: boolean; // enable rest routes.
   crud?: boolean; // enable crud routes.

@@ -8,7 +8,7 @@
       "name": "Debug",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/src/debug.ts",
+      "program": "${workspaceFolder}/src/debug/index.ts",
       "stopOnEntry": false,
       "args": [],
       "cwd": "${workspaceFolder}",

@@ -4,14 +4,14 @@ import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
-import { IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig } from './types';
-export declare class Service extends Entity {
+import { IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig, ContextHandlers } from './types';
+declare class Service extends Entity {
     filters: IFilters;
     routes: IRoutes;
     constructor();
     constructor(mount: string);
 }
-export declare class Controller extends Entity {
+declare class Controller extends Entity {
     policies: IPolicies;
     filters: IFilters;
     routes: IRoutes;
@@ -50,15 +50,14 @@ export declare class Controller extends Entity {
      */
     policy(key?: string, policies?: Policy | Policy[], force?: boolean): any;
 }
-export declare class Tensil extends Entity {
-    static Service: typeof Service;
-    static Controller: typeof Controller;
+declare class Tensil extends Entity {
     private _initialized;
     private _normalized;
-    private _events;
     private _routeMap;
-    options: IOptions;
+    protected _options: IOptions;
     server: HttpServer | HttpsServer;
+    port: number;
+    host: string;
     constructor();
     constructor(options: IOptions);
     constructor(app: Express, options?: IOptions);
@@ -107,56 +106,11 @@ export declare class Tensil extends Entity {
      * @param context the context to look up.
      * @param key the property key within the context.
      */
-    protected normalizeHandlers(handlers: any, context: ContextTypes, key?: string): Function[];
-    /**
-     * Renders Express view or static html file.
-     *
-     * @param res the Express Request handler.
-     * @param next the Express Next Function handler.
-     */
-    protected renderFileOrView(res: Response, next: NextFunction): (view: string, context: any, status: number) => Promise<void>;
-    /**
-     * Binds event listener to event.
-     *
-     * @example
-     * .on('start', () => { console.log('server started'); });
-     *
-     * @param event the event to listen on.
-     * @param handler the handler to be called on emit.
-     */
-    on(event: string, handler: (...args: any[]) => void): this;
-    /**
-     * Emits events by name.
-     *
-     * @example
-     * .emit('register', SomeEntity);
-     *
-     * @param event the event to be emitted.
-     * @param args the arguments to be passed to the handler.
-     */
-    emit(event: string, ...args: any[]): void;
-    /**
-     * Disables an event removing it from the collection.
-     *
-     * @example
-     * .off('register', (entity: Entity) => {});
-     *
-     * @param event the event to be disabled.
-     * @param handler the handler within event collection to be removed.
-     */
-    off(event: string, handler: (...args: any[]) => void): this;
-    /**
-     * Removes all handlers for the specified event.
-     *
-     * @example
-     * .removeEvents('register');
-     *
-     * @param event the event name to remove handlers for.
-     */
-    removeEvents(event: string): void;
+    protected normalizeHandlers<R extends Request = Request, S extends Response = Response>(handlers: any, context: ContextTypes, key?: string): ContextHandlers<R, S>[];
+    options: IOptions;
     readonly entities: IEntities;
     readonly routers: IRouters;
-    readonly routeMap: IRouteMap;
+    readonly routeMap: IRouteMap<Request, Response>;
     readonly isProd: boolean;
     readonly isDev: boolean;
     /**
@@ -317,11 +271,25 @@ export declare class Tensil extends Entity {
      */
     serverError(text?: string, view?: string): ErrorRequestHandler;
     /**
+     * Renders Express view or static html file.
+     *
+     * @param req the Express Request handler.
+     * @param res the Express Response handler.
+     * @param next the Express Next Function handler.
+     */
+    renderFileOrView(req: Request, res: Response, next: NextFunction): (view: string, context: any, status: number) => Promise<void>;
+    /**
+     * Gets the base class type for a given class.
+     *
+     * @param Type the type to inspect for base type.
+     */
+    getType(Type: Entity): any;
+    /**
      * Gets a Service by name.
      *
      * @example
      * .getService('LogService');
-     * .getService<Request, Response>('LogService');
+     * .getService('LogService');
      *
      * @param name the name of the Service to get.
      */
@@ -331,7 +299,7 @@ export declare class Tensil extends Entity {
      *
      * @example
      * .getController('UserController');
-     * .getController<Request, Response>('LogService');
+     * .getController('LogService');
      *
      * @param name the name of the Controller to get.
      */
@@ -369,7 +337,7 @@ export declare class Tensil extends Entity {
      * @param route the route to parse for methods and path.
      * @param base a base path to be prefixed to route.
      */
-    parseRoute(route: string, base?: string): {
+    parseRoute<R extends Request = Request, S extends Response = Response>(route: string, base?: string): {
         methods: string[];
         path: string;
         fullPath: string;
@@ -384,9 +352,9 @@ export declare class Tensil extends Entity {
      * @param mount the router mount point to be registered
      * @param route the route to be parsed and registerd.
      * @param handlers the handlers to be bound to route.
-     * @param controller optional Controller name when generating routes.
+     * @param entity entity type name.
      */
-    registerRoute(mount: string, route: string, handlers: Function[], controller?: string): this;
+    protected registerRoute<R extends Request = Request, S extends Response = Response>(mount: string, route: string, handlers: ContextHandlers<R, S>[], entity?: string): this;
     /**
      * Registers a route with the routeMap.
      *
@@ -398,9 +366,9 @@ export declare class Tensil extends Entity {
      * @param base the base path to prefix to the route.
      * @param route the route to be parsed and registerd.
      * @param handlers the handlers to be bound to route.
-     * @param controller optional Controller name when generating routes.
+     * @param entity entity type name.
      */
-    registerRoute(mount: string, base: string, route: string, handlers: Function[], controller?: string): this;
+    protected registerRoute<R extends Request = Request, S extends Response = Response>(mount: string, base: string, route: string, handlers: ContextHandlers<R, S>[], entity?: string): this;
     /**
      * Configures constructed class merging in initialized data from decorators.
      *
@@ -425,39 +393,53 @@ export declare class Tensil extends Entity {
      */
     normalize(): this;
     /**
-     * Creates an Http Server with specified app and options.
+     * Creates an Http Server with specified and options.
      *
      * @example
-     * .createServer(app);
-     * .createServer(tensil.app, {});
+     * .withServer();
+     */
+    withServer(): HttpServer;
+    /**
+     * Creates an Http Server with specified and options.
      *
-     * @param app an Express app to bind to the server.
+     * @example
+     * .withServer(tensil.app, {});
+     *
      * @param options the Http Server options to apply on create.
      */
-    createServer(app: Express, options?: HttpServerOptions): HttpServer;
+    withServer(options?: HttpServerOptions): HttpServer;
+    /**
+     * Creates an Http Server with specified options.
+     *
+     * @example
+     * .withServer({}, true);
+     *
+     * @param options the Https server options.
+     * @param isSSL indicates an Https server is being created.
+     */
+    withServer(options: HttpsServerOptions, isSSL: boolean): HttpsServer;
     /**
      * Creates an Http Server with specified app and options.
      *
      * @example
-     * .createServer(tensil.app, {}, true);
+     * .withServer(app);
+     * .withServer(tensil.app, {});
+     *
+     * @param app an Express app to bind to the server.
+     * @param options the Http Server options to apply on create.
+     */
+    withServer(app: Express, options?: HttpServerOptions): HttpServer;
+    /**
+     * Creates an Http Server with specified app and options.
+     *
+     * @example
+     * .withServer(tensil.app, {}, true);
      *
      * @param app the Express app to bind to the server.
      * @param options the Https server options.
      * @param isSSL indicates an Https server is being created.
      */
-    createServer(app: Express, options: HttpsServerOptions, isSSL: boolean): HttpsServer;
-    /**
-     * Binds the Http Server instance to Tensil.
-     *
-     * @example
-     * import { createServer } from 'http';
-     * import * as express from 'express';
-     * const server = createServer(express());
-     * .bindServer(server);
-     *
-     * @param server the server to use for listening to requests.
-     */
-    bindServer(server: HttpServer | HttpsServer): this;
+    withServer(app: Express, options: HttpsServerOptions, isSSL: boolean): HttpsServer;
     /**
      * Mounts the routes from the generated routeMap to their respective routers.
      *
@@ -483,12 +465,21 @@ export declare class Tensil extends Entity {
      * Starts the server after initializing, normalizing and mounting routes.
      *
      * @example
+     * .start(() => { console.log('listening...')});
+     *
+     * @param fn a callback on server listening.
+     */
+    start(fn: () => void): this;
+    /**
+     * Starts the server after initializing, normalizing and mounting routes.
+     *
+     * @example
      * .start(8080, () => { console.log('listening...')});
      *
      * @param port the port the server should listen on.
      * @param fn a callback on server listening.
      */
-    start(port: number, fn: () => void): this;
+    start(port: number, fn?: () => void): this;
     /**
      * Starts the server after initializing, normalizing and mounting routes.
      *
@@ -501,3 +492,6 @@ export declare class Tensil extends Entity {
      */
     start(port: number, host: string, fn?: Noop): this;
 }
+export { Tensil, Service, Controller };
+declare const _default: Tensil;
+export default _default;

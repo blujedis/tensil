@@ -1,8 +1,9 @@
+/// <reference types="node" />
 import { Router, Express } from 'express';
 import { Core } from './core';
-import { Tensil } from './tensil';
-import { Filter, Action, IFilters, IPolicies, IRoutes, IActions, ContextTypes } from './types';
-export declare class Entity {
+import { EventEmitter } from 'events';
+import { Filter, Action, IFilters, IPolicies, IRoutes, IActions, ContextTypes, ITemplates } from './types';
+export declare class Entity extends EventEmitter {
     protected _core: Core;
     protected policies: IPolicies;
     protected filters: IFilters;
@@ -12,9 +13,9 @@ export declare class Entity {
     baseType: string;
     mountPath: string;
     basePath: string;
+    templates: ITemplates;
     constructor();
     constructor(base: string, mount?: string, app?: Express);
-    protected readonly tensil: Tensil;
     /**
      * Ensures a key does not exist in a context collection.
      *

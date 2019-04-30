@@ -71,12 +71,10 @@
 				<h2 id="install">Install</h2>
 				<pre><code class="language-sh">$ npm install tensil -s</code></pre>
 				<h2 id="usage">Usage</h2>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil, { Controller } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> bodyParser <span class="hljs-keyword">from</span> <span class="hljs-string">'body-parser'</span>;
 
-<span class="hljs-keyword">const</span> tensil = <span class="hljs-keyword">new</span> Tensil();
-
-<span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> Tensil.Controller {
+<span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> Controller {
   <span class="hljs-comment">// See below for configuring Controllers &amp; Services</span>
   <span class="hljs-comment">// Excluded here for clarity sake of how to wire up Tensil.</span>
 }
@@ -90,27 +88,34 @@ tensil
   .registerController(MyController)
   .start();
 </code></pre>
-				<h2 id="with-app">With App</h2>
+				<h2 id="with-custom-app">With Custom App</h2>
 				<p>Using Tensil with external express() app.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
 
 <span class="hljs-keyword">const</span> app = express();
-<span class="hljs-keyword">const</span> tensil = <span class="hljs-keyword">new</span> Tensil(app);</code></pre>
+tensil.app = app;</code></pre>
 				<h2 id="with-http-server">With Http Server</h2>
 				<p>Using Tensil with http.createServer</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
-<span class="hljs-keyword">import</span> { createServer } <span class="hljs-keyword">from</span> <span class="hljs-string">'http'</span>;
 
-<span class="hljs-keyword">const</span> app = express();
-<span class="hljs-keyword">const</span> tensil = <span class="hljs-keyword">new</span> Tensil(app);
-tensil.bindServer(createServer(app)); <span class="hljs-comment">// or .bindServer(createServer(tensil.app));</span></code></pre>
+tensil.withServer();
+
+<span class="hljs-comment">// OR</span>
+tensil.withServer(express());
+
+<span class="hljs-comment">// OR</span>
+tensil.withServer({ options });
+
+<span class="hljs-comment">// OR with SSL</span>
+tensil.withServer({ options }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// </span></code></pre>
 				<h2 id="server">Server</h2>
 				<p>Configuring a Tensil Service.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil, { filter } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil, { filter, Service } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> { format } <span class="hljs-keyword">from</span> <span class="hljs-string">'util'</span>;
-<span class="hljs-keyword">class</span> MyService <span class="hljs-keyword">extends</span> Tensil.Service {
+
+<span class="hljs-keyword">class</span> MyService <span class="hljs-keyword">extends</span> Service {
 
   filters: {
     canCreate: [<span class="hljs-string">'log'</span>, <span class="hljs-string">'isAuthorized'</span>]
@@ -141,7 +146,7 @@ tensil.bindServer(createServer(app)); <span class="hljs-comment">// or .bindServ
 tensil.registerSerivce(MyService);</code></pre>
 				<h2 id="controller">Controller</h2>
 				<p>Configuring a Tensil Controller.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> Tensil, { action, HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil, { action, HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> Tensil.Controller {
 
   <span class="hljs-comment">// When a custom route or generated route</span>
@@ -158,13 +163,13 @@ tensil.registerSerivce(MyService);</code></pre>
   <span class="hljs-comment">// or use HttpMethod.Get </span>
   <span class="hljs-comment">// or template defined in options like "find"</span>
   <span class="hljs-comment">// or define with path @action('get', '/some/path/:id?')</span>
-  <span class="hljs-meta">@action</span>(<span class="hljs-string">'get'</span>) 
+  <span class="hljs-meta">@action</span>() 
   find(req, res) {
     <span class="hljs-comment">// find a record.</span>
     res.json({});
   }
 
-  <span class="hljs-meta">@action</span>(<span class="hljs-string">'post'</span>) 
+  <span class="hljs-meta">@action</span>(HttpMethod.Post) 
   create(req, res) {
     <span class="hljs-comment">// create a record</span>
     res.status(<span class="hljs-number">201</span>).json({})
@@ -217,6 +222,21 @@ create(req, res) {
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_core_.html">"core"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_debug_controllers_.html">"debug/controllers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_debug_data_.html">"debug/data"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_debug_entities_.html">"debug/entities"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_debug_index_.html">"debug/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_debug_services_.html">"debug/services"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_decorators_.html">"decorators"</a>

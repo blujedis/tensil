@@ -81,6 +81,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_.html#action" class="tsd-kind-icon">action</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_.html#filter" class="tsd-kind-icon">filter</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_decorators_.html#route" class="tsd-kind-icon">route</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,35 +95,9 @@
 					<div class="tsd-signature tsd-kind-icon">Descriptor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/12ab8fb/src/decorators.ts#L51">decorators.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L32">decorators.ts:32</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Adds method as filter in Service or Controller filters collection.
-								Accepts an Http Method or Methods or a template name as the first argument.
-							A path argument can be passed to statically define the action&#39;s path.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>example</dt>
-							<dd><p>class UserController {
-									@action(&#39;create&#39;)
-									create(req, res, next) {
-									// check if authorized.
-									}
-								}</p>
-							</dd>
-							<dt>param</dt>
-							<dd><p>the target class instance.</p>
-							</dd>
-							<dt>param</dt>
-							<dd><p>the method name the decorator is bound to.</p>
-							</dd>
-							<dt>param</dt>
-							<dd><p>the property descriptor for the bound method.</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -159,28 +134,58 @@
 					<h3>action</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
 						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
-						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>template<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
-						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>methods<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol"> | </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
+						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>template<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
+						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>methods<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
+						<li class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">(</span>methods<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/12ab8fb/src/decorators.ts#L53">decorators.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L43">decorators.ts:43</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates action route with Http Method Get</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>.action();
+											find(req, res, next) {
+											// handle request.
+										}</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/12ab8fb/src/decorators.ts#L54">decorators.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L56">decorators.ts:56</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates action route using specified template.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>.action(&#39;my-template-name&#39;);
+											find(req, res, next) {
+											// handle request.
+										}</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>template: <span class="tsd-signature-type">string</span></h5>
+									<h5>template: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the template name from options.templates</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
@@ -188,16 +193,68 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/12ab8fb/src/decorators.ts#L55">decorators.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L70">decorators.ts:70</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an action route using the specified method and path.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>.action(HttpMethod.Get, &#39;/some/path&#39;);
+											find(req, res, next) {
+											// handle request.
+										}</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>methods: <a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol"> | </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>methods: <a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a></h5>
 								</li>
 								<li>
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a custom path to use for the route.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L84">decorators.ts:84</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an action route for each specified Http method.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>.action([HttpMethod.Get, HttpMethod.Post], &#39;/some/path&#39;);
+											find(req, res, next) {
+											// handle request.
+										}</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>methods: <a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the Http Methods to apply to each route.</p>
+									</div>
+								</li>
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a custom path to use for the route.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
@@ -214,7 +271,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/12ab8fb/src/decorators.ts#L19">decorators.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L17">decorators.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -223,11 +280,9 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><p>class UserService {
-											@filter
+									<dd><p> @filter
 											isAuthorized(req, res, next) {
 											// check if authorized.
-											}
 										}</p>
 									</dd>
 								</dl>
@@ -257,6 +312,85 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="route" class="tsd-anchor"></a>
+					<h3>route</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">route<span class="tsd-signature-symbol">(</span>methods<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, filters<span class="tsd-signature-symbol">?: </span><a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
+						<li class="tsd-signature tsd-kind-icon">route<span class="tsd-signature-symbol">(</span>methods<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span>, path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, filters<span class="tsd-signature-symbol">?: </span><a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L119">decorators.ts:119</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a route using the specified method and path.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>.action(HttpMethod.Get, &#39;/some/path&#39;);</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>methods: <a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a></h5>
+								</li>
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a custom path to use for the route.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> filters: <a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/blujedis/tensil/blob/90dc384/src/decorators.ts#L130">decorators.ts:130</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a route for each specified Http method.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><p>.action([HttpMethod.Get, HttpMethod.Post], &#39;/some/path&#39;);</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>methods: <a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the Http Methods to apply to each route.</p>
+									</div>
+								</li>
+								<li>
+									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a custom path to use for the route.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> filters: <a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_decorators_.html#descriptor" class="tsd-signature-type">Descriptor</a></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -267,6 +401,21 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_core_.html">"core"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_debug_controllers_.html">"debug/controllers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_debug_data_.html">"debug/data"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_debug_entities_.html">"debug/entities"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_debug_index_.html">"debug/index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="_debug_services_.html">"debug/services"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_decorators_.html">"decorators"</a>
@@ -298,6 +447,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_decorators_.html#filter" class="tsd-kind-icon">filter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_decorators_.html#route" class="tsd-kind-icon">route</a>
 					</li>
 				</ul>
 			</nav>

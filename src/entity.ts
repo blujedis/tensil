@@ -1,10 +1,11 @@
 import { Router, Express, NextFunction } from 'express';
 import { Core } from './core';
-import { Tensil } from './tensil';
+import { EventEmitter } from 'events';
 import { castArray, has, isObject } from 'lodash';
-import { Filter, Action, IFilters, IPolicies, IRoutes, EntityType, IActions, ContextTypes } from './types';
+import { Filter, Action, IFilters, IPolicies, IRoutes, EntityType, IActions, ContextTypes, ITemplates } from './types';
+import { Tensil } from './tensil';
 
-export class Entity {
+export class Entity extends EventEmitter {
 
   protected _core: Core;
 
@@ -17,11 +18,12 @@ export class Entity {
   baseType: string;
   mountPath: string;
   basePath: string;
+  templates: ITemplates;
 
   constructor();
   constructor(base: string, mount?: string, app?: Express);
   constructor(base?: string, mount?: string, app?: Express) {
-
+    super();
     const ctorName = this.constructor.name;
 
     this._core = Core.getInstance(app);
@@ -49,10 +51,6 @@ export class Entity {
     // Register the service with core.
     this._core.registerInstance(this);
 
-  }
-
-  protected get tensil(): Tensil {
-    return this._core.entities.Tensil as any;
   }
 
   /**
@@ -117,7 +115,7 @@ export class Entity {
 
     if (isObject(key)) {
       this.filters = { ...(this.filters), ...key };
-      this.tensil.emit('filter', key, this.filters);
+      this.emit('filter', key, this.filters);
       return this;
     }
 
@@ -130,7 +128,7 @@ export class Entity {
     this.filters = this.filters || {};
     this.filters[validKey] = filters;
 
-    this.tensil.emit('filter', { [validKey]: filters }, this.filters);
+    this.emit('filter', { [validKey]: filters }, this.filters);
 
     return this;
 
@@ -164,7 +162,7 @@ export class Entity {
 
     if (isObject(route)) {
       this.routes = { ...(this.routes), ...route };
-      this.tensil.emit('route', route, this.routes);
+      this.emit('route', route, this.routes);
       return this;
     }
 
@@ -177,7 +175,7 @@ export class Entity {
     this.routes = this.routes || {};
     this.routes[validRoute] = actions;
 
-    this.tensil.emit('route', { [validRoute]: actions }, this.routes);
+    this.emit('route', { [validRoute]: actions }, this.routes);
 
     return this;
 

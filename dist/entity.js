@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const core_1 = require("./core");
+const events_1 = require("events");
 const lodash_1 = require("lodash");
 const types_1 = require("./types");
-class Entity {
+class Entity extends events_1.EventEmitter {
     constructor(base, mount, app) {
+        super();
         const ctorName = this.constructor.name;
         this._core = core_1.Core.getInstance(app);
         this.type = ctorName;
@@ -26,9 +28,6 @@ class Entity {
         });
         // Register the service with core.
         this._core.registerInstance(this);
-    }
-    get tensil() {
-        return this._core.entities.Tensil;
     }
     /**
      * Ensures a key does not exist in a context collection.
@@ -59,7 +58,7 @@ class Entity {
     filter(key, filters, force = false) {
         if (lodash_1.isObject(key)) {
             this.filters = { ...(this.filters), ...key };
-            this.tensil.emit('filter', key, this.filters);
+            this.emit('filter', key, this.filters);
             return this;
         }
         filters = lodash_1.castArray(filters);
@@ -68,13 +67,13 @@ class Entity {
             throw new Error(`Filter key "${key}" exists set force to true to overwrite`);
         this.filters = this.filters || {};
         this.filters[validKey] = filters;
-        this.tensil.emit('filter', { [validKey]: filters }, this.filters);
+        this.emit('filter', { [validKey]: filters }, this.filters);
         return this;
     }
     route(route, actions, force = false) {
         if (lodash_1.isObject(route)) {
             this.routes = { ...(this.routes), ...route };
-            this.tensil.emit('route', route, this.routes);
+            this.emit('route', route, this.routes);
             return this;
         }
         actions = lodash_1.castArray(actions);
@@ -83,7 +82,7 @@ class Entity {
             throw new Error(`Route "${route}" exists set force to true to overwrite`);
         this.routes = this.routes || {};
         this.routes[validRoute] = actions;
-        this.tensil.emit('route', { [validRoute]: actions }, this.routes);
+        this.emit('route', { [validRoute]: actions }, this.routes);
         return this;
     }
 }

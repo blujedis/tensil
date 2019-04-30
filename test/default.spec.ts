@@ -10,8 +10,8 @@ chai.use(http);
 describe('Tensil', () => {
 
   it('should verify route map keys', () => {
-    assert.deepEqual(Object.keys(tensil.routeMap), ['/id']);
-    assert.deepEqual(Object.keys(tensil.routeMap['/id']), ['get', 'UserController']);
+    assert.deepEqual(Object.keys(tensil.routeMap), ['/id', '/']);
+    assert.deepEqual(Object.keys(tensil.routeMap['/id']), ['get', 'post']);
   });
 
   it('should request user from find method', (done) => {
@@ -27,7 +27,6 @@ describe('Tensil', () => {
 
   });
 
-
   it('should request user by id', (done) => {
 
     chai.request(tensil.server)
@@ -41,6 +40,86 @@ describe('Tensil', () => {
           password: 'swingline',
           location: 'basement'
         });
+        done();
+      });
+
+  });
+
+  it('should create user & return status 201 with id of 3', (done) => {
+
+    chai.request(tensil.server)
+      .post('/id/user')
+      .send({
+        firstName: 'Bill',
+        lastName: 'Lumburgh',
+        username: 'bill@officespace.com',
+        password: 'emkay',
+        location: 'roving'
+      })
+      .end((err, res) => {
+        assert.equal(res.status, 201);
+        assert.equal(res.body, 3);
+        done();
+      });
+
+  });
+
+  it('should test custom route in action decorator', (done) => {
+
+    chai.request(tensil.server)
+      .get('/id/user/custom')
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, 'custom');
+        done();
+      });
+
+  });
+
+  it('should test custom route defind by method', (done) => {
+
+    chai.request(tensil.server)
+      .get('/id/user/test/method')
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, 'test-method');
+        done();
+      });
+
+  });
+
+  it('should test custom route defined in class routes property', (done) => {
+
+    chai.request(tensil.server)
+      .get('/id/user/test/defined')
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, 'test-defined');
+        done();
+      });
+
+  });
+
+
+  it('should test route decorator and return "show all"', (done) => {
+
+    chai.request(tensil.server)
+      .get('/id/user/show/all')
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, 'show-all');
+        done();
+      });
+
+  });
+
+  it('should test route decorator and return "show all"', (done) => {
+
+    chai.request(tensil.server)
+      .get('/')
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.text, 'test-home');
         done();
       });
 

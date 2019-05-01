@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Express } from 'express';
 import { has } from 'lodash';
 import { IEntities, IRouters } from './types';
-import { Controller, Service } from './tensil';
+import { Controller, Service, Tensil } from './tensil';
 import { Entity } from './entity';
 
 // templateSettings.interpolate = /{{([\s\S]+?)}}/g;
@@ -58,6 +58,26 @@ export class Core {
   }
 
   /**
+   * Checks if core has already registered the entity.
+   * 
+   * @param type the entity type name.
+   */
+  has(type: string): boolean;
+
+  /**
+   * Checks if core has already registered the entity.
+   * 
+   * @param Entity the Entity instance.
+   */
+  has(Entity: Service | Controller | Entity | Tensil): boolean;
+  has(entity: string | Service | Controller | Entity | Tensil) {
+    let type = entity as string;
+    if (typeof entity !== 'string')
+      type = entity.type;
+    return has(this.entities, type);
+  }
+
+  /**
    * Registers an Entity instance with the Tensil Entities collection.
    * 
    * @example
@@ -65,11 +85,11 @@ export class Core {
    * 
    * @param entity the Entity instance to register with Tensil.
    */
-  registerInstance(entity: Service | Controller | Entity) {
-    if (has(this.entities, entity.type))
-      throw new Error(`Entity ${entity.type} failed to register, already exists`);
+  registerInstance(entity: Service | Controller | Entity | Tensil) {
+    if (this.has(entity))
+      return false;
     this.entities[entity.type] = entity;
-    return this;
+    return true;
   }
 
 }

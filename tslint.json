@@ -23,6 +23,7 @@
       "array-type": false,
       "unified-signatures": false,
       "only-arrow-functions": false,
+      "space-before-function-paren": false,
       "no-var-requires": false,
       "align": false,
       "ban-types": false,

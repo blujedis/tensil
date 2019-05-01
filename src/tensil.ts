@@ -9,10 +9,10 @@ import { Server as HttpsServer, createServer as createHttpsServer, ServerOptions
 import { Entity } from './entity';
 import {
   isBoolean, get, set, has, isString, isFunction, castArray, isObject, isUndefined,
-  uniq, includes, templateSettings, template
+  uniq, includes, templateSettings, template, isPlainObject
 } from 'lodash';
 import { STATUS_CODES } from 'statuses';
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import { stat, statSync, createReadStream, readFile } from 'fs';
 import {
   IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy,
@@ -22,6 +22,9 @@ import {
 import { awaiter } from './utils';
 
 templateSettings.interpolate = /{{([\s\S]+?)}}/g;
+
+const BASE_DIR = join(__dirname, '../');
+const ERROR_VIEW = join(BASE_DIR, 'dist/views/error.html');
 
 const DEFAULT_OPTIONS: IOptions = {
 
@@ -37,14 +40,13 @@ const DEFAULT_OPTIONS: IOptions = {
   },
 
   rest: true,
-  crud: false,
+  crud: true,
   sort: true,
 
   formatter: (key: string, path: string, type: 'rest' | 'crud') => {
     if (type === 'rest')
-      return path.replace(/{{action}}/, '').replace(/^\/\//, '/');
-    key = key.replace(/ById$/, '');
-    return path.replace(/{{action}}/, '');
+      return path.replace(/{{action}}/g, '').replace(/\/\//g, '/');
+    return path.replace(/{{action}}/g, key);
   },
 
   themes: {
@@ -119,8 +121,8 @@ class Controller extends Entity {
   policy(key?: string | boolean | IPolicies, policies?: Policy | Policy[], force: boolean = false) {
 
     if (isObject(key)) {
-      this.policies = { ...(this.policies), ...key };
-      this.emit('policy', key, this.policies);
+      this.policies = { ...key };
+      this.emit('policy', 'add', this.policies);
       return this;
     }
 
@@ -132,13 +134,15 @@ class Controller extends Entity {
     policies = castArray(policies) as Policy[];
     const validKey = this.validateKey(key, 'policies', force);
 
-    if (!validKey)
-      throw new Error(`Policy key "${key}" exists set force to true to overwrite`);
+    if (!validKey) {
+      this.emit('policy', 'error', new Error(`Policy key "${key}" exists set force to true to overwrite`));
+      return this;
+    }
 
     this.policies = this.policies || {};
     this.policies[validKey] = policies;
 
-    this.emit('policy', { [validKey]: policies }, this.policies);
+    this.emit('policy', 'add', { [validKey]: policies });
 
     return this;
 
@@ -170,6 +174,13 @@ class Tensil extends Entity {
   }
 
   // PRIVATE & PROTECTED // 
+
+  protected wrapContext(entity, fn) {
+    return function () {
+      const args = [].slice.call(arguments);
+      return fn.apply(entity, args);
+    };
+  }
 
   /**
    * Creates transform to be used with ReadStream.
@@ -298,10 +309,8 @@ class Tensil extends Entity {
     result = get(entity, parts.join('.'));
 
     // Since this was looked up bind the context.
-    if (result && isFunction(result)) {
-      (result as any).__namespace__ = namespace;
-      result.bind(entity);
-    }
+    if (result && isFunction(result))
+      result = this.wrapContext(entity, result);
 
     return result;
 
@@ -506,7 +515,7 @@ class Tensil extends Entity {
 
     status = status || 406;
     text = text || STATUS_CODES[status];
-    view = view || resolve(__dirname, 'views/error.html');
+    view = view || ERROR_VIEW;
     const theme = this.options.themes[status];
 
     const err = new HttpError(text, status as number, text, theme);
@@ -603,7 +612,7 @@ class Tensil extends Entity {
 
     status = status || 403;
     text = text || STATUS_CODES[status];
-    view = view || resolve(__dirname, 'views/error.html');
+    view = view || ERROR_VIEW;
     const theme = this.options.themes[status];
 
     const err = new HttpError(text, status as number, text, theme);
@@ -687,7 +696,7 @@ class Tensil extends Entity {
   notFound(text?: string, view?: string) {
 
     text = text || STATUS_CODES[404];
-    view = view || resolve(__dirname, 'views/error.html');
+    view = view || ERROR_VIEW;
     const theme = this.options.themes[404];
 
     const handler = async (req: Request, res: Response, next: NextFunction) => {
@@ -721,7 +730,7 @@ class Tensil extends Entity {
   serverError(text?: string, view?: string): ErrorRequestHandler {
 
     text = text || STATUS_CODES[500];
-    view = view || resolve(__dirname, 'views/error.html');
+    view = view || ERROR_VIEW;
 
     const handler = async (err: HttpError, req: Request, res: Response, next: NextFunction) => {
 
@@ -750,11 +759,12 @@ class Tensil extends Entity {
    * @param res the Express Response handler.
    * @param next the Express Next Function handler.
    */
-  renderFileOrView(req: Request, res: Response, next: NextFunction) {
+  renderFileOrView(req: Request, res: Response, next?: NextFunction) {
 
-    return async (view: string, context: any, status: number) => {
+    return async (view: string, context?: any, status?: number) => {
 
       const result = await awaiter(this.isView(view));
+      status = status || 200;
 
       if (!result.err && result.data)
         return res.status(status).render(view, context);
@@ -907,12 +917,14 @@ class Tensil extends Entity {
    * @param route the route to be parsed and registerd.
    * @param handlers the handlers to be bound to route.
    * @param entity entity type name.
+   * @param isGenerated when true registering a generated route.
    */
   protected registerRoute<R extends Request = Request, S extends Response = Response>(
-    mount: string, base: string, route: string, handlers: ContextHandlers<R, S>[], entity?: string): this;
+    mount: string, base: string, route: string,
+    handlers: ContextHandlers<R, S>[], entity?: string, isGenerated?: boolean): this;
   protected registerRoute<R extends Request = Request, S extends Response = Response>(
     mount: string, base: string, route: string | ContextHandlers<R, S>[],
-    handlers?: string | ContextHandlers<R, S>[], entity?: string) {
+    handlers?: string | ContextHandlers<R, S>[], entity?: string, isGenerated?: boolean) {
 
     if (isString(handlers)) {
       entity = handlers as string;
@@ -949,8 +961,15 @@ class Tensil extends Entity {
       const path = config.fullPath;
 
       // Show warning overriding path.
-      if (has(root[method], path) && process.env.NODE_ENV !== 'production')
-        console.warn(`[Tensil] WARN: overriding route path "${path}" mounted at "${mount}"`);
+      if (has(root[method], path) && process.env.NODE_ENV !== 'production') {
+
+        this.emit('route:duplicate', new Error(`[TENSIL] WARN: overriding route path "${path}" mounted at "${mount}"`));
+
+        // If generated don't overwrite defined route.
+        if (isGenerated)
+          return this;
+
+      }
 
       const _handlers = handlers as (RequestHandlers<R, S> & { __namespace__: string })[];
 
@@ -1020,40 +1039,6 @@ class Tensil extends Entity {
       ctrl.policies = ctrl.policies || {};
       ctrl.policies['*'] = this.normalizeHandlers(ctrl.policies['*'], ContextType.policies, '*');
 
-      // Generate routes for controllers.
-      if (ctrl.actions) {
-
-        for (const k in ctrl.actions) {
-
-          let route = (ctrl.actions[k] || this.templates[k]) || 'get';
-          route = this.templates[route] || route || '';
-
-          // If no route by this point throw error.
-          if (!route)
-            throw new Error(`Action ${entity.type}.${k} route could NOT be generated using path ${route}`);
-
-          const actionKey = `${entity.type}.${k}`;
-
-          // Lookup the policies for action.
-          let handlers = this.normalizeHandlers(actionKey, ContextType.actions, k);
-          handlers = uniq([...(ctrl.policies['*'] as any[]), ...handlers]);
-
-          // Generate rest route.
-          if (this.options.rest) {
-            const restPath = this.options.formatter(k, route, 'rest');
-            this.registerRoute(ctrl.mountPath, ctrl.basePath, restPath, handlers, entity.type);
-          }
-
-          // Generate crud route.
-          if (this.options.crud) {
-            const crudPath = this.options.formatter(k, route, 'crud');
-            this.registerRoute(ctrl.mountPath, ctrl.basePath, crudPath, handlers, entity.type);
-          }
-
-        }
-
-      }
-
     }
 
     // Routes may have been generated by decorator
@@ -1074,23 +1059,45 @@ class Tensil extends Entity {
 
       let key = k;
       const lookup = `${entity.type}.${k}`;
-      const handlers = castArray(entity.routes[k]);
-      const lastHandler = handlers[handlers.length - 1] as any;
+      const route = entity.routes[k];
+      const handlers = castArray(route);
 
-      // If last handler is NOT dot notation we need
-      // to set it as the key/route.
-      if (isString(lastHandler) && !~lastHandler.indexOf('.')) {
+      // TODO: refactor this into method basically duplication here :(
 
-        // Last handler is route remove it.
-        key = handlers.pop() as string;
-        // push the lookup which maps to Class.method.
-        handlers.push(lookup);
+      // Multiple route configs passed in decorator.
+      if (isPlainObject(handlers[0])) {
 
-        // Update new route configuration.
-        entity.routes[key as string] = handlers;
+        const configs = handlers as any;
 
-        // delete the existing key from object.
+        configs.forEach(c => {
+          c.path = c.path || `/${k}`;
+          entity.routes[c.method + ' ' + c.path] = [...(c.filters || []), lookup];
+        });
+
         delete entity.routes[k];
+
+      }
+      else {
+
+        const lastHandler = handlers[handlers.length - 1] as any;
+
+        // If last handler is NOT dot notation we need
+        // to set it as the key/route.
+        if (isString(lastHandler) && !~lastHandler.indexOf('.')) {
+
+          // Last handler is route remove it.
+          key = handlers.pop() as string;
+
+          // push the lookup which maps to Class.method.
+          handlers.push(lookup);
+
+          // Update new route configuration.
+          entity.routes[key as string] = handlers;
+
+          // delete the existing key from object.
+          delete entity.routes[k];
+
+        }
 
       }
 
@@ -1151,6 +1158,61 @@ class Tensil extends Entity {
       }
 
     });
+
+    if (ctrl) {
+
+      // Generate routes for controllers.
+      if (ctrl.actions) {
+
+        for (const k in ctrl.actions) {
+
+          let route = ctrl.actions[k].trim();
+          route = (route || this.templates[k]) || 'get';
+
+          route = this.templates[route] || route || '';
+
+          const actionKey = `${entity.type}.${k}`;
+
+          // If no route by this point throw error.
+          if (!route)
+            throw new Error(`Action "${actionKey}" route could NOT be generated using path ${route}`);
+
+          // Lookup the policies for action.
+          let handlers = this.lookupHandler(actionKey);  // this.normalizeHandlers(actionKey, ContextType.actions, k);
+
+          if (!handlers)
+            throw new Error(`Failed to lookup action "${actionKey}" for route "${route}`);
+
+          handlers = castArray(handlers);
+
+          // Lookup action policies.
+          const policies = this.normalizeHandlers(ctrl.policies[k], ContextType.policies, k);
+
+          handlers = uniq([...(ctrl.policies['*'] as any[]), ...policies, ...handlers]);
+
+          const routes = [];
+
+          // Generate rest route.
+          if (this.options.rest) {
+            const restPath = this.options.formatter(k, route, 'rest');
+            routes.push(restPath);
+            this.registerRoute(ctrl.mountPath, ctrl.basePath, restPath, handlers, entity.type, true);
+          }
+
+          // Generate crud route.
+          if (this.options.crud) {
+            const crudPath = this.options.formatter(k, route, 'crud');
+            routes.push(crudPath);
+            // this.registerRoute(ctrl.mountPath, ctrl.basePath, crudPath, handlers, entity.type, true);
+          }
+
+          // console.log(...routes);
+
+        }
+
+      }
+
+    }
 
     return entity;
 
@@ -1272,6 +1334,8 @@ class Tensil extends Entity {
    */
   mount() {
 
+    const self = this;
+
     if (!this._normalized)
       this.normalize();
 
@@ -1297,6 +1361,8 @@ class Tensil extends Entity {
         routes
           .forEach(r => {
             const config = methods[m][r];
+            const rtr = { router: k };
+            self.emit('mount:route', { ...config, ...({ router: k }) });
             router[m](r, ...(config.handlers));
           });
       }
@@ -1306,6 +1372,8 @@ class Tensil extends Entity {
         this.app.use(k, router);
 
     }
+
+    this.emit('mount:finished');
 
     return this;
 
@@ -1327,6 +1395,8 @@ class Tensil extends Entity {
       .mount();
 
     this._initialized = true;
+
+    this.emit('init:finished');
 
     return this;
 
@@ -1398,7 +1468,7 @@ class Tensil extends Entity {
     const server =
       ((this.server || this.app) as HttpServer | HttpsServer)
         .listen(port, host as any, () => {
-          this.emit('start');
+          this.emit('start:finish');
           fn();
         });
 

@@ -1,6 +1,9 @@
 const { copyFileSync, mkdirSync, existsSync } = require('fs');
 const { resolve, join, basename } = require('path');
 
+if (!existsSync('./dist'))
+  mkdirSync('./dist');
+
 const files = ['./src/error.html|./dist/views'];
 
 files.forEach(f => {

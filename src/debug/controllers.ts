@@ -5,7 +5,7 @@ import users from './data';
 export class UserController extends Controller {
 
   policies: IPolicies = {
-    find: 'log'
+    find: ['log', 'log2']
   };
 
   routes: IRoutes = {
@@ -14,7 +14,11 @@ export class UserController extends Controller {
 
   @filter
   log(req, res, next) {
-    console.log(`[TENSIL]: REQ id ${Date.now()}`);
+    next();
+  }
+
+  @filter
+  log2(req, res, next) {
     next();
   }
 
@@ -25,14 +29,14 @@ export class UserController extends Controller {
     res.json(Object.keys(users).map(k => users[k]));
   }
 
-  @action(HttpMethod.Post)
+  @action()
   create(req: Request, res: Response) {
     const nextId = parseInt(Object.keys(users).pop(), 10) + 1;
     users[nextId] = req.body;
     res.status(201).json(nextId);
   }
 
-  @action(HttpMethod.Get, 'custom')
+  @action(HttpMethod.Get, '/custom')
   createCustom(req, res) {
     res.send('custom');
   }
@@ -40,6 +44,18 @@ export class UserController extends Controller {
   @route(HttpMethod.Get, '/show/all')
   show(req, res, next) {
     res.send('show-all');
+  }
+
+  // @route([
+  //   { method: HttpMethod.Get, path: '' }
+  // ])
+
+  @route([
+    { method: HttpMethod.Get },
+    { method: HttpMethod.Post, path: '/other', filters: [] }
+  ])
+  multiple(req, res) {
+    res.send('test-multiple');
   }
 
 }

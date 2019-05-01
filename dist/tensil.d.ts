@@ -61,6 +61,7 @@ declare class Tensil extends Entity {
     constructor();
     constructor(options: IOptions);
     constructor(app: Express, options?: IOptions);
+    protected wrapContext(entity: any, fn: any): () => any;
     /**
      * Creates transform to be used with ReadStream.
      *
@@ -277,7 +278,7 @@ declare class Tensil extends Entity {
      * @param res the Express Response handler.
      * @param next the Express Next Function handler.
      */
-    renderFileOrView(req: Request, res: Response, next: NextFunction): (view: string, context: any, status: number) => Promise<void>;
+    renderFileOrView(req: Request, res: Response, next?: NextFunction): (view: string, context?: any, status?: number) => Promise<void>;
     /**
      * Gets the base class type for a given class.
      *
@@ -367,8 +368,9 @@ declare class Tensil extends Entity {
      * @param route the route to be parsed and registerd.
      * @param handlers the handlers to be bound to route.
      * @param entity entity type name.
+     * @param isGenerated when true registering a generated route.
      */
-    protected registerRoute<R extends Request = Request, S extends Response = Response>(mount: string, base: string, route: string, handlers: ContextHandlers<R, S>[], entity?: string): this;
+    protected registerRoute<R extends Request = Request, S extends Response = Response>(mount: string, base: string, route: string, handlers: ContextHandlers<R, S>[], entity?: string, isGenerated?: boolean): this;
     /**
      * Configures constructed class merging in initialized data from decorators.
      *

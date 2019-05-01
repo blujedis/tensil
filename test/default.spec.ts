@@ -100,7 +100,6 @@ describe('Tensil', () => {
 
   });
 
-
   it('should test route decorator and return "show all"', (done) => {
 
     chai.request(tensil.server)
@@ -113,13 +112,12 @@ describe('Tensil', () => {
 
   });
 
-  it('should test route decorator and return "show all"', (done) => {
+  it('should test route decorator with filter requiring XHR', (done) => {
 
     chai.request(tensil.server)
       .get('/')
       .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.equal(res.text, 'test-home');
+        assert.equal(res.status, 406);
         done();
       });
 

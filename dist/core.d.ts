@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import { IEntities, IRouters } from './types';
-import { Controller, Service } from './tensil';
+import { Controller, Service, Tensil } from './tensil';
 import { Entity } from './entity';
 export declare class Core {
     private static _instance;
@@ -19,6 +19,18 @@ export declare class Core {
      */
     getType(entity: Service | Controller | Entity): any;
     /**
+     * Checks if core has already registered the entity.
+     *
+     * @param type the entity type name.
+     */
+    has(type: string): boolean;
+    /**
+     * Checks if core has already registered the entity.
+     *
+     * @param Entity the Entity instance.
+     */
+    has(Entity: Service | Controller | Entity | Tensil): boolean;
+    /**
      * Registers an Entity instance with the Tensil Entities collection.
      *
      * @example
@@ -26,5 +38,5 @@ export declare class Core {
      *
      * @param entity the Entity instance to register with Tensil.
      */
-    registerInstance(entity: Service | Controller | Entity): this;
+    registerInstance(entity: Service | Controller | Entity | Tensil): boolean;
 }

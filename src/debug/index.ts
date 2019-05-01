@@ -5,5 +5,5 @@ import './entities';
 
 tensil.start(() => {
   console.log('Running');
-  // console.log(tensil.routeMap['/'].get['/']);
+  console.log(tensil.routeMap);
 });

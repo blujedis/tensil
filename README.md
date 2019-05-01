@@ -178,8 +178,28 @@ const options = {
   }
   rest: true,
   crud: false
+
 }
 ```
+
+## Events
+
+A pipe **|** indicates or.
+
+<table>
+  <tr><td>Name</td><td>Arg1</td><td>Arg2</td></tr>
+  <tr><td>register:error</td><td>Error</td></tr>
+  <tr><td>register:success</td><td>true</td></tr>
+  <tr><td>policy:error</td><td>Error</td></tr>
+  <tr><td>policy:success</td><td>{ policy } | { policies }</td></tr>
+  <tr><td>filter:error</td><td>Error</td></tr>
+  <tr><td>filter:success</td><td>{ filter } | { filters }</td></tr>
+  <tr><td>route:error</td><td>Error</td></tr>
+  <tr><td>route:duplicate</td><td>Error</td></tr>
+  <tr><td>mount:route</td><td>{ config }</td></tr>
+  <tr><td>mount:finished</td><td>undefined</td></tr>
+  <tr><td>init:finished</td><td>undefined</td></tr>
+</table>
 
 ## Docs
 

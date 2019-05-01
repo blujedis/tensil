@@ -28,12 +28,14 @@ exports.filter = filter;
 function action(methods, path = '') {
     methods = methods || [];
     return (target, key, descriptor) => {
-        path = (lodash_1.castArray(methods).join('|') + ' ' + path).trim();
         const isFunc = descriptor.value && typeof descriptor.value === 'function';
         const baseType = Object.getPrototypeOf(target).constructor.name;
         const isCtrl = baseType === types_1.EntityType.Controller;
         if (!isFunc || !isCtrl)
-            throw new Error(`Cannot set "action" decorator on ${key}`);
+            throw new Error(`Cannot set "action" decorator on ${key}, is this a method and controller?`);
+        if (path)
+            path = '/' + `${path}`.replace(/^\/\/?/, '');
+        path = (lodash_1.castArray(methods).join('|') + ' ' + path).trim();
         target.constructor.__INIT_DATA__ = target.constructor.__INIT_DATA__ || {};
         target.constructor.__INIT_DATA__.actions = target.constructor.__INIT_DATA__.actions || {};
         target.constructor.__INIT_DATA__.actions[key] = path;
@@ -41,29 +43,24 @@ function action(methods, path = '') {
     };
 }
 exports.action = action;
-/**
- * Creates a route for each specified Http method.
- *
- * @example
- * .action(HttpMethod.Get, '/some/path');
- * .action([HttpMethod.Get, HttpMethod.Post], '/some/path');
- *
- * @param methods the Http Methods to apply to each route.
- * @param path a custom path to use for the route.
- */
 function route(methods, path, filters) {
     methods = methods || [];
     filters = lodash_1.castArray(filters || []);
     return (target, key, descriptor) => {
-        path = (lodash_1.castArray(methods).join('|') + ' ' + path).trim();
         const isFunc = descriptor.value && typeof descriptor.value === 'function';
-        const baseType = Object.getPrototypeOf(target).constructor.name;
-        const isCtrl = baseType === types_1.EntityType.Controller;
         if (!isFunc)
-            throw new Error(`Cannot set "router" decorator on ${key}`);
+            throw new Error(`Cannot set "router" decorator on ${key}, is this a method?`);
+        const isConfigs = lodash_1.isPlainObject(methods[0]);
+        if (!isConfigs && !path)
+            path = `/${key}`;
+        path = (lodash_1.castArray(methods).join('|') + ' ' + path).trim();
         target.constructor.__INIT_DATA__ = target.constructor.__INIT_DATA__ || {};
         target.constructor.__INIT_DATA__.routes = target.constructor.__INIT_DATA__.routes || {};
-        target.constructor.__INIT_DATA__.routes[key] = [...filters, path];
+        // if is object containing route configs iterate and defined.
+        if (isConfigs)
+            target.constructor.__INIT_DATA__.routes[key] = methods;
+        else
+            target.constructor.__INIT_DATA__.routes[key] = [...filters, path];
         return descriptor;
     };
 }

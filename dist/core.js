@@ -33,6 +33,12 @@ class Core {
     getType(entity) {
         return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
     }
+    has(entity) {
+        let type = entity;
+        if (typeof entity !== 'string')
+            type = entity.type;
+        return lodash_1.has(this.entities, type);
+    }
     /**
      * Registers an Entity instance with the Tensil Entities collection.
      *
@@ -42,10 +48,10 @@ class Core {
      * @param entity the Entity instance to register with Tensil.
      */
     registerInstance(entity) {
-        if (lodash_1.has(this.entities, entity.type))
-            throw new Error(`Entity ${entity.type} failed to register, already exists`);
+        if (this.has(entity))
+            return false;
         this.entities[entity.type] = entity;
-        return this;
+        return true;
     }
 }
 exports.Core = Core;

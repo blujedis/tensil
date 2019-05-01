@@ -27,7 +27,11 @@ class Entity extends events_1.EventEmitter {
             name: { writable: false }
         });
         // Register the service with core.
-        this._core.registerInstance(this);
+        const registered = this._core.registerInstance(this);
+        if (!registered)
+            this.emit('register', 'error', new Error(`${this.type} failed to register, already exists`));
+        else
+            this.emit('register', 'success', true);
     }
     /**
      * Ensures a key does not exist in a context collection.
@@ -57,32 +61,36 @@ class Entity extends events_1.EventEmitter {
     }
     filter(key, filters, force = false) {
         if (lodash_1.isObject(key)) {
-            this.filters = { ...(this.filters), ...key };
-            this.emit('filter', key, this.filters);
+            this.filters = { ...key };
+            this.emit('filter', 'add', this.filters);
             return this;
         }
         filters = lodash_1.castArray(filters);
         const validKey = this.validateKey(key, 'filters', force);
-        if (!validKey)
-            throw new Error(`Filter key "${key}" exists set force to true to overwrite`);
+        if (!validKey) {
+            this.emit('filter', 'error', new Error(`Filter key "${key}" exists set force to true to overwrite`));
+            return this;
+        }
         this.filters = this.filters || {};
         this.filters[validKey] = filters;
-        this.emit('filter', { [validKey]: filters }, this.filters);
+        this.emit('filter', 'add', { [validKey]: filters });
         return this;
     }
     route(route, actions, force = false) {
         if (lodash_1.isObject(route)) {
-            this.routes = { ...(this.routes), ...route };
-            this.emit('route', route, this.routes);
+            this.routes = { ...route };
+            this.emit('route', 'add', this.routes);
             return this;
         }
         actions = lodash_1.castArray(actions);
         const validRoute = this.validateKey(route, 'routes', force);
-        if (!validRoute)
-            throw new Error(`Route "${route}" exists set force to true to overwrite`);
+        if (!validRoute) {
+            this.emit('route', 'error', new Error(`Route "${route}" exists set force to true to overwrite`));
+            return this;
+        }
         this.routes = this.routes || {};
         this.routes[validRoute] = actions;
-        this.emit('route', { [validRoute]: actions }, this.routes);
+        this.emit('route', 'add', { [validRoute]: actions });
         return this;
     }
 }

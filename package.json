@@ -1,6 +1,6 @@
 {
   "name": "tensil",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "Simple Express framework",
   "main": "dist/index.js",
   "scripts": {
@@ -9,11 +9,10 @@
     "build": "npm run copy tsc",
     "watch": "npm run clean && npm run build -- -w",
     "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
-    "typedoc": "typedoc ./src --options ./typedoc.json --out ./docs",
-    "docs": "npm run typedoc && touch ./docs/.nojekll",
-    "test": "NODE_ENV=test npm run copy && mocha test/**/*.spec.ts* --require ./build/register.js --bail",
-    "prep": "npm run clean && npm run lint && npm run build && npm run test && npm run docs && npm run copy",
-    "release": "npm run prep && bump patch --commit --push && npm publish"
+    "docs": "typedoc ./src --options ./typedoc.json --out ./docs && touch ./docs/.nojekll",
+    "test": "NODE_ENV=test mocha test/**/*.spec.ts* --require ./build/register.js --bail",
+    "prep": "npm run clean && npm run lint && npm run build && npm run test",
+    "release": "npm run prep && npm run docs && bump patch --commit --push && npm publish"
   },
   "author": "Blujedis <blujedicorp@gmail.com>",
   "repository": {

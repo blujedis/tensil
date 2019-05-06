@@ -29,9 +29,28 @@ class Entity extends events_1.EventEmitter {
         // Register the service with core.
         const registered = this._core.registerInstance(this);
         if (!registered)
-            this.emit('register', 'error', new Error(`${this.type} failed to register, already exists`));
+            this.emitter('entity', 'duplicate', new Error(`Skipping duplicate registration for ${this.baseType} "${this.type}"`));
         else
-            this.emit('register', 'success', true);
+            this.emitter('entity', 'registered', registered);
+    }
+    /**
+     * Helper method for emitting events.
+     *
+     * @param key the group key of the event.
+     * @param type the subtype of the group.
+     * @param args arguments to pass to the emit event.
+     */
+    emitter(key, type, ...args) {
+        // First arg is error.
+        const isError = args[0] instanceof Error;
+        this.emit('*', key, type, ...args);
+        this.emit(key, type, ...args);
+        this.emit(`${key}:${type}`, ...args);
+        // If in strict mode after emitting 
+        // events by type emit the error.
+        if (isError && this.isStrict())
+            this.emit('error', args[0]);
+        return this;
     }
     /**
      * Ensures a key does not exist in a context collection.
@@ -59,38 +78,47 @@ class Entity extends events_1.EventEmitter {
     get router() {
         return this._core.routers[this.mountPath];
     }
+    /**
+     * Returns value indicating if running in strict mode.
+     */
+    isStrict() {
+        const strict = this._core.entities.Tensil.options.strict;
+        if (typeof strict === 'undefined' && process.env.NODE_ENV === 'production')
+            return true;
+        return strict;
+    }
     filter(key, filters, force = false) {
         if (lodash_1.isObject(key)) {
             this.filters = { ...key };
-            this.emit('filter', 'add', this.filters);
+            this.emitter('filter', 'create', this.filters);
             return this;
         }
         filters = lodash_1.castArray(filters);
         const validKey = this.validateKey(key, 'filters', force);
         if (!validKey) {
-            this.emit('filter', 'error', new Error(`Filter key "${key}" exists set force to true to overwrite`));
+            this.emitter('filter', 'invalid', new Error(`Filter key "${key}" exists set force to true to overwrite`));
             return this;
         }
         this.filters = this.filters || {};
         this.filters[validKey] = filters;
-        this.emit('filter', 'add', { [validKey]: filters });
+        this.emitter('filter', 'create', { [validKey]: filters });
         return this;
     }
     route(route, actions, force = false) {
         if (lodash_1.isObject(route)) {
             this.routes = { ...route };
-            this.emit('route', 'add', this.routes);
+            this.emitter('route', 'create', this.routes);
             return this;
         }
         actions = lodash_1.castArray(actions);
         const validRoute = this.validateKey(route, 'routes', force);
         if (!validRoute) {
-            this.emit('route', 'error', new Error(`Route "${route}" exists set force to true to overwrite`));
+            this.emitter('route', 'invalid', new Error(`Route "${route}" exists set force to true to overwrite`));
             return this;
         }
         this.routes = this.routes || {};
         this.routes[validRoute] = actions;
-        this.emit('route', 'add', { [validRoute]: actions });
+        this.emitter('route', 'create', { [validRoute]: actions });
         return this;
     }
 }

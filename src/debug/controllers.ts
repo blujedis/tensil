@@ -5,7 +5,7 @@ import users from './data';
 export class UserController extends Controller {
 
   policies: IPolicies = {
-    find: ['log', 'log2']
+    read: ['log', 'log2']
   };
 
   routes: IRoutes = {
@@ -22,18 +22,25 @@ export class UserController extends Controller {
     next();
   }
 
+  // get /:id?
+  // get /find/:id?
   @action()
-  find(req: Request, res: Response) {
+  read(req: Request, res: Response) {
     if (req.params.id)
       return res.json(users[req.params.id]);
     res.json(Object.keys(users).map(k => users[k]));
   }
 
-  @action()
+  @action(HttpMethod.Post, 'create')
   create(req: Request, res: Response) {
     const nextId = parseInt(Object.keys(users).pop(), 10) + 1;
     users[nextId] = req.body;
     res.status(201).json(nextId);
+  }
+
+  @action(HttpMethod.Post)
+  methodOnly(req, res) {
+    res.send('test-method-only');
   }
 
   @action(HttpMethod.Get, '/custom')
@@ -41,19 +48,12 @@ export class UserController extends Controller {
     res.send('custom');
   }
 
-  @route(HttpMethod.Get, '/show/all')
+  @route(HttpMethod.Get, '/show/all', 'log')
   show(req, res, next) {
     res.send('show-all');
   }
 
-  // @route([
-  //   { method: HttpMethod.Get, path: '' }
-  // ])
-
-  @route([
-    { method: HttpMethod.Get },
-    { method: HttpMethod.Post, path: '/other', filters: [] }
-  ])
+  @route(HttpMethod.Post)
   multiple(req, res) {
     res.send('test-multiple');
   }

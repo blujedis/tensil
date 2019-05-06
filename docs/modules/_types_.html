@@ -74,8 +74,10 @@
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_types_.contexttype.html" class="tsd-kind-icon">Context<wbr>Type</a></li>
+								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_types_.decoratortype.html" class="tsd-kind-icon">Decorator<wbr>Type</a></li>
 								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_types_.entitytype.html" class="tsd-kind-icon">Entity<wbr>Type</a></li>
 								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_types_.httpmethod.html" class="tsd-kind-icon">Http<wbr>Method</a></li>
+								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_types_.routetype.html" class="tsd-kind-icon">Route<wbr>Type</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -91,6 +93,9 @@
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.iconfig.html" class="tsd-kind-icon">IConfig</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ientities.html" class="tsd-kind-icon">IEntities</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ifilters.html" class="tsd-kind-icon">IFilters</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.igenerateactionconfig.html" class="tsd-kind-icon">IGenerate<wbr>Action<wbr>Config</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.igenerateconfigbase.html" class="tsd-kind-icon">IGenerate<wbr>Config<wbr>Base</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.igeneraterouteconfig.html" class="tsd-kind-icon">IGenerate<wbr>Route<wbr>Config</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/_types_.imethods.html" class="tsd-kind-icon">IMethods</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ioptions.html" class="tsd-kind-icon">IOptions</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_types_.ipolicies.html" class="tsd-kind-icon">IPolicies</a></li>
@@ -111,13 +116,19 @@
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#constructor" class="tsd-kind-icon">Constructor</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#contexthandlers" class="tsd-kind-icon">Context<wbr>Handlers</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#contexttypes" class="tsd-kind-icon">Context<wbr>Types</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#decoratortypes" class="tsd-kind-icon">Decorator<wbr>Types</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#descriptor" class="tsd-kind-icon">Descriptor</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#entitytypes" class="tsd-kind-icon">Entity<wbr>Types</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#filter" class="tsd-kind-icon">Filter</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#httpmethods" class="tsd-kind-icon">Http<wbr>Methods</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#noop" class="tsd-kind-icon">Noop</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#policy" class="tsd-kind-icon">Policy</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#requesterrorhandler" class="tsd-kind-icon">Request<wbr>Error<wbr>Handler</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#requesthandler" class="tsd-kind-icon">Request<wbr>Handler</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#requesthandlers" class="tsd-kind-icon">Request<wbr>Handlers</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#requestparamhandler" class="tsd-kind-icon">Request<wbr>Param<wbr>Handler</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_types_.html#routetypes" class="tsd-kind-icon">Route<wbr>Types</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_types_.html#valuesof" class="tsd-kind-icon">Values<wbr>Of</a></li>
 							</ul>
 						</section>
 					</div>
@@ -131,7 +142,7 @@
 					<div class="tsd-signature tsd-kind-icon">Action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#requesthandlers" class="tsd-signature-type">RequestHandlers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L38">types.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L65">types.ts:65</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -141,7 +152,7 @@
 					<div class="tsd-signature tsd-kind-icon">Awaiter<wbr>Response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L28">types.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L52">types.ts:52</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -151,7 +162,7 @@
 					<div class="tsd-signature tsd-kind-icon">Constructor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L25">types.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L50">types.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -166,7 +177,7 @@
 					<div class="tsd-signature tsd-kind-icon">Context<wbr>Handlers<span class="tsd-signature-symbol">:</span> <a href="_types_.html#filter" class="tsd-signature-type">Filter</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#policy" class="tsd-signature-type">Policy</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#action" class="tsd-signature-type">Action</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L41">types.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L68">types.ts:68</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -176,7 +187,64 @@
 					<div class="tsd-signature tsd-kind-icon">Context<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof ContextType</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L24">types.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L43">types.ts:43</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="decoratortypes" class="tsd-anchor"></a>
+					<h3>Decorator<wbr>Types</h3>
+					<div class="tsd-signature tsd-kind-icon">Decorator<wbr>Types<span class="tsd-signature-symbol">:</span> <a href="_types_.html#valuesof" class="tsd-signature-type">ValuesOf</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/_types_.decoratortype.html" class="tsd-signature-type">DecoratorType</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L44">types.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="descriptor" class="tsd-anchor"></a>
+					<h3>Descriptor</h3>
+					<div class="tsd-signature tsd-kind-icon">Descriptor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L73">types.ts:73</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, descriptor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PropertyDescriptor</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PropertyDescriptor</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>target: <span class="tsd-signature-type">any</span></h5>
+											</li>
+											<li>
+												<h5>key: <span class="tsd-signature-type">string</span></h5>
+											</li>
+											<li>
+												<h5>descriptor: <span class="tsd-signature-type">PropertyDescriptor</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PropertyDescriptor</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="entitytypes" class="tsd-anchor"></a>
+					<h3>Entity<wbr>Types</h3>
+					<div class="tsd-signature tsd-kind-icon">Entity<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof EntityType</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L42">types.ts:42</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -186,7 +254,17 @@
 					<div class="tsd-signature tsd-kind-icon">Filter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#requesthandlers" class="tsd-signature-type">RequestHandlers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L34">types.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L61">types.ts:61</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="httpmethods" class="tsd-anchor"></a>
+					<h3>Http<wbr>Methods</h3>
+					<div class="tsd-signature tsd-kind-icon">Http<wbr>Methods<span class="tsd-signature-symbol">:</span> <a href="_types_.html#valuesof" class="tsd-signature-type">ValuesOf</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/_types_.httpmethod.html" class="tsd-signature-type">HttpMethod</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L45">types.ts:45</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -196,7 +274,7 @@
 					<div class="tsd-signature tsd-kind-icon">Noop<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L26">types.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L51">types.ts:51</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -227,7 +305,7 @@
 					<div class="tsd-signature tsd-kind-icon">Policy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#requesthandlers" class="tsd-signature-type">RequestHandlers</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L36">types.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L63">types.ts:63</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -237,7 +315,7 @@
 					<div class="tsd-signature tsd-kind-icon">Request<wbr>Error<wbr>Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L30">types.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L57">types.ts:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -277,7 +355,7 @@
 					<div class="tsd-signature tsd-kind-icon">Request<wbr>Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L29">types.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L56">types.ts:56</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -314,7 +392,7 @@
 					<div class="tsd-signature tsd-kind-icon">Request<wbr>Handlers<span class="tsd-signature-symbol">:</span> <a href="_types_.html#requesthandler" class="tsd-signature-type">RequestHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#requesterrorhandler" class="tsd-signature-type">RequestErrorHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#requestparamhandler" class="tsd-signature-type">RequestParamHandler</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L32">types.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L59">types.ts:59</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -324,7 +402,7 @@
 					<div class="tsd-signature tsd-kind-icon">Request<wbr>Param<wbr>Handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/930d76c/src/types.ts#L31">types.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L58">types.ts:58</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -355,6 +433,31 @@
 									</li>
 								</ul>
 							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="routetypes" class="tsd-anchor"></a>
+					<h3>Route<wbr>Types</h3>
+					<div class="tsd-signature tsd-kind-icon">Route<wbr>Types<span class="tsd-signature-symbol">:</span> <a href="_types_.html#valuesof" class="tsd-signature-type">ValuesOf</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/_types_.routetype.html" class="tsd-signature-type">RouteType</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L46">types.ts:46</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+					<a name="valuesof" class="tsd-anchor"></a>
+					<h3>Values<wbr>Of</h3>
+					<div class="tsd-signature tsd-kind-icon">Values<wbr>Of<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/blujedis/tensil/blob/863f20d/src/types.ts#L38">types.ts:38</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
 						</ul>
 					</div>
 				</section>
@@ -394,6 +497,9 @@
 						<a href="_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_temp_.html">"temp"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_tensil_.html">"tensil"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
@@ -410,10 +516,16 @@
 						<a href="../enums/_types_.contexttype.html" class="tsd-kind-icon">Context<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/_types_.decoratortype.html" class="tsd-kind-icon">Decorator<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/_types_.entitytype.html" class="tsd-kind-icon">Entity<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/_types_.httpmethod.html" class="tsd-kind-icon">Http<wbr>Method</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/_types_.routetype.html" class="tsd-kind-icon">Route<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="../classes/_types_.httperror.html" class="tsd-kind-icon">Http<wbr>Error</a>
@@ -429,6 +541,15 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/_types_.ifilters.html" class="tsd-kind-icon">IFilters</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_types_.igenerateactionconfig.html" class="tsd-kind-icon">IGenerate<wbr>Action<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_types_.igenerateconfigbase.html" class="tsd-kind-icon">IGenerate<wbr>Config<wbr>Base</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/_types_.igeneraterouteconfig.html" class="tsd-kind-icon">IGenerate<wbr>Route<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/_types_.imethods.html" class="tsd-kind-icon">IMethods</a>
@@ -475,8 +596,20 @@
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_types_.html#contexttypes" class="tsd-kind-icon">Context<wbr>Types</a>
 					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#decoratortypes" class="tsd-kind-icon">Decorator<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#descriptor" class="tsd-kind-icon">Descriptor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#entitytypes" class="tsd-kind-icon">Entity<wbr>Types</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_types_.html#filter" class="tsd-kind-icon">Filter</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#httpmethods" class="tsd-kind-icon">Http<wbr>Methods</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="_types_.html#noop" class="tsd-kind-icon">Noop</a>
@@ -495,6 +628,12 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_types_.html#requestparamhandler" class="tsd-kind-icon">Request<wbr>Param<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="_types_.html#routetypes" class="tsd-kind-icon">Route<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_types_.html#valuesof" class="tsd-kind-icon">Values<wbr>Of</a>
 					</li>
 				</ul>
 			</nav>

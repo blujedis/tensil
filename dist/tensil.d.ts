@@ -61,6 +61,12 @@ declare class Tensil extends Entity {
     constructor();
     constructor(options: IOptions);
     constructor(app: Express, options?: IOptions);
+    /**
+     * Binds the context to a looked up handler method.
+     *
+     * @param entity the entity context to be bound to function.
+     * @param fn the function whose context should be bound to entity.
+     */
     protected wrapContext(entity: any, fn: any): () => any;
     /**
      * Creates transform to be used with ReadStream.
@@ -81,6 +87,34 @@ declare class Tensil extends Entity {
      * @param err the error to be cloned.
      */
     protected cloneError<T extends Error = Error>(err: T, pick?: string | string[]): T;
+    /**
+     * Converts entity type or entity with key property to namespace.
+     *
+     * @example
+     * .toNamespace(UserController, 'create');
+     * .toNamespace('UserController', 'create');
+     *
+     * @param entity an entity type name or entity.
+     * @param key the key to be joined to namespace.
+     */
+    protected toNamespace(entity: Service | Controller | string, key: string): string;
+    /**
+     * Takes a namespaces and converts to key value of entity or entity type and key.
+     *
+     * @example
+     * .fromNamespace('UserController.create');
+     * .fromNamespace('UserController.create', true);
+     *
+     * @param namespace the namspace to be split to entity and key.
+     * @param asEntity when true returns an entity instead of entity type.
+     */
+    protected fromNamespace<T extends Entity = Entity>(namespace: string, asEntity?: boolean): {
+        entity: T;
+        key: string;
+    } | {
+        entity: string;
+        key: string;
+    };
     /**
      * Normalizes namespaces for lookups.
      *
@@ -377,7 +411,7 @@ declare class Tensil extends Entity {
      * @param entity the Service or Controller to configure init data for.
      * @param contexts the configuration contexts to merge/init data for.
      */
-    configure(entity: Service | Controller, contexts: IConfig): Service | Controller;
+    protected configure(entity: Service | Controller, contexts: IConfig): Service | Controller;
     /**
      * Iterates configuration contexts normalizing them for the purpose of building routes.
      *
@@ -386,7 +420,7 @@ declare class Tensil extends Entity {
      *
      * @param entity the Service or Controller to be normalized.
      */
-    normalizeEntity(entity: Service | Controller): Service | Controller;
+    protected normalizeEntity(entity: Service | Controller): Service | Controller;
     /**
      * Iterates each entity, loads init data then normalizes.
      *
@@ -442,6 +476,12 @@ declare class Tensil extends Entity {
      * @param isSSL indicates an Https server is being created.
      */
     withServer(app: Express, options: HttpsServerOptions, isSSL: boolean): HttpsServer;
+    /**
+     * Sets whether or not to run in strict mode.
+     *
+     * @param strict boolean value indicating strict mode.
+     */
+    strict(strict?: boolean): this;
     /**
      * Mounts the routes from the generated routeMap to their respective routers.
      *

@@ -16,22 +16,24 @@ const BASE_DIR = path_1.join(__dirname, '../');
 const ERROR_VIEW = path_1.join(BASE_DIR, 'dist/views/error.html');
 const DEFAULT_OPTIONS = {
     templates: {
-        get: types_1.HttpMethod.Get + ' ' + '/{{action}}',
-        put: types_1.HttpMethod.Put + ' ' + '/{{action}}/:id?',
-        post: types_1.HttpMethod.Post + ' ' + '/{{action}}',
-        del: types_1.HttpMethod.Del + ' ' + '/{{action}}/:id?',
-        find: types_1.HttpMethod.Get + ' ' + '/{{action}}/:id?',
-        create: types_1.HttpMethod.Post + ' ' + '/{{action}}',
-        update: types_1.HttpMethod.Put + ' ' + '/{{action}}/:id?',
-        delete: types_1.HttpMethod.Del + ' ' + '/{{action}}/:id?',
+        get: '/{{key}}',
+        put: '/{{key}}/:id?',
+        post: '/{{key}}',
+        del: '/{{key}}/:id?',
+        read: '/{{key}}/:id?',
+        create: '/{{key}}',
+        update: '/{{key}}/:id?',
+        delete: '/{{key}}/:id?',
     },
     rest: true,
-    crud: true,
+    crud: false,
     sort: true,
-    formatter: (key, path, type) => {
-        if (type === 'rest')
-            return path.replace(/{{action}}/g, '').replace(/\/\//g, '/');
-        return path.replace(/{{action}}/g, key);
+    strict: undefined,
+    formatter: (type, tplt, props) => {
+        if (type === types_1.RouteType.Rest)
+            props.key = '';
+        const compiled = lodash_1.template(tplt)(props);
+        return compiled.replace(/\/\//g, '/');
     },
     themes: {
         500: { primary: '#661717', accent: '#dd0d2c' },
@@ -55,7 +57,7 @@ class Controller extends entity_1.Entity {
     policy(key, policies, force = false) {
         if (lodash_1.isObject(key)) {
             this.policies = { ...key };
-            this.emit('policy', 'add', this.policies);
+            this.emitter('policy', 'create', this.policies);
             return this;
         }
         if (lodash_1.isBoolean(key)) {
@@ -65,12 +67,12 @@ class Controller extends entity_1.Entity {
         policies = lodash_1.castArray(policies);
         const validKey = this.validateKey(key, 'policies', force);
         if (!validKey) {
-            this.emit('policy', 'error', new Error(`Policy key "${key}" exists set force to true to overwrite`));
+            this.emitter('policy', 'invalid', new Error(`Policy key "${key}" exists set force to true to overwrite`));
             return this;
         }
         this.policies = this.policies || {};
         this.policies[validKey] = policies;
-        this.emit('policy', 'add', { [validKey]: policies });
+        this.emitter('policy', 'create', { [validKey]: policies });
         return this;
     }
 }
@@ -88,10 +90,25 @@ class Tensil extends entity_1.Entity {
         this.options = { ...DEFAULT_OPTIONS, ...options };
     }
     // PRIVATE & PROTECTED // 
+    /**
+     * Binds the context to a looked up handler method.
+     *
+     * @param entity the entity context to be bound to function.
+     * @param fn the function whose context should be bound to entity.
+     */
     wrapContext(entity, fn) {
         return function () {
             const args = [].slice.call(arguments);
-            return fn.apply(entity, args);
+            try {
+                return fn.apply(entity, args);
+            }
+            catch (ex) {
+                const next = args[args.length - 1];
+                if (lodash_1.isFunction(next))
+                    return next(ex);
+                // As last resort throw the error.
+                throw ex;
+            }
         };
     }
     /**
@@ -129,6 +146,43 @@ class Tensil extends entity_1.Entity {
             a[c] = err[c];
             return a;
         }, {});
+    }
+    /**
+     * Converts entity type or entity with key property to namespace.
+     *
+     * @example
+     * .toNamespace(UserController, 'create');
+     * .toNamespace('UserController', 'create');
+     *
+     * @param entity an entity type name or entity.
+     * @param key the key to be joined to namespace.
+     */
+    toNamespace(entity, key) {
+        if (!lodash_1.isString(entity))
+            entity = entity.type;
+        return `${entity}.${key}`;
+    }
+    /**
+     * Takes a namespaces and converts to key value of entity or entity type and key.
+     *
+     * @example
+     * .fromNamespace('UserController.create');
+     * .fromNamespace('UserController.create', true);
+     *
+     * @param namespace the namspace to be split to entity and key.
+     * @param asEntity when true returns an entity instead of entity type.
+     */
+    fromNamespace(namespace, asEntity) {
+        const parts = namespace.split('.');
+        if (asEntity)
+            return {
+                entity: this.entities[parts[0]],
+                key: parts[1]
+            };
+        return {
+            entity: parts[0],
+            key: parts[1]
+        };
     }
     /**
      * Normalizes namespaces for lookups.
@@ -191,8 +245,11 @@ class Tensil extends entity_1.Entity {
         // If no result fallback check if class contains handler.
         result = lodash_1.get(entity, parts.join('.'));
         // Since this was looked up bind the context.
-        if (result && lodash_1.isFunction(result))
+        if (result && lodash_1.isFunction(result)) {
             result = this.wrapContext(entity, result);
+            // Store the namespace
+            result.__namespace__ = namespace;
+        }
         return result;
     }
     /**
@@ -442,9 +499,9 @@ class Tensil extends entity_1.Entity {
         view = view || ERROR_VIEW;
         const handler = async (err, req, res, next) => {
             const status = err.status || 500;
-            const statusText = err.status ? err.statusText || statuses_1.STATUS_CODES[status] : text;
             const theme = this.options.themes[status];
-            err = new types_1.HttpError(err.message, status, statusText, theme);
+            text = err.status ? statuses_1.STATUS_CODES[status] : text;
+            err = new types_1.HttpError(err.message, status, text, theme);
             const payload = this.isProd ? this.cloneError(err, 'stack') : this.cloneError(err);
             if (this.isXHR(req))
                 return res.status(status).json(payload);
@@ -588,26 +645,30 @@ class Tensil extends entity_1.Entity {
         const root = this._routeMap[mount] = this._routeMap[mount] || {};
         const config = this.parseRoute(route, base);
         config.methods.forEach(method => {
+            const origMethod = method;
             // For redirect, view, param we need to add to get collection.
-            if (lodash_1.includes(['view', 'redirect', 'param'], method))
+            if (lodash_1.includes(['view', 'redirect'], method))
                 method = 'get';
             root[method] = root[method] || {};
             const path = config.fullPath;
             // Show warning overriding path.
-            if (lodash_1.has(root[method], path) && process.env.NODE_ENV !== 'production') {
-                this.emit('route:duplicate', new Error(`[TENSIL] WARN: overriding route path "${path}" mounted at "${mount}"`));
+            if (lodash_1.has(root[method], path)) {
+                this.emitter('route', 'duplicate', new Error(`Duplicate route "${path}" mounted at "${mount}" detected`));
                 // If generated don't overwrite defined route.
-                if (isGenerated)
+                if (this.options.strict)
                     return this;
             }
             const _handlers = handlers;
-            const isRedirect = method === 'redirect';
-            const isParam = method === 'param';
-            const isView = method === 'view';
+            const isRedirect = origMethod === 'redirect';
+            const isParam = origMethod === 'param';
+            const isView = origMethod === 'view';
             const namespaces = _handlers.map(handler => {
                 return handler.__namespace__ || handler.name || 'Anonymous';
             });
-            lodash_1.set(root, `${method}.${path}`, { handlers, entity, method, isRedirect, isParam, isView, namespaces });
+            const routeKey = `${method}.${path}`;
+            const routeConfig = { mount, handlers, entity, method, isRedirect, isParam, isView, namespaces };
+            lodash_1.set(root, routeKey, routeConfig);
+            this.emitter('route', 'registered', routeKey, routeConfig);
         });
         return this;
     }
@@ -618,6 +679,9 @@ class Tensil extends entity_1.Entity {
      * @param contexts the configuration contexts to merge/init data for.
      */
     configure(entity, contexts) {
+        // Ensure templates.
+        // Not sure I like this, maybe a 
+        this.templates = this.templates || { ...(this.options.templates) };
         entity.filters = entity.filters || {};
         entity.routes = entity.routes || {};
         if (entity.baseType === types_1.EntityType.Controller) {
@@ -629,6 +693,60 @@ class Tensil extends entity_1.Entity {
             throw new Error(`Service ${entity.type} cannot contain "policies", did you mean to use a Controller?`);
         }
         for (const k in contexts) {
+            if ((k === types_1.ContextType.actions || k === types_1.ContextType.routes)) {
+                for (const n in contexts[k]) {
+                    if (lodash_1.isEmpty(contexts[k]))
+                        continue;
+                    const decorators = contexts[k][n];
+                    // This is a decorator config.
+                    if (Array.isArray(decorators) && lodash_1.isPlainObject(decorators[0])) {
+                        decorators.forEach((d) => {
+                            const methods = lodash_1.castArray(d.methods);
+                            const ns = this.toNamespace(entity.type, d.key);
+                            const handler = this.lookupHandler(ns);
+                            let filters = lodash_1.castArray(d.filters || []);
+                            // Handle Route Config
+                            if (d.decorator === types_1.DecoratorType.Route) {
+                                // If no route emit error.
+                                if (!d.path)
+                                    this.emitter('route', 'invalid', new Error(`Route failed, path for namespace "${ns}" is undefined`));
+                                else
+                                    contexts[k][`${methods.join('|')} ${d.path}`] = [...filters, handler];
+                            }
+                            // Handle Action Config
+                            else {
+                                const tpltKey = d.template || (!d.path && d.key);
+                                const tplt = !d.path && tpltKey && this.templates[tpltKey];
+                                // For actions we need to lookup the policy.
+                                const policies = entity.policies;
+                                const globalPol = lodash_1.castArray(policies['*'] || []);
+                                filters = [...globalPol, ...lodash_1.castArray(policies[d.key] || [])];
+                                // Has known template.
+                                if (tplt) {
+                                    const props = {
+                                        key: d.key,
+                                        methods: d.methods,
+                                        decorator: d.decorator
+                                    };
+                                    if (this.options.crud)
+                                        contexts[k][methods.join('|') + ' ' +
+                                            this.options.formatter(types_1.RouteType.Crud, tplt, props)] = [...filters, handler];
+                                    if (this.options.rest)
+                                        contexts[k][methods.join('|') + ' ' +
+                                            this.options.formatter(types_1.RouteType.Rest, tplt, props)] = [...filters, handler];
+                                }
+                                else {
+                                    if (!d.path)
+                                        d.path = `/${d.key}`;
+                                    contexts[k][`${methods.join('|')} ${d.path}`] = [...d.filters, handler];
+                                }
+                            }
+                        });
+                        // Delete the original key
+                        delete contexts[k][n];
+                    }
+                }
+            }
             entity[k] = { ...contexts[k], ...entity[k] };
         }
         return entity;
@@ -643,59 +761,13 @@ class Tensil extends entity_1.Entity {
      */
     normalizeEntity(entity) {
         const ctrl = (entity.baseType === types_1.EntityType.Controller) && entity;
-        // Entity is a controller.
+        let globalPolicies = [];
+        // If controller lookup global policies.
         if (ctrl) {
-            // Ensure templates.
-            this.templates = this.templates || { ...(this.options.templates) };
-            // Check global policy.
-            ctrl.policies = ctrl.policies || {};
             ctrl.policies['*'] = this.normalizeHandlers(ctrl.policies['*'], types_1.ContextType.policies, '*');
+            globalPolicies = ctrl.policies['*'];
         }
-        // Routes may have been generated by decorator
-        // Ensure lookup of action.
-        // NOTE: Decorator routes configured as:
-        // {
-        // someMethod: 'get /custom/route'
-        // OR
-        // someMethod: ['Some.Filter', 'Other.Filter', 'get /custom/route']
-        // }
-        for (const k in entity.routes) {
-            // Ignore special routes no lookup needed here.
-            // May need to refactor Normalize Handlers to make
-            // more clear handle all these scenarios in one palce.
-            if (lodash_1.includes(['view', 'redirect', 'param'], k.split(' ')[0].toLowerCase()))
-                continue;
-            let key = k;
-            const lookup = `${entity.type}.${k}`;
-            const route = entity.routes[k];
-            const handlers = lodash_1.castArray(route);
-            // TODO: refactor this into method basically duplication here :(
-            // Multiple route configs passed in decorator.
-            if (lodash_1.isPlainObject(handlers[0])) {
-                const configs = handlers;
-                configs.forEach(c => {
-                    c.path = c.path || `/${k}`;
-                    entity.routes[c.method + ' ' + c.path] = [...(c.filters || []), lookup];
-                });
-                delete entity.routes[k];
-            }
-            else {
-                const lastHandler = handlers[handlers.length - 1];
-                // If last handler is NOT dot notation we need
-                // to set it as the key/route.
-                if (lodash_1.isString(lastHandler) && !~lastHandler.indexOf('.')) {
-                    // Last handler is route remove it.
-                    key = handlers.pop();
-                    // push the lookup which maps to Class.method.
-                    handlers.push(lookup);
-                    // Update new route configuration.
-                    entity.routes[key] = handlers;
-                    // delete the existing key from object.
-                    delete entity.routes[k];
-                }
-            }
-        }
-        const contexts = ctrl ? ['filters', 'policies', 'routes'] : ['filters', 'routes'];
+        const contexts = ctrl ? ['filters', 'policies', 'routes', 'actions'] : ['filters', 'routes'];
         contexts.forEach((context) => {
             this.normalizeNamespaces(entity, context);
             for (const key in entity[context]) {
@@ -707,65 +779,26 @@ class Tensil extends entity_1.Entity {
                 const lastHandler = handlers[handlers.length - 1];
                 handlers = this.normalizeHandlers(handlers, context, key);
                 if (ctrl) {
-                    // When context is policies merge global policy.
-                    if (context === types_1.ContextType.policies)
-                        handlers = [...ctrl.policies['*'], ...handlers];
                     // If route we need to lookup the policy for 
                     // the route when last handler is string.
-                    if (context === types_1.ContextType.routes) {
+                    if (context === types_1.ContextType.routes || context === types_1.ContextType.actions) {
                         if (lodash_1.isString(lastHandler)) {
                             const lastHandlerPolicy = lastHandler.split('.');
                             // If policy exists look it up and ensure handlers.
                             if (ctrl.policies[lastHandlerPolicy[lastHandlerPolicy.length - 1]]) {
                                 lastHandlerPolicy.splice(1, 0, 'policies');
-                                const policyHandlers = this.normalizeHandlers([lastHandlerPolicy.join('.')], 'routes', key);
-                                handlers = [...policyHandlers, ...handlers];
+                                const policies = this.normalizeHandlers([lastHandlerPolicy.join('.')], 'routes', key);
+                                handlers = [...globalPolicies, ...policies, ...handlers];
                             }
                         }
                     }
                 }
                 entity[context][key] = handlers = lodash_1.uniq(handlers);
                 // If route bind to router.
-                if (context === types_1.ContextType.routes)
-                    this.registerRoute(entity.mountPath, entity.basePath, key, handlers, entity.type);
+                if (context === types_1.ContextType.routes || context === types_1.ContextType.actions)
+                    this.registerRoute(entity.mountPath, entity.basePath, key, handlers, entity.type, context === types_1.ContextType.actions);
             }
         });
-        if (ctrl) {
-            // Generate routes for controllers.
-            if (ctrl.actions) {
-                for (const k in ctrl.actions) {
-                    let route = ctrl.actions[k].trim();
-                    route = (route || this.templates[k]) || 'get';
-                    route = this.templates[route] || route || '';
-                    const actionKey = `${entity.type}.${k}`;
-                    // If no route by this point throw error.
-                    if (!route)
-                        throw new Error(`Action "${actionKey}" route could NOT be generated using path ${route}`);
-                    // Lookup the policies for action.
-                    let handlers = this.lookupHandler(actionKey); // this.normalizeHandlers(actionKey, ContextType.actions, k);
-                    if (!handlers)
-                        throw new Error(`Failed to lookup action "${actionKey}" for route "${route}`);
-                    handlers = lodash_1.castArray(handlers);
-                    // Lookup action policies.
-                    const policies = this.normalizeHandlers(ctrl.policies[k], types_1.ContextType.policies, k);
-                    handlers = lodash_1.uniq([...ctrl.policies['*'], ...policies, ...handlers]);
-                    const routes = [];
-                    // Generate rest route.
-                    if (this.options.rest) {
-                        const restPath = this.options.formatter(k, route, 'rest');
-                        routes.push(restPath);
-                        this.registerRoute(ctrl.mountPath, ctrl.basePath, restPath, handlers, entity.type, true);
-                    }
-                    // Generate crud route.
-                    if (this.options.crud) {
-                        const crudPath = this.options.formatter(k, route, 'crud');
-                        routes.push(crudPath);
-                        // this.registerRoute(ctrl.mountPath, ctrl.basePath, crudPath, handlers, entity.type, true);
-                    }
-                    // console.log(...routes);
-                }
-            }
-        }
         return entity;
     }
     /**
@@ -805,6 +838,15 @@ class Tensil extends entity_1.Entity {
         return server;
     }
     /**
+     * Sets whether or not to run in strict mode.
+     *
+     * @param strict boolean value indicating strict mode.
+     */
+    strict(strict = true) {
+        this.options.strict = strict;
+        return this;
+    }
+    /**
      * Mounts the routes from the generated routeMap to their respective routers.
      *
      * @example
@@ -834,7 +876,7 @@ class Tensil extends entity_1.Entity {
                     .forEach(r => {
                     const config = methods[m][r];
                     const rtr = { router: k };
-                    self.emit('mount:route', { ...config, ...({ router: k }) });
+                    self.emitter('route', 'mounted', { ...config, ...({ mount: k }) });
                     router[m](r, ...(config.handlers));
                 });
             }
@@ -842,7 +884,7 @@ class Tensil extends entity_1.Entity {
             if (k !== '/')
                 this.app.use(k, router);
         }
-        this.emit('mount:finished');
+        this.emitter('mount', 'completed');
         return this;
     }
     /**
@@ -858,7 +900,7 @@ class Tensil extends entity_1.Entity {
             .normalize()
             .mount();
         this._initialized = true;
-        this.emit('init:finished');
+        this.emitter('init', 'completed');
         return this;
     }
     start(port, host, fn) {
@@ -873,14 +915,15 @@ class Tensil extends entity_1.Entity {
         this.port = port = (port || 3000);
         this.host = host = (host || '127.0.0.1');
         fn = fn || (() => {
+            const msg = `[TENSIL]: SERVER Listening at ${host}:${port}`;
             if (process.env.NODE_ENV !== 'test')
-                console.log(`[TENSIL]: SERVER Listening at ${host}:${port}`);
+                console.log(msg);
         });
         // Ensure Tensil is initialized.
         this.init();
         const server = (this.server || this.app)
             .listen(port, host, () => {
-            this.emit('start:finish');
+            this.emitter('start', 'completed');
             fn();
         });
         // If no server then we started using

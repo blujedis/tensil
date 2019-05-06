@@ -14,7 +14,7 @@ describe('Tensil', () => {
     assert.deepEqual(Object.keys(tensil.routeMap['/id']), ['get', 'post']);
   });
 
-  it('should request user from find method', (done) => {
+  it('should request user from read method', (done) => {
 
     chai.request(tensil.server)
       .get('/id/user')

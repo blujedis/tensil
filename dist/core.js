@@ -15,13 +15,6 @@ class Core {
     static getInstance(app) {
         return (this._instance || (this._instance = new this(app)));
     }
-    // PLACEHOLDER
-    // formatMessage(message: string, map?: IMap<any>) {
-    //   message = template(message)(map || {});
-    //   const caller = parseCaller(3);
-    //   return template(this.config.messageTemplate)
-    // ({ program: this.config.program, ministack: caller.ministack, message });
-    // }
     /**
      * Gets the prototypeOf name for the provided Entity class.
      *

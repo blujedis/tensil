@@ -1,12 +1,50 @@
-import { castArray, isPlainObject } from 'lodash';
-import { HttpMethod, EntityType, Filter } from './types';
+import { castArray, isPlainObject, isString } from 'lodash';
+import { HttpMethod, EntityType, Filter, Descriptor, IGenerateRouteConfig, DecoratorType } from './types';
 
-export type Descriptor = (target: any, key: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
+/**
+ * Helper function to convert decorator params to array of config objects.
+ * 
+ * @private
+ */
+function normalizeDecorator(target: any, key: string,
+  methodsOrConfigs: HttpMethod | HttpMethod[] | IGenerateRouteConfig[],
+  path: string, filters: Filter | Filter[] = [], type: DecoratorType = DecoratorType.Action) {
 
-export interface IDecoratorRoute {
-  method: HttpMethod | HttpMethod[];
-  path?: string;
-  filters?: Filter | Filter[];
+  let methods: HttpMethod[];
+  let configs: Partial<IGenerateRouteConfig>[];
+
+  const template = (path && !/^\//.test(path) && path) || undefined;
+
+  // Set the default path.
+  path = template ? '' : path;
+
+  if (Array.isArray(methodsOrConfigs) && isPlainObject(methodsOrConfigs[0])) {
+    configs = methodsOrConfigs as IGenerateRouteConfig[];
+    methodsOrConfigs = undefined;
+  }
+  else {
+    methods = (methodsOrConfigs && castArray(methodsOrConfigs as HttpMethod)) || undefined;
+    configs = [
+      {
+        methods,
+        filters,
+        template,
+        path
+      }
+    ];
+  }
+
+  configs = configs.map(c => {
+    c.key = c.key || key;
+    c.methods = castArray(c.methods || [HttpMethod.Get]);
+    c.decorator = type;
+    c.path = c.path || '';
+    c.filters = castArray(c.filters || []);
+    return c;
+  });
+
+  return configs;
+
 }
 
 /**
@@ -49,19 +87,6 @@ export function filter(target: any, key: string, descriptor: PropertyDescriptor)
 export function action(): Descriptor;
 
 /**
- * Creates action route using specified template.
- * 
- * @example
- * .action('my-template-name');
- * find(req, res, next) {
- *    // handle request.
- * }
- * 
- * @param template the template name from options.templates
- */
-export function action(template: string): Descriptor;
-
-/**
  * Creates an action route for each specified Http method.
  * 
  * @example
@@ -72,12 +97,13 @@ export function action(template: string): Descriptor;
  * }
  * 
  * @param methods the Http Methods to apply to each route.
- * @param path a custom path to use for the route.
+ * @param path the path or template to be used, paths begin with /
  */
-export function action(methods: HttpMethod | HttpMethod[], path: string): Descriptor;
-export function action(methods?: string | HttpMethod | HttpMethod[], path: string = '') {
+export function action(methods?: HttpMethod | HttpMethod[], pathOrTemplate?: string): Descriptor;
+export function action(methods?: HttpMethod | HttpMethod[], pathOrTemplate?: string) {
 
-  methods = methods || [];
+  if (methods === HttpMethod.Param)
+    throw new Error('Whoops method "Param" is not valid for action decorator, did you mean to use "@param()"?');
 
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
 
@@ -88,14 +114,9 @@ export function action(methods?: string | HttpMethod | HttpMethod[], path: strin
     if (!isFunc || !isCtrl)
       throw new Error(`Cannot set "action" decorator on ${key}, is this a method and controller?`);
 
-    if (path)
-      path = '/' + `${path}`.replace(/^\/\/?/, '');
-
-    path = (castArray(methods as string).join('|') + ' ' + path).trim();
-
     target.constructor.__INIT_DATA__ = target.constructor.__INIT_DATA__ || {};
     target.constructor.__INIT_DATA__.actions = target.constructor.__INIT_DATA__.actions || {};
-    target.constructor.__INIT_DATA__.actions[key] = path;
+    target.constructor.__INIT_DATA__.actions[key] = normalizeDecorator(target, key, methods, pathOrTemplate);
 
     return descriptor;
 
@@ -114,7 +135,7 @@ export function action(methods?: string | HttpMethod | HttpMethod[], path: strin
  * 
  * @param routes route configuration objects.
  */
-export function route(methods: IDecoratorRoute[]): Descriptor;
+export function route(methods: IGenerateRouteConfig[]): Descriptor;
 
 /**
  * Creates route for each specified Http method.
@@ -129,11 +150,11 @@ export function route(methods: IDecoratorRoute[]): Descriptor;
 export function route(methods: HttpMethod | HttpMethod[],
   path?: string, filters?: Filter | Filter[]): Descriptor;
 
-export function route(methods: HttpMethod | HttpMethod[] | IDecoratorRoute[],
+export function route(methods: HttpMethod | HttpMethod[] | IGenerateRouteConfig[],
   path?: string, filters?: Filter | Filter[]) {
 
-  methods = methods || [];
-  filters = castArray(filters || []);
+  if (methods === HttpMethod.Param)
+    throw new Error('Whoops method "Param" is not valid for action decorator, did you mean to use "@param()"?');
 
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
 
@@ -142,21 +163,13 @@ export function route(methods: HttpMethod | HttpMethod[] | IDecoratorRoute[],
     if (!isFunc)
       throw new Error(`Cannot set "router" decorator on ${key}, is this a method?`);
 
-    const isConfigs = isPlainObject(methods[0]);
-
-    if (!isConfigs && !path)
+    if (isString(methods) && !path)
       path = `/${key}`;
-
-    path = (castArray(methods as string).join('|') + ' ' + path).trim();
 
     target.constructor.__INIT_DATA__ = target.constructor.__INIT_DATA__ || {};
     target.constructor.__INIT_DATA__.routes = target.constructor.__INIT_DATA__.routes || {};
-
-    // if is object containing route configs iterate and defined.
-    if (isConfigs)
-      target.constructor.__INIT_DATA__.routes[key] = methods;
-    else
-      target.constructor.__INIT_DATA__.routes[key] = [...filters as any[], path];
+    target.constructor.__INIT_DATA__.routes[key] =
+      normalizeDecorator(target, key, methods, path, filters, DecoratorType.Route);
 
     return descriptor;
 

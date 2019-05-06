@@ -7,6 +7,7 @@ const tensil_1 = require("./tensil");
 __export(require("./types"));
 __export(require("./decorators"));
 __export(require("./utils"));
+__export(require("./entity"));
 __export(require("./tensil"));
 exports.default = tensil_1.default;
 //# sourceMappingURL=index.js.map

@@ -17,6 +17,14 @@ export declare class Entity extends EventEmitter {
     constructor();
     constructor(base: string, mount?: string, app?: Express);
     /**
+     * Helper method for emitting events.
+     *
+     * @param key the group key of the event.
+     * @param type the subtype of the group.
+     * @param args arguments to pass to the emit event.
+     */
+    protected emitter(key: string, type: string, ...args: any[]): this;
+    /**
      * Ensures a key does not exist in a context collection.
      *
      * @example
@@ -30,6 +38,10 @@ export declare class Entity extends EventEmitter {
     protected validateKey(key: string, context: ContextTypes, force?: boolean): string;
     app: Express;
     readonly router: Router;
+    /**
+     * Returns value indicating if running in strict mode.
+     */
+    isStrict(): boolean;
     /**
      * Merges policies with the provided object.
      *

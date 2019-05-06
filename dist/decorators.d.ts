@@ -1,10 +1,4 @@
-import { HttpMethod, Filter } from './types';
-export declare type Descriptor = (target: any, key: string, descriptor: PropertyDescriptor) => PropertyDescriptor;
-export interface IDecoratorRoute {
-    method: HttpMethod | HttpMethod[];
-    path?: string;
-    filters?: Filter | Filter[];
-}
+import { HttpMethod, Filter, Descriptor, IGenerateRouteConfig } from './types';
 /**
  * Adds method as filter in Service or Controller filters collection.
  *
@@ -30,18 +24,6 @@ export declare function filter(target: any, key: string, descriptor: PropertyDes
  */
 export declare function action(): Descriptor;
 /**
- * Creates action route using specified template.
- *
- * @example
- * .action('my-template-name');
- * find(req, res, next) {
- *    // handle request.
- * }
- *
- * @param template the template name from options.templates
- */
-export declare function action(template: string): Descriptor;
-/**
  * Creates an action route for each specified Http method.
  *
  * @example
@@ -52,9 +34,9 @@ export declare function action(template: string): Descriptor;
  * }
  *
  * @param methods the Http Methods to apply to each route.
- * @param path a custom path to use for the route.
+ * @param path the path or template to be used, paths begin with /
  */
-export declare function action(methods: HttpMethod | HttpMethod[], path: string): Descriptor;
+export declare function action(methods?: HttpMethod | HttpMethod[], pathOrTemplate?: string): Descriptor;
 /**
  * Creates multiple routes defined by array of configs.
  *
@@ -66,7 +48,7 @@ export declare function action(methods: HttpMethod | HttpMethod[], path: string)
  *
  * @param routes route configuration objects.
  */
-export declare function route(methods: IDecoratorRoute[]): Descriptor;
+export declare function route(methods: IGenerateRouteConfig[]): Descriptor;
 /**
  * Creates route for each specified Http method.
  *

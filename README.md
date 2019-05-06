@@ -184,21 +184,51 @@ const options = {
 
 ## Events
 
-A pipe **|** indicates or.
+A pipe "**|**" indicates or. By default all errors are emitted without halting by throwing an error. When <code>options.strict</code> is enabled then errors will be thrown. Note when NOT **prodcution** strict is automatically enabled when strict is undefined. This is done to ensure there are not duplicate registrations and routes in a production environment.
+
+Listening to all events for a given group.
+
+```ts
+tensil.on(`route`, (type, ...args) => {
+  // do something with route.
+});
+```
+
+To listen to a specific event type you combine the event with the type separated by a colon. When listening to a specific event type the **type** is removed from the first argument.
+
+```ts
+tensil.on(`route:mounted`, (...args) => {
+  // do something with route.
+});
+```
+
+You can also listen to ALL events as follows:
+
+
+```ts
+tensil.on(`*`, (event, type, ...args) => {
+  // do something with event.
+});
+```
 
 <table>
-  <tr><td>Name</td><td>Arg1</td><td>Arg2</td></tr>
-  <tr><td>register:error</td><td>Error</td></tr>
-  <tr><td>register:success</td><td>true</td></tr>
-  <tr><td>policy:error</td><td>Error</td></tr>
-  <tr><td>policy:success</td><td>{ policy } | { policies }</td></tr>
-  <tr><td>filter:error</td><td>Error</td></tr>
-  <tr><td>filter:success</td><td>{ filter } | { filters }</td></tr>
-  <tr><td>route:error</td><td>Error</td></tr>
-  <tr><td>route:duplicate</td><td>Error</td></tr>
-  <tr><td>mount:route</td><td>{ config }</td></tr>
-  <tr><td>mount:finished</td><td>undefined</td></tr>
-  <tr><td>init:finished</td><td>undefined</td></tr>
+    <caption>Tensil Events</caption>
+    <tr><th>Event</th><th>Type</th><th>Value1</th><th>Value2</th></tr>
+    <tr><td>entity</td><td>duplicate</td><td>Error</td><td></td></tr>
+    <tr><td>policy</td><td>invalid</td><td>Error</td><td></td></tr>
+    <tr><td>filter</td><td>invalid</td><td>Error</td><td></td></tr>
+    <tr><td>route</td><td>duplicate</td><td>Error</td>x<td></td></tr>
+    <tr><td>route</td><td>invalid</td><td>Error</td><td></td></tr>
+    <tr><td>entity</td><td>registered</td><td>Service | Controller</td><td></td></tr>
+    <tr><td>policy</td><td>create</td><td>IPolicy | IPolicies</td><td></td></tr>
+    <tr><td>filter</td><td>create</td><td>IFilter | IFilters }</td><td></td></tr>
+    <tr><td>route</td><td>create</td><td>IRoute | IRoutes</td><td></td></tr>
+    <tr><td>route</td><td>registered</td><td>path: string</td><td>IRouteConfig'<'Request, Response'>'</td></tr>
+    <tr><td>route</td><td>mounted</td><td>path: string</td><td>IRouteConfig'<'Request, Response'>'</td></tr>
+    <tr><td>mount</td><td>completed</td><td>null</td><td></td></tr>
+    <tr><td>init</td><td>completed</td><td>null</td><td></td></tr>
+    <tr><td>start</td><td>completed</td><td>null</td><td></td></tr>
+
 </table>
 
 ## Docs

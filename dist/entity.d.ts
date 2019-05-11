@@ -2,9 +2,10 @@
 import { Router, Express } from 'express';
 import { Core } from './core';
 import { EventEmitter } from 'events';
-import { Filter, Action, IFilters, IPolicies, IRoutes, IActions, ContextTypes, ITemplates } from './types';
+import { Filter, Action, IFilters, IPolicies, IRoutes, IActions, ContextTypes, ITemplates, IEntities } from './types';
+import { Service, Controller } from './tensil';
 export declare class Entity extends EventEmitter {
-    protected _core: Core;
+    protected core: Core;
     protected policies: IPolicies;
     protected filters: IFilters;
     protected routes: IRoutes;
@@ -38,10 +39,50 @@ export declare class Entity extends EventEmitter {
     protected validateKey(key: string, context: ContextTypes, force?: boolean): string;
     app: Express;
     readonly router: Router;
+    readonly entities: IEntities;
     /**
      * Returns value indicating if running in strict mode.
      */
     isStrict(): boolean;
+    /**
+     * Gets the base class type for a given class.
+     *
+     * @param Type the type to inspect for base type.
+     */
+    /**
+     * Gets an entity by it's type.
+     *
+     * @param name the name of the entity to get.
+     */
+    getAs<T extends Entity>(name: string): T;
+    /**
+     * Gets a property on the entity as type.
+     *
+     * @example
+     * .getPropAs('UserController', 'MyCustomProp');
+     *
+     * @param name the name of an entity.
+     * @param prop the property on the entity to get.
+     */
+    getPropAs<T>(name: string, prop: string): T;
+    /**
+     * Gets a Service by name.
+     *
+     * @example
+     * .getService('LogService');
+     *
+     * @param name the name of the Service to get.
+     */
+    getService<T extends Service = Service>(name: string): T;
+    /**
+     * Gets a Controller by name.
+     *
+     * @example
+     * .getController('UserController');
+     *
+     * @param name the name of the Controller to get.
+     */
+    getController<T extends Controller = Controller>(name: string): T;
     /**
      * Merges policies with the provided object.
      *

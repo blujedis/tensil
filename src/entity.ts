@@ -2,12 +2,15 @@ import { Router, Express, NextFunction } from 'express';
 import { Core } from './core';
 import { EventEmitter } from 'events';
 import { castArray, has, isObject } from 'lodash';
-import { Filter, Action, IFilters, IPolicies, IRoutes, EntityType, IActions, ContextTypes, ITemplates } from './types';
-import { Tensil } from './tensil';
+import {
+  Filter, Action, IFilters, IPolicies, IRoutes, EntityType,
+  IActions, ContextTypes, ITemplates, IEntities
+} from './types';
+import { Tensil, Service, Controller } from './tensil';
 
 export class Entity extends EventEmitter {
 
-  protected _core: Core;
+  protected core: Core;
 
   protected policies: IPolicies;
   protected filters: IFilters;
@@ -26,10 +29,10 @@ export class Entity extends EventEmitter {
     super();
     const ctorName = this.constructor.name;
 
-    this._core = Core.getInstance(app);
+    this.core = Core.getInstance(app);
 
     this.type = ctorName;
-    this.baseType = this._core.getType(this);
+    this.baseType = (this as any).getType;
     this.mountPath = '/' + ((mount || '/').trim().toLowerCase()).replace(/^\/\/?/, '');
 
     // Defaults basePath to controller name without "Controller"
@@ -39,8 +42,8 @@ export class Entity extends EventEmitter {
     }
 
     // Check if router exists
-    if (this.mountPath && !this._core.routers[this.mountPath])
-      this._core.routers[this.mountPath] = Router();
+    if (this.mountPath && !this.core.routers[this.mountPath])
+      this.core.routers[this.mountPath] = Router();
 
     // Set readonly properties.
     Object.defineProperties(this, {
@@ -49,7 +52,7 @@ export class Entity extends EventEmitter {
     });
 
     // Register the service with core.
-    const registered = this._core.registerInstance(this);
+    const registered = this.core.registerInstance(this);
     if (!registered)
       this.emitter('entity', 'duplicate',
         new Error(`Skipping duplicate registration for ${this.baseType} "${this.type}"`));
@@ -106,25 +109,104 @@ export class Entity extends EventEmitter {
   }
 
   get app() {
-    return this._core.app;
+    return this.core.app;
   }
 
   set app(app: Express) {
-    this._core.app = app;
+    this.core.app = app;
   }
 
   get router() {
-    return this._core.routers[this.mountPath];
+    return this.core.routers[this.mountPath];
+  }
+
+  get entities(): IEntities {
+    return this.core.entities;
   }
 
   /**
    * Returns value indicating if running in strict mode.
    */
   isStrict() {
-    const strict = (this._core.entities.Tensil as Tensil).options.strict;
+    const strict = (this.core.entities.Tensil as Tensil).options.strict;
     if (typeof strict === 'undefined' && process.env.NODE_ENV === 'production')
       return true;
     return strict;
+  }
+
+  /**
+   * Gets the base class type for a given class.
+   * 
+   * @param Type the type to inspect for base type.
+   */
+  // getType(Type: Entity) {
+  //   return this.core.getType(Type);
+  // }
+
+  /**
+   * Gets an entity by it's type.
+   * 
+   * @param name the name of the entity to get.
+   */
+  getAs<T extends Entity>(name: string): T {
+    return this.entities[name] as any;
+  }
+
+  /**
+   * Gets a property on the entity as type.
+   * 
+   * @example
+   * .getPropAs('UserController', 'MyCustomProp');
+   * 
+   * @param name the name of an entity.
+   * @param prop the property on the entity to get.
+   */
+  getPropAs<T>(name: string, prop: string): T {
+    return this.entities[name][prop];
+  }
+
+  /**
+   * Gets a Service by name.
+   * 
+   * @example
+   * .getService('LogService');
+   * 
+   * @param name the name of the Service to get.
+   */
+  getService<T extends Service = Service>(name: string): T {
+    const entity = this.getAs<T>(name);
+    if (!entity) {
+      this.emitter('entity', 'undefined', name);
+      return null;
+    }
+
+    if (entity.baseType !== EntityType.Service) {
+      this.emitter('entity', 'mismatch', name);
+      return null;
+    }
+    return entity;
+  }
+
+  /**
+   * Gets a Controller by name.
+   * 
+   * @example
+   * .getController('UserController');
+   * 
+   * @param name the name of the Controller to get.
+   */
+  getController<T extends Controller = Controller>(name: string): T {
+    const entity = this.getAs<T>(name);
+    if (!entity) {
+      this.emitter('entity', 'undefined', name);
+      return null;
+    }
+
+    if (entity.baseType !== EntityType.Service) {
+      this.emitter('entity', 'mismatch', name);
+      return null;
+    }
+    return entity;
   }
 
   /**

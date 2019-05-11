@@ -9,9 +9,9 @@ class Entity extends events_1.EventEmitter {
     constructor(base, mount, app) {
         super();
         const ctorName = this.constructor.name;
-        this._core = core_1.Core.getInstance(app);
+        this.core = core_1.Core.getInstance(app);
         this.type = ctorName;
-        this.baseType = this._core.getType(this);
+        this.baseType = this.getType;
         this.mountPath = '/' + ((mount || '/').trim().toLowerCase()).replace(/^\/\/?/, '');
         // Defaults basePath to controller name without "Controller"
         if (this.baseType === types_1.EntityType.Controller) {
@@ -19,15 +19,15 @@ class Entity extends events_1.EventEmitter {
             this.basePath = base.replace(/^\//, '');
         }
         // Check if router exists
-        if (this.mountPath && !this._core.routers[this.mountPath])
-            this._core.routers[this.mountPath] = express_1.Router();
+        if (this.mountPath && !this.core.routers[this.mountPath])
+            this.core.routers[this.mountPath] = express_1.Router();
         // Set readonly properties.
         Object.defineProperties(this, {
             _core: { enumerable: false },
             name: { writable: false }
         });
         // Register the service with core.
-        const registered = this._core.registerInstance(this);
+        const registered = this.core.registerInstance(this);
         if (!registered)
             this.emitter('entity', 'duplicate', new Error(`Skipping duplicate registration for ${this.baseType} "${this.type}"`));
         else
@@ -70,22 +70,93 @@ class Entity extends events_1.EventEmitter {
         return key;
     }
     get app() {
-        return this._core.app;
+        return this.core.app;
     }
     set app(app) {
-        this._core.app = app;
+        this.core.app = app;
     }
     get router() {
-        return this._core.routers[this.mountPath];
+        return this.core.routers[this.mountPath];
+    }
+    get entities() {
+        return this.core.entities;
     }
     /**
      * Returns value indicating if running in strict mode.
      */
     isStrict() {
-        const strict = this._core.entities.Tensil.options.strict;
+        const strict = this.core.entities.Tensil.options.strict;
         if (typeof strict === 'undefined' && process.env.NODE_ENV === 'production')
             return true;
         return strict;
+    }
+    /**
+     * Gets the base class type for a given class.
+     *
+     * @param Type the type to inspect for base type.
+     */
+    // getType(Type: Entity) {
+    //   return this.core.getType(Type);
+    // }
+    /**
+     * Gets an entity by it's type.
+     *
+     * @param name the name of the entity to get.
+     */
+    getAs(name) {
+        return this.entities[name];
+    }
+    /**
+     * Gets a property on the entity as type.
+     *
+     * @example
+     * .getPropAs('UserController', 'MyCustomProp');
+     *
+     * @param name the name of an entity.
+     * @param prop the property on the entity to get.
+     */
+    getPropAs(name, prop) {
+        return this.entities[name][prop];
+    }
+    /**
+     * Gets a Service by name.
+     *
+     * @example
+     * .getService('LogService');
+     *
+     * @param name the name of the Service to get.
+     */
+    getService(name) {
+        const entity = this.getAs(name);
+        if (!entity) {
+            this.emitter('entity', 'undefined', name);
+            return null;
+        }
+        if (entity.baseType !== types_1.EntityType.Service) {
+            this.emitter('entity', 'mismatch', name);
+            return null;
+        }
+        return entity;
+    }
+    /**
+     * Gets a Controller by name.
+     *
+     * @example
+     * .getController('UserController');
+     *
+     * @param name the name of the Controller to get.
+     */
+    getController(name) {
+        const entity = this.getAs(name);
+        if (!entity) {
+            this.emitter('entity', 'undefined', name);
+            return null;
+        }
+        if (entity.baseType !== types_1.EntityType.Service) {
+            this.emitter('entity', 'mismatch', name);
+            return null;
+        }
+        return entity;
     }
     filter(key, filters, force = false) {
         if (lodash_1.isObject(key)) {

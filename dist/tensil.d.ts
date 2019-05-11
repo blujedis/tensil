@@ -4,12 +4,13 @@ import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
-import { IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig, ContextHandlers } from './types';
+import { IPolicies, IFilters, IRoutes, IRouters, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig, ContextHandlers } from './types';
 declare class Service extends Entity {
     filters: IFilters;
     routes: IRoutes;
     constructor();
     constructor(mount: string);
+    protected readonly getType: string;
 }
 declare class Controller extends Entity {
     policies: IPolicies;
@@ -17,6 +18,7 @@ declare class Controller extends Entity {
     routes: IRoutes;
     actions: IActions;
     constructor(base: string, mount?: string);
+    protected readonly getType: string;
     /**
      * Sets global policy for Controller.
      *
@@ -61,6 +63,7 @@ declare class Tensil extends Entity {
     constructor();
     constructor(options: IOptions);
     constructor(app: Express, options?: IOptions);
+    protected readonly getType: string;
     /**
      * Binds the context to a looked up handler method.
      *
@@ -143,7 +146,6 @@ declare class Tensil extends Entity {
      */
     protected normalizeHandlers<R extends Request = Request, S extends Response = Response>(handlers: any, context: ContextTypes, key?: string): ContextHandlers<R, S>[];
     options: IOptions;
-    readonly entities: IEntities;
     readonly routers: IRouters;
     readonly routeMap: IRouteMap<Request, Response>;
     readonly isProd: boolean;
@@ -314,32 +316,6 @@ declare class Tensil extends Entity {
      */
     renderFileOrView(req: Request, res: Response, next?: NextFunction): (view: string, context?: any, status?: number) => Promise<void>;
     /**
-     * Gets the base class type for a given class.
-     *
-     * @param Type the type to inspect for base type.
-     */
-    getType(Type: Entity): any;
-    /**
-     * Gets a Service by name.
-     *
-     * @example
-     * .getService('LogService');
-     * .getService('LogService');
-     *
-     * @param name the name of the Service to get.
-     */
-    getService(name: string): Service;
-    /**
-     * Gets a Controller by name.
-     *
-     * @example
-     * .getController('UserController');
-     * .getController('LogService');
-     *
-     * @param name the name of the Controller to get.
-     */
-    getController(name: string): Service;
-    /**
      * Registers a Service with Tensil.
      *
      * @example
@@ -349,7 +325,7 @@ declare class Tensil extends Entity {
      * @param Klass the Service class to be registered.
      * @param mount the optional router mount point to use.
      */
-    registerService<T extends Constructor>(Klass: T, mount?: string): this;
+    registerService<T extends Constructor>(Klass: T, mount?: string, ...args: any[]): this;
     /**
      * Registers a Controller with Tensil.
      *
@@ -360,7 +336,7 @@ declare class Tensil extends Entity {
      * @param Klass the Controller class to be registered.
      * @param mount the optional router mount point to use.
      */
-    registerController<T extends Constructor>(Klass: T, base: string, mount?: string): this;
+    registerController<T extends Constructor>(Klass: T, base: string, mount?: string, ...args: any[]): this;
     /**
      * Parses a route returning config object.
      *

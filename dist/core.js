@@ -24,7 +24,11 @@ class Core {
      * @param entity the Entity to get prototype name for.
      */
     getType(entity) {
-        return Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
+        const type = Object.getPrototypeOf(Object.getPrototypeOf(entity)).constructor.name;
+        // if (type !== 'Service' && type !== 'Controller')
+        //   return this.getType((entity as any).constructor.prototype);
+        // console.log((entity as any).__proto__.constructor.__proto__.constructor.__proto__);
+        return type;
     }
     has(entity) {
         let type = entity;

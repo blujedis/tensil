@@ -48,11 +48,17 @@ class Service extends entity_1.Entity {
     constructor(mount) {
         super(undefined, mount);
     }
+    get getType() {
+        return 'Service';
+    }
 }
 exports.Service = Service;
 class Controller extends entity_1.Entity {
     constructor(base, mount) {
         super(base, mount);
+    }
+    get getType() {
+        return 'Controller';
     }
     policy(key, policies, force = false) {
         if (lodash_1.isObject(key)) {
@@ -90,6 +96,9 @@ class Tensil extends entity_1.Entity {
         this.options = { ...DEFAULT_OPTIONS, ...options };
     }
     // PRIVATE & PROTECTED // 
+    get getType() {
+        return 'Tensil';
+    }
     /**
      * Binds the context to a looked up handler method.
      *
@@ -234,7 +243,7 @@ class Tensil extends entity_1.Entity {
      * @param namespace the namespace to be looked up.
      */
     lookupHandler(namespace) {
-        const entities = this._core.entities;
+        const entities = this.core.entities;
         const parts = namespace.split('.');
         const entityType = parts.shift() || '';
         const entity = entities[entityType];
@@ -305,11 +314,8 @@ class Tensil extends entity_1.Entity {
     set options(options) {
         this._options = options;
     }
-    get entities() {
-        return this._core.entities;
-    }
     get routers() {
-        return this._core.routers;
+        return this.core.routers;
     }
     get routeMap() {
         return this._routeMap;
@@ -531,44 +537,6 @@ class Tensil extends entity_1.Entity {
     }
     // SERVICE & CONTROLLER //
     /**
-     * Gets the base class type for a given class.
-     *
-     * @param Type the type to inspect for base type.
-     */
-    getType(Type) {
-        return this._core.getType(Type);
-    }
-    /**
-     * Gets a Service by name.
-     *
-     * @example
-     * .getService('LogService');
-     * .getService('LogService');
-     *
-     * @param name the name of the Service to get.
-     */
-    getService(name) {
-        const entity = this.entities[name];
-        if (entity.baseType !== types_1.EntityType.Service)
-            return null;
-        return entity;
-    }
-    /**
-     * Gets a Controller by name.
-     *
-     * @example
-     * .getController('UserController');
-     * .getController('LogService');
-     *
-     * @param name the name of the Controller to get.
-     */
-    getController(name) {
-        const entity = this.entities[name];
-        if (entity.baseType !== types_1.EntityType.Controller)
-            return null;
-        return entity;
-    }
-    /**
      * Registers a Service with Tensil.
      *
      * @example
@@ -578,8 +546,8 @@ class Tensil extends entity_1.Entity {
      * @param Klass the Service class to be registered.
      * @param mount the optional router mount point to use.
      */
-    registerService(Klass, mount) {
-        new Klass(mount);
+    registerService(Klass, mount, ...args) {
+        new Klass(mount, ...args);
         return this;
     }
     /**
@@ -592,8 +560,8 @@ class Tensil extends entity_1.Entity {
      * @param Klass the Controller class to be registered.
      * @param mount the optional router mount point to use.
      */
-    registerController(Klass, base, mount) {
-        new Klass(base, mount);
+    registerController(Klass, base, mount, ...args) {
+        new Klass(base, mount, ...args);
         return this;
     }
     // CONFIGURATION //
@@ -668,7 +636,7 @@ class Tensil extends entity_1.Entity {
             const routeKey = `${method}.${path}`;
             const routeConfig = { mount, handlers, entity, method, isRedirect, isParam, isView, namespaces };
             lodash_1.set(root, routeKey, routeConfig);
-            this.emitter('route', 'registered', routeKey, routeConfig);
+            this.emitter('route', 'registered', `${method} ${path}`, routeConfig);
         });
         return this;
     }

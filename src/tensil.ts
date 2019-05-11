@@ -74,6 +74,10 @@ class Service extends Entity {
     super(undefined, mount);
   }
 
+  protected get getType() {
+    return 'Service';
+  }
+
 }
 
 class Controller extends Entity {
@@ -85,6 +89,10 @@ class Controller extends Entity {
 
   constructor(base: string, mount?: string) {
     super(base, mount);
+  }
+
+  protected get getType() {
+    return 'Controller';
   }
 
   /**
@@ -177,6 +185,10 @@ class Tensil extends Entity {
   }
 
   // PRIVATE & PROTECTED // 
+
+  protected get getType() {
+    return 'Tensil';
+  }
 
   /**
    * Binds the context to a looked up handler method.
@@ -350,7 +362,7 @@ class Tensil extends Entity {
    */
   protected lookupHandler(namespace: string) {
 
-    const entities = this._core.entities;
+    const entities = this.core.entities;
 
     const parts = namespace.split('.');
     const entityType = parts.shift() || '';
@@ -457,12 +469,8 @@ class Tensil extends Entity {
     this._options = options;
   }
 
-  get entities(): IEntities {
-    return this._core.entities;
-  }
-
   get routers(): IRouters {
-    return this._core.routers;
+    return this.core.routers;
   }
 
   get routeMap() {
@@ -842,47 +850,6 @@ class Tensil extends Entity {
   // SERVICE & CONTROLLER //
 
   /**
-   * Gets the base class type for a given class.
-   * 
-   * @param Type the type to inspect for base type.
-   */
-  getType(Type: Entity) {
-    return this._core.getType(Type);
-  }
-
-  /**
-   * Gets a Service by name.
-   * 
-   * @example
-   * .getService('LogService');
-   * .getService('LogService');
-   * 
-   * @param name the name of the Service to get.
-   */
-  getService(name: string): Service {
-    const entity = this.entities[name];
-    if (entity.baseType !== EntityType.Service)
-      return null;
-    return entity as any;
-  }
-
-  /**
-   * Gets a Controller by name.
-   * 
-   * @example
-   * .getController('UserController');
-   * .getController('LogService');
-   * 
-   * @param name the name of the Controller to get.
-   */
-  getController(name: string): Service {
-    const entity = this.entities[name];
-    if (entity.baseType !== EntityType.Controller)
-      return null;
-    return entity as any;
-  }
-
-  /**
    * Registers a Service with Tensil.
    * 
    * @example
@@ -892,8 +859,8 @@ class Tensil extends Entity {
    * @param Klass the Service class to be registered.
    * @param mount the optional router mount point to use.
    */
-  registerService<T extends Constructor>(Klass: T, mount?: string) {
-    new Klass(mount);
+  registerService<T extends Constructor>(Klass: T, mount?: string, ...args: any[]) {
+    new Klass(mount, ...args);
     return this;
   }
 
@@ -907,8 +874,8 @@ class Tensil extends Entity {
    * @param Klass the Controller class to be registered.
    * @param mount the optional router mount point to use.
    */
-  registerController<T extends Constructor>(Klass: T, base: string, mount?: string) {
-    new Klass(base, mount);
+  registerController<T extends Constructor>(Klass: T, base: string, mount?: string, ...args: any[]) {
+    new Klass(base, mount, ...args);
     return this;
   }
 
@@ -1048,7 +1015,7 @@ class Tensil extends Entity {
 
       set(root, routeKey, routeConfig);
 
-      this.emitter('route', 'registered', routeKey, routeConfig);
+      this.emitter('route', 'registered', `${method} ${path}`, routeConfig);
 
     });
 
@@ -1076,6 +1043,7 @@ class Tensil extends Entity {
       ctrl.policies = ctrl.policies || {};
       ctrl.actions = ctrl.actions || {};
     }
+
     else if (entity.baseType === EntityType.Service && (entity as Controller).policies) {
       throw new Error(`Service ${entity.type} cannot contain "policies", did you mean to use a Controller?`);
     }
@@ -1119,6 +1087,7 @@ class Tensil extends Entity {
                 const tplt = !d.path && tpltKey && this.templates[tpltKey];
 
                 // For actions we need to lookup the policy.
+
                 const policies = (entity as Controller).policies;
                 const globalPol = castArray(policies['*'] || []) as Policy[];
                 filters = [...globalPol, ...castArray(policies[d.key] || [])];
@@ -1399,6 +1368,7 @@ class Tensil extends Entity {
 
         if (this.options.sort)
           routes.reverse();
+
         routes
           .forEach(r => {
             const config = methods[m][r];

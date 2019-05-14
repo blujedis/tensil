@@ -108,7 +108,7 @@ export function action(methods?: HttpMethod | HttpMethod[], pathOrTemplate?: str
   return (target: any, key: string, descriptor: PropertyDescriptor) => {
 
     const isFunc = descriptor.value && typeof descriptor.value === 'function';
-    const baseType = Object.getPrototypeOf(target).constructor.name;
+    const baseType = target.constructor.__BASE_TYPE__;
     const isCtrl = baseType === EntityType.Controller;
 
     if (!isFunc || !isCtrl)

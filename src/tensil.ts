@@ -65,6 +65,8 @@ const DEFAULT_OPTIONS: IOptions = {
 
 class Service extends Entity {
 
+  static __BASE_TYPE__ = 'Service';
+
   filters: IFilters;
   routes: IRoutes;
 
@@ -75,12 +77,14 @@ class Service extends Entity {
   }
 
   protected get getType() {
-    return 'Service';
+    return Service.__BASE_TYPE__;
   }
 
 }
 
 class Controller extends Entity {
+
+  static __BASE_TYPE__ = 'Controller';
 
   policies: IPolicies;
   filters: IFilters;
@@ -92,7 +96,7 @@ class Controller extends Entity {
   }
 
   protected get getType() {
-    return 'Controller';
+    return Controller.__BASE_TYPE__;
   }
 
   /**
@@ -163,6 +167,8 @@ class Controller extends Entity {
 
 class Tensil extends Entity {
 
+  static __BASE_TYPE__ = 'Tensil';
+
   private _initialized = false;
   private _normalized = false;
   private _routeMap: IRouteMap = {};
@@ -187,7 +193,7 @@ class Tensil extends Entity {
   // PRIVATE & PROTECTED // 
 
   protected get getType() {
-    return 'Tensil';
+    return Tensil.__BASE_TYPE__;
   }
 
   /**
@@ -1066,7 +1072,7 @@ class Tensil extends Entity {
               const methods = castArray(d.methods);
               const ns = this.toNamespace(entity.type, d.key);
               const handler = this.lookupHandler(ns);
-              let filters = castArray(d.filters || []);
+              let policyFilters = castArray(d.filters || []);
 
               // Handle Route Config
               if (d.decorator === DecoratorType.Route) {
@@ -1076,12 +1082,14 @@ class Tensil extends Entity {
                   this.emitter('route', 'invalid', new Error(`Route failed, path for namespace "${ns}" is undefined`));
 
                 else
-                  contexts[k][`${methods.join('|')} ${d.path}`] = [...filters, handler];
+                  contexts[k][`${methods.join('|')} ${d.path}`] = [...policyFilters, handler];
 
               }
 
               // Handle Action Config
               else {
+
+
 
                 const tpltKey = d.template || (!d.path && d.key);
                 const tplt = !d.path && tpltKey && this.templates[tpltKey];
@@ -1090,7 +1098,7 @@ class Tensil extends Entity {
 
                 const policies = (entity as Controller).policies;
                 const globalPol = castArray(policies['*'] || []) as Policy[];
-                filters = [...globalPol, ...castArray(policies[d.key] || [])];
+                policyFilters = [...globalPol, ...castArray(policies[d.key] || [])];
 
                 // Has known template.
                 if (tplt) {
@@ -1103,11 +1111,11 @@ class Tensil extends Entity {
 
                   if (this.options.crud)
                     contexts[k][methods.join('|') + ' ' +
-                      this.options.formatter(RouteType.Crud, tplt, props)] = [...filters, handler];
+                      this.options.formatter(RouteType.Crud, tplt, props)] = [...policyFilters, handler];
 
                   if (this.options.rest)
                     contexts[k][methods.join('|') + ' ' +
-                      this.options.formatter(RouteType.Rest, tplt, props)] = [...filters, handler];
+                      this.options.formatter(RouteType.Rest, tplt, props)] = [...policyFilters, handler];
 
                 }
 
@@ -1116,7 +1124,7 @@ class Tensil extends Entity {
                   if (!d.path)
                     d.path = `/${d.key}`;
 
-                  contexts[k][`${methods.join('|')} ${d.path}`] = [...(d.filters as any), handler];
+                  contexts[k][`${methods.join('|')} ${d.path}`] = [...policyFilters, ...(d.filters as any), handler];
 
                 }
 

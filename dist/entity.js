@@ -18,6 +18,7 @@ class Entity extends events_1.EventEmitter {
             base = base || ctorName.toLowerCase().replace(/controller$/, '');
             this.basePath = base.replace(/^\//, '');
         }
+        this.basePath = this.basePath || '';
         // Check if router exists
         if (this.mountPath && !this.core.routers[this.mountPath])
             this.core.routers[this.mountPath] = express_1.Router();

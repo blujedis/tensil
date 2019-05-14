@@ -66,7 +66,7 @@ function action(methods, pathOrTemplate) {
         throw new Error('Whoops method "Param" is not valid for action decorator, did you mean to use "@param()"?');
     return (target, key, descriptor) => {
         const isFunc = descriptor.value && typeof descriptor.value === 'function';
-        const baseType = Object.getPrototypeOf(target).constructor.name;
+        const baseType = target.constructor.__BASE_TYPE__;
         const isCtrl = baseType === types_1.EntityType.Controller;
         if (!isFunc || !isCtrl)
             throw new Error(`Cannot set "action" decorator on ${key}, is this a method and controller?`);

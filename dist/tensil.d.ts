@@ -6,6 +6,7 @@ import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'http
 import { Entity } from './entity';
 import { IPolicies, IFilters, IRoutes, IRouters, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig, ContextHandlers } from './types';
 declare class Service extends Entity {
+    static __BASE_TYPE__: string;
     filters: IFilters;
     routes: IRoutes;
     constructor();
@@ -13,6 +14,7 @@ declare class Service extends Entity {
     protected readonly getType: string;
 }
 declare class Controller extends Entity {
+    static __BASE_TYPE__: string;
     policies: IPolicies;
     filters: IFilters;
     routes: IRoutes;
@@ -53,6 +55,7 @@ declare class Controller extends Entity {
     policy(key?: string, policies?: Policy | Policy[], force?: boolean): any;
 }
 declare class Tensil extends Entity {
+    static __BASE_TYPE__: string;
     private _initialized;
     private _normalized;
     private _routeMap;

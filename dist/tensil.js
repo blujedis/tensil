@@ -49,16 +49,17 @@ class Service extends entity_1.Entity {
         super(undefined, mount);
     }
     get getType() {
-        return 'Service';
+        return Service.__BASE_TYPE__;
     }
 }
+Service.__BASE_TYPE__ = 'Service';
 exports.Service = Service;
 class Controller extends entity_1.Entity {
     constructor(base, mount) {
         super(base, mount);
     }
     get getType() {
-        return 'Controller';
+        return Controller.__BASE_TYPE__;
     }
     policy(key, policies, force = false) {
         if (lodash_1.isObject(key)) {
@@ -82,6 +83,7 @@ class Controller extends entity_1.Entity {
         return this;
     }
 }
+Controller.__BASE_TYPE__ = 'Controller';
 exports.Controller = Controller;
 class Tensil extends entity_1.Entity {
     constructor(app, options) {
@@ -97,7 +99,7 @@ class Tensil extends entity_1.Entity {
     }
     // PRIVATE & PROTECTED // 
     get getType() {
-        return 'Tensil';
+        return Tensil.__BASE_TYPE__;
     }
     /**
      * Binds the context to a looked up handler method.
@@ -672,14 +674,14 @@ class Tensil extends entity_1.Entity {
                             const methods = lodash_1.castArray(d.methods);
                             const ns = this.toNamespace(entity.type, d.key);
                             const handler = this.lookupHandler(ns);
-                            let filters = lodash_1.castArray(d.filters || []);
+                            let policyFilters = lodash_1.castArray(d.filters || []);
                             // Handle Route Config
                             if (d.decorator === types_1.DecoratorType.Route) {
                                 // If no route emit error.
                                 if (!d.path)
                                     this.emitter('route', 'invalid', new Error(`Route failed, path for namespace "${ns}" is undefined`));
                                 else
-                                    contexts[k][`${methods.join('|')} ${d.path}`] = [...filters, handler];
+                                    contexts[k][`${methods.join('|')} ${d.path}`] = [...policyFilters, handler];
                             }
                             // Handle Action Config
                             else {
@@ -688,7 +690,7 @@ class Tensil extends entity_1.Entity {
                                 // For actions we need to lookup the policy.
                                 const policies = entity.policies;
                                 const globalPol = lodash_1.castArray(policies['*'] || []);
-                                filters = [...globalPol, ...lodash_1.castArray(policies[d.key] || [])];
+                                policyFilters = [...globalPol, ...lodash_1.castArray(policies[d.key] || [])];
                                 // Has known template.
                                 if (tplt) {
                                     const props = {
@@ -698,15 +700,15 @@ class Tensil extends entity_1.Entity {
                                     };
                                     if (this.options.crud)
                                         contexts[k][methods.join('|') + ' ' +
-                                            this.options.formatter(types_1.RouteType.Crud, tplt, props)] = [...filters, handler];
+                                            this.options.formatter(types_1.RouteType.Crud, tplt, props)] = [...policyFilters, handler];
                                     if (this.options.rest)
                                         contexts[k][methods.join('|') + ' ' +
-                                            this.options.formatter(types_1.RouteType.Rest, tplt, props)] = [...filters, handler];
+                                            this.options.formatter(types_1.RouteType.Rest, tplt, props)] = [...policyFilters, handler];
                                 }
                                 else {
                                     if (!d.path)
                                         d.path = `/${d.key}`;
-                                    contexts[k][`${methods.join('|')} ${d.path}`] = [...d.filters, handler];
+                                    contexts[k][`${methods.join('|')} ${d.path}`] = [...policyFilters, ...d.filters, handler];
                                 }
                             }
                         });
@@ -901,6 +903,7 @@ class Tensil extends entity_1.Entity {
         return this;
     }
 }
+Tensil.__BASE_TYPE__ = 'Tensil';
 exports.Tensil = Tensil;
 let _instance;
 function initTensil() {

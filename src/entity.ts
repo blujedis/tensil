@@ -41,6 +41,8 @@ export class Entity extends EventEmitter {
       this.basePath = base.replace(/^\//, '');
     }
 
+    this.basePath = this.basePath || '';
+
     // Check if router exists
     if (this.mountPath && !this.core.routers[this.mountPath])
       this.core.routers[this.mountPath] = Router();

@@ -1,6 +1,6 @@
 {
   "name": "tensil",
-  "version": "1.1.24",
+  "version": "1.1.25",
   "description": "Simple Express framework",
   "main": "dist/index.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "mocha": "^6.2.0",
     "rimraf": "^2.7.1",
     "ts-node": "^8.4.1",
+    "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   }
 }

@@ -164,7 +164,7 @@ declare class Tensil extends Entity {
      *
      * @param req Express Request
      */
-    isXHR(req: Request): string | boolean;
+    isXHR(req: Request): string | number | true;
     /**
      * Synchronously checks if a view exists.
      *
@@ -276,9 +276,9 @@ declare class Tensil extends Entity {
      * Binds static path for resolving static content (images, styles etc)
      *
      * @example
-     * app.use('./public', {  });
-     * app.use('./public', true);
-     * app.use('./public', {}, true);
+     * .static('./public', {  });
+     * .static('./public', true);
+     * .static('./public', {}, true);
      *
      * @param path the path to the directory for static content.
      * @param options any ServeStaticOptions to be applied.

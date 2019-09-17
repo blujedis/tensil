@@ -3,9 +3,9 @@
  *
  * @param promise the promise to be wrapped.
  */
-export declare const awaiter: <T, K extends string = "data">(promise: Promise<T>) => Promise<{
+export declare const awaiter: <T>(promise: Promise<T>) => Promise<{
     err?: Error;
-} & Record<K, T>>;
+} & Record<"data", T>>;
 /**
  * Parses out the caller from stack trace using an error.
  *

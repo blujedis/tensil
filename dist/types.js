@@ -19,6 +19,7 @@ var HttpMethod;
     HttpMethod["Put"] = "put";
     HttpMethod["Post"] = "post";
     HttpMethod["Del"] = "delete";
+    HttpMethod["Patch"] = "patch";
     HttpMethod["Param"] = "param";
 })(HttpMethod = exports.HttpMethod || (exports.HttpMethod = {}));
 var DecoratorType;

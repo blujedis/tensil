@@ -33,10 +33,10 @@ const DEFAULT_OPTIONS: IOptions = {
     get: '/{{key}}',
     put: '/{{key}}/:id?',
     post: '/{{key}}',
-    del: '/{{key}}/:id?',
     read: '/{{key}}/:id?',
     create: '/{{key}}',
     update: '/{{key}}/:id?',
+    patch: '/{{key}}/:id',
     delete: '/{{key}}/:id?',
   },
 
@@ -508,7 +508,8 @@ class Tensil extends Entity {
    * @param req Express Request
    */
   isXHR(req: Request) {
-    return req.xhr || req.get('X-Requested-With') || req.is('*/json');
+    return req.xhr || req.accepts(['json']) || req.get('X-Requested-With') || req.is('*/json') ||
+      (req.headers && req.headers.accept && ~req.headers.accept.indexOf('json'));
   }
 
   /**
@@ -737,9 +738,9 @@ class Tensil extends Entity {
    * Binds static path for resolving static content (images, styles etc)
    * 
    * @example
-   * app.use('./public', {  });
-   * app.use('./public', true);
-   * app.use('./public', {}, true);
+   * .static('./public', {  });
+   * .static('./public', true);
+   * .static('./public', {}, true);
    * 
    * @param path the path to the directory for static content.
    * @param options any ServeStaticOptions to be applied.
@@ -1088,8 +1089,6 @@ class Tensil extends Entity {
 
               // Handle Action Config
               else {
-
-
 
                 const tpltKey = d.template || (!d.path && d.key);
                 const tplt = !d.path && tpltKey && this.templates[tpltKey];

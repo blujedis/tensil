@@ -5,7 +5,6 @@ import * as bodyParser from 'body-parser';
 // Import debug files.
 import '../src/debug/entities';
 
-const server = tensil.withServer();
 const app = tensil.app;
 
 app.use(bodyParser.json());

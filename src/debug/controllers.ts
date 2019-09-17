@@ -68,3 +68,22 @@ ctrl.route('/test/method', (req, res, next) => {
 
 ctrl.route('view /routes/list', 'routes/list');
 ctrl.route('redirect /routes/map', '/routes/list');
+
+// export class BaseController extends Controller {
+
+//   constructor(base, mount?) {
+//     super(base, mount);
+//   }
+
+//   @action(HttpMethod.Get)
+//   asdf(req, res) {
+//     //
+//   }
+
+// }
+
+// export class BusinessController extends BaseController {
+
+// }
+
+// const biz = new BusinessController('/');

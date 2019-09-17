@@ -16,6 +16,7 @@ export declare enum HttpMethod {
     Put = "put",
     Post = "post",
     Del = "delete",
+    Patch = "patch",
     Param = "param"
 }
 export declare enum DecoratorType {

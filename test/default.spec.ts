@@ -116,6 +116,7 @@ describe('Tensil', () => {
 
     chai.request(tensil.server)
       .get('/')
+      .set('accept', 'text/html')
       .end((err, res) => {
         assert.equal(res.status, 406);
         done();

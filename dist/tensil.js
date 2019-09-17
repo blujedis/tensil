@@ -19,10 +19,10 @@ const DEFAULT_OPTIONS = {
         get: '/{{key}}',
         put: '/{{key}}/:id?',
         post: '/{{key}}',
-        del: '/{{key}}/:id?',
         read: '/{{key}}/:id?',
         create: '/{{key}}',
         update: '/{{key}}/:id?',
+        patch: '/{{key}}/:id',
         delete: '/{{key}}/:id?',
     },
     rest: true,
@@ -52,8 +52,8 @@ class Service extends entity_1.Entity {
         return Service.__BASE_TYPE__;
     }
 }
-Service.__BASE_TYPE__ = 'Service';
 exports.Service = Service;
+Service.__BASE_TYPE__ = 'Service';
 class Controller extends entity_1.Entity {
     constructor(base, mount) {
         super(base, mount);
@@ -83,8 +83,8 @@ class Controller extends entity_1.Entity {
         return this;
     }
 }
-Controller.__BASE_TYPE__ = 'Controller';
 exports.Controller = Controller;
+Controller.__BASE_TYPE__ = 'Controller';
 class Tensil extends entity_1.Entity {
     constructor(app, options) {
         super(undefined, undefined, (lodash_1.isFunction(app) && app));
@@ -343,7 +343,8 @@ class Tensil extends entity_1.Entity {
      * @param req Express Request
      */
     isXHR(req) {
-        return req.xhr || req.get('X-Requested-With') || req.is('*/json');
+        return req.xhr || req.accepts(['json']) || req.get('X-Requested-With') || req.is('*/json') ||
+            (req.headers && req.headers.accept && ~req.headers.accept.indexOf('json'));
     }
     isView(view, sync) {
         const dir = this.app.get('views');
@@ -448,9 +449,9 @@ class Tensil extends entity_1.Entity {
      * Binds static path for resolving static content (images, styles etc)
      *
      * @example
-     * app.use('./public', {  });
-     * app.use('./public', true);
-     * app.use('./public', {}, true);
+     * .static('./public', {  });
+     * .static('./public', true);
+     * .static('./public', {}, true);
      *
      * @param path the path to the directory for static content.
      * @param options any ServeStaticOptions to be applied.
@@ -903,8 +904,8 @@ class Tensil extends entity_1.Entity {
         return this;
     }
 }
-Tensil.__BASE_TYPE__ = 'Tensil';
 exports.Tensil = Tensil;
+Tensil.__BASE_TYPE__ = 'Tensil';
 let _instance;
 function initTensil() {
     if (!_instance)

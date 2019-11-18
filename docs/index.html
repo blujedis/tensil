@@ -64,13 +64,21 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="tensil">Tensil</h1>
+				<a href="#tensil" id="tensil" style="color: inherit; text-decoration: none;">
+					<h1>Tensil</h1>
+				</a>
 				<p>Express server Service, Controller and Routing framework.</p>
-				<h2 id="introduction">Introduction</h2>
+				<a href="#introduction" id="introduction" style="color: inherit; text-decoration: none;">
+					<h2>Introduction</h2>
+				</a>
 				<p>Tensil flexible and lightweight. It intentionally leaves out opinion and focuses on painless secure routing. The idea behind Tensil is flexibilty with just enough magic. Services and Controllers can be mounted to the root router or their own router for app segregation. </p>
-				<h2 id="install">Install</h2>
+				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+					<h2>Install</h2>
+				</a>
 				<pre><code class="language-sh">$ npm install tensil -s</code></pre>
-				<h2 id="usage">Usage</h2>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil, { Controller } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> bodyParser <span class="hljs-keyword">from</span> <span class="hljs-string">'body-parser'</span>;
 
@@ -88,14 +96,18 @@ tensil
   .registerController(MyController)
   .start();
 </code></pre>
-				<h2 id="with-custom-app">With Custom App</h2>
+				<a href="#with-custom-app" id="with-custom-app" style="color: inherit; text-decoration: none;">
+					<h2>With Custom App</h2>
+				</a>
 				<p>Using Tensil with external express() app.</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
 
 <span class="hljs-keyword">const</span> app = express();
 tensil.app = app;</code></pre>
-				<h2 id="with-http-server">With Http Server</h2>
+				<a href="#with-http-server" id="with-http-server" style="color: inherit; text-decoration: none;">
+					<h2>With Http Server</h2>
+				</a>
 				<p>Using Tensil with http.createServer</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
@@ -110,7 +122,9 @@ tensil.withServer({ options });
 
 <span class="hljs-comment">// OR with SSL</span>
 tensil.withServer({ options }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// </span></code></pre>
-				<h2 id="server">Server</h2>
+				<a href="#server" id="server" style="color: inherit; text-decoration: none;">
+					<h2>Server</h2>
+				</a>
 				<p>Configuring a Tensil Service.</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil, { filter, Service } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">import</span> { format } <span class="hljs-keyword">from</span> <span class="hljs-string">'util'</span>;
@@ -144,7 +158,9 @@ tensil.withServer({ options }, <span class="hljs-literal">true</span>); <span cl
 <span class="hljs-keyword">const</span> myService = <span class="hljs-keyword">new</span> MyService();
 <span class="hljs-comment">// OR</span>
 tensil.registerSerivce(MyService);</code></pre>
-				<h2 id="controller">Controller</h2>
+				<a href="#controller" id="controller" style="color: inherit; text-decoration: none;">
+					<h2>Controller</h2>
+				</a>
 				<p>Configuring a Tensil Controller.</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> tensil, { action, HttpMethod } <span class="hljs-keyword">from</span> <span class="hljs-string">'tensil'</span>;
 <span class="hljs-keyword">class</span> MyController <span class="hljs-keyword">extends</span> Tensil.Controller {
@@ -180,7 +196,9 @@ tensil.registerSerivce(MyService);</code></pre>
 <span class="hljs-keyword">const</span> myController = <span class="hljs-keyword">new</span> MyController(<span class="hljs-string">'user'</span>);
 <span class="hljs-comment">// OR</span>
 tensil.registerController(MyController, <span class="hljs-string">'user'</span>);</code></pre>
-				<h2 id="default-action-templates">Default Action Templates</h2>
+				<a href="#default-action-templates" id="default-action-templates" style="color: inherit; text-decoration: none;">
+					<h2>Default Action Templates</h2>
+				</a>
 				<p>Templates allow you to map your action decorators to a key to make the defining of generated routes for controller actions less verbose. You can always override and defined a specific path. </p>
 				<p>Simply define a template below then use as:</p>
 				<pre><code class="language-ts"><span class="hljs-meta">@action</span>(<span class="hljs-string">'my-template-name'</span>)
@@ -207,8 +225,10 @@ create(req, res) {
   crud: <span class="hljs-literal">false</span>
 
 }</code></pre>
-				<h2 id="events">Events</h2>
-				<p>A pipe &quot;<strong>|*<em>&quot; indicates or. By default all errors are emitted without halting by throwing an error. When <code>options.strict</code> is enabled then errors will be thrown. Note when NOT *</em>prodcution</strong> strict is automatically enabled when strict is undefined. This is done to ensure there are not duplicate registrations and routes in a production environment.</p>
+				<a href="#events" id="events" style="color: inherit; text-decoration: none;">
+					<h2>Events</h2>
+				</a>
+				<p>A pipe &quot;<strong>|</strong>&quot; indicates or. By default all errors are emitted without halting by throwing an error. When <code>options.strict</code> is enabled then errors will be thrown. Note when NOT <strong>prodcution</strong> strict is automatically enabled when strict is undefined. This is done to ensure there are not duplicate registrations and routes in a production environment.</p>
 				<p>Listening to all events for a given group.</p>
 				<pre><code class="language-ts">tensil.on(<span class="hljs-string">`route`</span>, <span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">type</span>, ...args</span>) =&gt;</span> {
   <span class="hljs-comment">// do something with route.</span>
@@ -239,11 +259,17 @@ create(req, res) {
 					<tr><td>init</td><td>completed</td><td>null</td><td></td></tr>
 					<tr><td>start</td><td>completed</td><td>null</td><td></td></tr>
 				</table>
-				<h2 id="docs">Docs</h2>
+				<a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
+					<h2>Docs</h2>
+				</a>
 				<p>See <a href="https://blujedis.github.io/tensil/">https://blujedis.github.io/tensil/</a></p>
-				<h2 id="change">Change</h2>
+				<a href="#change" id="change" style="color: inherit; text-decoration: none;">
+					<h2>Change</h2>
+				</a>
 				<p>See <a href="CHANGE.md">CHANGE.md</a></p>
-				<h2 id="license">License</h2>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
 				<p>See <a href="LICENSE">LICENSE.md</a></p>
 			</div>
 		</div>
@@ -281,9 +307,6 @@ create(req, res) {
 						<a href="modules/_index_.html">"index"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_temp_.html">"temp"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_tensil_.html">"tensil"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -313,6 +336,7 @@ create(req, res) {
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -361,7 +385,7 @@ create(req, res) {
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>

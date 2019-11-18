@@ -45,11 +45,6 @@ export declare class Entity extends EventEmitter {
      */
     isStrict(): boolean;
     /**
-     * Gets the base class type for a given class.
-     *
-     * @param Type the type to inspect for base type.
-     */
-    /**
      * Gets an entity by it's type.
      *
      * @param name the name of the entity to get.

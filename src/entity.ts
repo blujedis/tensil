@@ -1,4 +1,4 @@
-import { Router, Express, NextFunction } from 'express';
+import { Router, Express } from 'express';
 import { Core } from './core';
 import { EventEmitter } from 'events';
 import { castArray, has, isObject } from 'lodash';
@@ -135,15 +135,6 @@ export class Entity extends EventEmitter {
       return true;
     return strict;
   }
-
-  /**
-   * Gets the base class type for a given class.
-   * 
-   * @param Type the type to inspect for base type.
-   */
-  // getType(Type: Entity) {
-  //   return this.core.getType(Type);
-  // }
 
   /**
    * Gets an entity by it's type.

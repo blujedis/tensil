@@ -92,14 +92,6 @@ class Entity extends events_1.EventEmitter {
         return strict;
     }
     /**
-     * Gets the base class type for a given class.
-     *
-     * @param Type the type to inspect for base type.
-     */
-    // getType(Type: Entity) {
-    //   return this.core.getType(Type);
-    // }
-    /**
      * Gets an entity by it's type.
      *
      * @param name the name of the entity to get.

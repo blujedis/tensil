@@ -1505,7 +1505,8 @@ class Tensil extends Entity {
 let _instance: Tensil;
 
 function initTensil() {
-  if (!_instance) _instance = new Tensil();
+  if (!_instance)
+    _instance = new Tensil();
   return _instance;
 }
 

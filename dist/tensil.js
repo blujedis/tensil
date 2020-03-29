@@ -846,7 +846,7 @@ class Tensil extends entity_1.Entity {
                 routes
                     .forEach(r => {
                     const config = methods[m][r];
-                    const rtr = { router: k };
+                    // const rtr = { router: k };
                     self.emitter('route', 'mounted', { ...config, ...({ mount: k }) });
                     router[m](r, ...(config.handlers));
                 });

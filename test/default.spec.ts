@@ -19,6 +19,7 @@ describe('Tensil', () => {
     chai.request(tensil.server)
       .get('/id/user')
       .end((err, res) => {
+
         assert.equal(res.status, 200);
         assert.isArray(res.body);
         assert.equal(res.body.length, 2);
@@ -33,13 +34,26 @@ describe('Tensil', () => {
       .get('/id/user/1')
       .end((err, res) => {
         assert.equal(res.status, 200);
-        assert.deepEqual(res.body, {
+        const { _isAuthenticated, ...body } = res.body;
+        assert.deepEqual(body, {
           firstName: 'Milton',
           lastName: 'Waddams',
           username: 'milton@officespace.com',
           password: 'swingline',
           location: 'basement'
         });
+        done();
+      });
+
+  });
+
+  it('should request user by id check if auth by service filter', (done) => {
+
+    chai.request(tensil.server)
+      .get('/id/user/1')
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.equal(res.body._isAuthenticated, true);
         done();
       });
 

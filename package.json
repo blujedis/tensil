@@ -7,7 +7,7 @@
     "clean": "rimraf dist/*",
     "copy": "node ./build/copy",
     "build": "npm run copy && tsc",
-    "watch": "npm run clean && npm run build -- -w",
+    "start": "npm run clean && npm run build -- -w",
     "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
     "docs": "typedoc ./src --options ./typedoc.json --out ./docs && touch ./docs/.nojekll",
     "test": "NODE_ENV=test mocha test/**/*.spec.ts* --require ./build/register.js --bail",

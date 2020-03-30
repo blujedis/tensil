@@ -1,10 +1,22 @@
 /// <reference types="node" />
 import { Express, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express';
-import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
 import { IPolicies, IFilters, IRoutes, IRouters, Policy, Constructor, ContextTypes, IActions, IOptions, IRouteMap, Noop, IConfig, ContextHandlers } from './types';
+interface ServeStaticOptions {
+    cacheControl?: boolean;
+    dotfiles?: string;
+    etag?: boolean;
+    extensions?: string[];
+    fallthrough?: boolean;
+    immutable?: boolean;
+    index?: boolean | string | string[];
+    lastModified?: boolean;
+    maxAge?: number | string;
+    redirect?: boolean;
+    setHeaders?: (res: Response, path: string, stat: any) => any;
+}
 declare class Service extends Entity {
     static __BASE_TYPE__: string;
     filters: IFilters;

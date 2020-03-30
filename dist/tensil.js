@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const stream_1 = require("stream");
+// import { ServeStaticOptions } from 'serve-static';
 const http_1 = require("http");
 const https_1 = require("https");
 const entity_1 = require("./entity");

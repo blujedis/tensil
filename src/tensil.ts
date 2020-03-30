@@ -2,8 +2,9 @@ import {
   Express, Request, Response, static as createStatic, NextFunction, RequestHandler,
   ErrorRequestHandler
 } from 'express';
+
 import { Transform } from 'stream';
-import { ServeStaticOptions } from 'serve-static';
+// import { ServeStaticOptions } from 'serve-static';
 import { Server as HttpServer, createServer as createHttpServer, ServerOptions as HttpServerOptions } from 'http';
 import { Server as HttpsServer, createServer as createHttpsServer, ServerOptions as HttpsServerOptions } from 'https';
 import { Entity } from './entity';
@@ -15,12 +16,27 @@ import { STATUS_CODES } from 'statuses';
 import { join, resolve } from 'path';
 import { stat, statSync, readFile } from 'fs';
 import {
-  IPolicies, IFilters, IRoutes, IRouters, IEntities, Policy,
+  IPolicies, IFilters, IRoutes, IRouters, Policy,
   Constructor, EntityType, ContextType, ContextTypes, HttpError,
   IActions, HttpMethod, IOptions, IRouteMap, Noop, IConfig, RequestHandlers,
-  ContextHandlers, IGenerateRouteConfig, RouteType, IGenerateActionConfig, DecoratorType, Filter, Action
+  ContextHandlers, IGenerateRouteConfig, RouteType, IGenerateActionConfig, DecoratorType
 } from './types';
 import { awaiter } from './utils';
+
+// tslint:disable-next-line: interface-name
+interface ServeStaticOptions {
+  cacheControl?: boolean;
+  dotfiles?: string;
+  etag?: boolean;
+  extensions?: string[];
+  fallthrough?: boolean;
+  immutable?: boolean;
+  index?: boolean | string | string[];
+  lastModified?: boolean;
+  maxAge?: number | string;
+  redirect?: boolean;
+  setHeaders?: (res: Response, path: string, stat: any) => any;
+}
 
 templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 

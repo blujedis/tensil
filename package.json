@@ -1,6 +1,6 @@
 {
   "name": "tensil",
-  "version": "1.1.28",
+  "version": "1.1.30",
   "description": "Simple Express framework",
   "main": "dist/index.js",
   "scripts": {
@@ -14,13 +14,6 @@
     "prep": "npm run build && npm run lint && npm run test && npm run docs",
     "release": "npm run prep && bump patch --commit --push && npm publish"
   },
-  "files": [
-    "dist/*",
-    "README.md",
-    "LICENSE",
-    "CHANGE.md",
-    "docs/*"
-  ],
   "author": "Blujedis <blujedicorp@gmail.com>",
   "repository": {
     "type": "git",

@@ -37,10 +37,9 @@ export declare class Entity extends EventEmitter {
      * @param force when true allows overwrite of existing key.
      */
     protected validateKey(key: string, context: ContextTypes, force?: boolean): string;
-    get app(): Express;
-    set app(app: Express);
-    get router(): Router;
-    get entities(): IEntities;
+    app: Express;
+    readonly router: Router;
+    readonly entities: IEntities;
     /**
      * Returns value indicating if running in strict mode.
      */

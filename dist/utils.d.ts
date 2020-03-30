@@ -1,10 +1,11 @@
-import { AwaiterResponse } from './types';
 /**
  * Normalizes promise to return object containing { err, data }
  *
  * @param promise the promise to be wrapped.
  */
-export declare const awaiter: <T>(promise: Promise<T>) => AwaiterResponse<T, "data">;
+export declare const awaiter: <T>(promise: Promise<T>) => Promise<{
+    err?: Error;
+} & Record<"data", T>>;
 /**
  * Parses out the caller from stack trace using an error.
  *

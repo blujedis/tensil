@@ -11,7 +11,7 @@ declare class Service extends Entity {
     routes: IRoutes;
     constructor();
     constructor(mount: string);
-    protected get getType(): string;
+    protected readonly getType: string;
 }
 declare class Controller extends Entity {
     static __BASE_TYPE__: string;
@@ -20,7 +20,7 @@ declare class Controller extends Entity {
     routes: IRoutes;
     actions: IActions;
     constructor(base: string, mount?: string);
-    protected get getType(): string;
+    protected readonly getType: string;
     /**
      * Sets global policy for Controller.
      *
@@ -66,7 +66,7 @@ declare class Tensil extends Entity {
     constructor();
     constructor(options: IOptions);
     constructor(app: Express, options?: IOptions);
-    protected get getType(): string;
+    protected readonly getType: string;
     /**
      * Binds the context to a looked up handler method.
      *
@@ -148,12 +148,11 @@ declare class Tensil extends Entity {
      * @param key the property key within the context.
      */
     protected normalizeHandlers<R extends Request = Request, S extends Response = Response>(handlers: any, context: ContextTypes, key?: string): ContextHandlers<R, S>[];
-    get options(): IOptions;
-    set options(options: IOptions);
-    get routers(): IRouters;
-    get routeMap(): IRouteMap<Request<import("express-serve-static-core").ParamsDictionary>, Response>;
-    get isProd(): boolean;
-    get isDev(): boolean;
+    options: IOptions;
+    readonly routers: IRouters;
+    readonly routeMap: IRouteMap<Request, Response>;
+    readonly isProd: boolean;
+    readonly isDev: boolean;
     /**
      * Checks if process.env.NODE_ENV contains specified environment.
      *
@@ -263,7 +262,7 @@ declare class Tensil extends Entity {
      * @param view the path of the view.
      * @param context the context to pass to the view.
      */
-    view<T extends object = any>(view: string, context?: T): (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) => void;
+    view<T extends object = any>(view: string, context?: T): (req: Request, res: Response) => void;
     /**
      * Returns default redirect handler.
      *
@@ -272,7 +271,7 @@ declare class Tensil extends Entity {
      *
      * @param to the path to redirect to.
      */
-    redirect(to: string): (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) => void;
+    redirect(to: string): (req: Request, res: Response) => void;
     /**
      * Binds static path for resolving static content (images, styles etc)
      *
@@ -297,7 +296,7 @@ declare class Tensil extends Entity {
      * @param text method to be displayed on 404 error.
      * @param view optional view/filename to render (default: 'dist/views/error.html')
      */
-    notFound(text?: string, view?: string): (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response, next: NextFunction) => Promise<void | Response>;
+    notFound(text?: string, view?: string): (req: Request, res: Response, next: NextFunction) => Promise<void | import("express-serve-static-core").Response>;
     /**
      * Creates 500 Error handler.
      * NOTE: if next(err) and err contains status/statusText it will be used instead.
